@@ -38,28 +38,37 @@
         📦 Envíos Gratis a Todo Honduras 📦
     </div>
 
-    <!-- Header / Navbar -->
+    <!-- Header / Navbar con Logo Centrado -->
     <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-            <a href="#" class="flex items-center gap-2 group">
-                <img src="zentradiagonal.png" alt="Zentra Logo" class="h-10 w-auto object-contain">
-            </a>
-
-            <!-- Desktop Nav -->
-            <nav class="hidden md:flex items-center gap-8 font-medium text-slate-600">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 grid grid-cols-3 items-center">
+            
+            <!-- Izquierda: Navegación de Enlaces -->
+            <nav class="hidden md:flex items-center gap-6 font-medium text-slate-600 text-sm">
                 <a href="#productos" class="text-brand-dark font-bold transition">Catálogo</a>
                 <a href="#como-funciona" class="hover:text-brand-dark transition">Cómo funciona</a>
                 <a href="#opiniones" class="hover:text-brand-dark transition">Opiniones</a>
                 <a href="#contacto" class="hover:text-brand-dark transition">Contacto</a>
             </nav>
 
-            <!-- Actions -->
-            <div class="flex items-center gap-4">
+            <!-- Espacio móvil para equilibrar -->
+            <div class="md:hidden flex items-center">
+                <!-- Menú móvil simple o hamburguesa si se requiere -->
+            </div>
+
+            <!-- Centro: Logotipo de Zentra -->
+            <div class="flex justify-center">
+                <a href="#" class="flex items-center group">
+                    <img src="zentradiagonal.png" alt="Zentra Logo" class="h-10 w-auto object-contain">
+                </a>
+            </div>
+
+            <!-- Derecha: Acciones (Carrito y Botón) -->
+            <div class="flex items-center justify-end gap-3 sm:gap-4">
                 <button onclick="toggleCart()" class="relative p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition">
                     <i class="fa-solid fa-bag-shopping text-lg"></i>
                     <span id="cart-badge" class="absolute -top-1 -right-1 w-5 h-5 bg-brand-dark text-white rounded-full text-xs font-bold flex items-center justify-center">0</span>
                 </button>
-                <a href="#productos" class="hidden sm:inline-flex items-center justify-center px-5 py-2.5 rounded-xl bg-brand-dark hover:bg-black text-white font-bold text-sm shadow-lg transition">
+                <a href="#productos" class="hidden sm:inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-brand-dark hover:bg-black text-white font-bold text-xs sm:text-sm shadow-lg transition">
                     Ver catálogo
                 </a>
             </div>
@@ -309,20 +318,20 @@
 
     <!-- JavaScript Logic & State Management -->
     <script>
-        let products = JSON.parse(localStorage.getItem('zentra_products_v6')) || [
+        let products = JSON.parse(localStorage.getItem('zentra_products_v7')) || [
             { id: 1, name: 'Tarjeta NFC · Reseñas de Google', price: 499, badge: 'Más vendido', image: 'googleNFC.png', outOfStock: false },
             { id: 2, name: 'Tarjeta NFC · Seguidores de Instagram', price: 499, badge: 'Nuevo', image: 'igNFC.png', outOfStock: false },
             { id: 3, name: 'Combo Doble · Google + Instagram', price: 799, badge: 'Oferta', image: 'googleigNFC.png', outOfStock: false },
             { id: 4, name: 'AirPods 4ta Gen AAA+', price: 699, badge: 'Agotado', image: 'airpods4tagen.png', outOfStock: true }
         ];
 
-        let cart = JSON.parse(localStorage.getItem('zentra_cart_v6')) || [];
-        let orders = JSON.parse(localStorage.getItem('zentra_orders_v6')) || [];
+        let cart = JSON.parse(localStorage.getItem('zentra_cart_v7')) || [];
+        let orders = JSON.parse(localStorage.getItem('zentra_orders_v7')) || [];
 
         function saveState() {
-            localStorage.setItem('zentra_products_v6', JSON.stringify(products));
-            localStorage.setItem('zentra_cart_v6', JSON.stringify(cart));
-            localStorage.setItem('zentra_orders_v6', JSON.stringify(orders));
+            localStorage.setItem('zentra_products_v7', JSON.stringify(products));
+            localStorage.setItem('zentra_cart_v7', JSON.stringify(cart));
+            localStorage.setItem('zentra_orders_v7', JSON.stringify(orders));
         }
 
         function renderProducts() {
