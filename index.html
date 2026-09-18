@@ -68,11 +68,7 @@
 
             <!-- Acciones Derecha -->
             <div class="flex items-center justify-end gap-3 sm:gap-4">
-                <button onclick="toggleCart()" class="relative p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition">
-                    <i class="fa-solid fa-bag-shopping text-lg"></i>
-                    <span id="cart-badge" class="absolute -top-1 -right-1 w-5 h-5 bg-brand-dark text-white rounded-full text-xs font-bold flex items-center justify-center">0</span>
-                </button>
-                <a href="#productos" class="hidden sm:inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-brand-dark hover:bg-black text-white font-bold text-xs sm:text-sm shadow-lg transition">
+                <a href="#productos" class="inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-brand-dark hover:bg-black text-white font-bold text-xs sm:text-sm shadow-lg transition">
                     Ver catálogo
                 </a>
             </div>
@@ -106,7 +102,7 @@
         <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
             <div>
                 <div class="mb-3">
-                    <a href="https://wa.me/50488780115?text=Estoy%20interesado%20en%20un%20producto" target="_blank" class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 text-brand-dark font-semibold text-xs border border-slate-200 transition shadow-sm hover:scale-[1.02]">
+                    <a href="https://wa.me/50488780115?text=Hola,%20estoy%20interesado%20en%20sus%20productos%20NFC." target="_blank" class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 text-brand-dark font-semibold text-xs border border-slate-200 transition shadow-sm hover:scale-[1.02]">
                         <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                         CONTÁCTANOS <i class="fa-brands fa-whatsapp text-emerald-600 ml-1"></i>
                     </a>
@@ -160,66 +156,36 @@
         </div>
     </footer>
 
-    <!-- Cart Drawer Modal -->
-    <div id="cart-drawer" class="fixed inset-0 z-50 overflow-hidden hidden">
-        <div class="absolute inset-0 bg-slate-900/50 backdrop-blur-sm transition-opacity" onclick="toggleCart()"></div>
-        <div class="absolute inset-y-0 right-0 max-w-full flex pl-10">
-            <div class="w-screen max-w-md bg-white shadow-2xl flex flex-col">
-                <div class="p-6 border-b border-slate-200 flex items-center justify-between">
-                    <h3 class="font-bold text-lg text-brand-dark flex items-center gap-2">
-                        <i class="fa-solid fa-bag-shopping text-brand-dark"></i> Tu Carrito
-                    </h3>
-                    <button onclick="toggleCart()" class="text-slate-400 hover:text-slate-600 text-lg p-2"><i class="fa-solid fa-xmark"></i></button>
-                </div>
-                <div id="cart-items" class="flex-1 overflow-y-auto p-6 space-y-4"></div>
-                <div class="p-6 border-t border-slate-200 bg-slate-50 space-y-4">
-                    <div class="flex justify-between items-center font-bold text-lg">
-                        <span>Total:</span>
-                        <span id="cart-total" class="text-brand-dark">L. 0.00</span>
-                    </div>
-                    <button onclick="checkout()" class="w-full py-4 rounded-xl bg-brand-dark hover:bg-black text-white font-bold text-center shadow-lg transition">
-                        Finalizar Compra / Registrar en CRM
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Admin Floating Button -->
     <button onclick="toggleAdminModal()" class="fixed bottom-6 right-6 z-50 bg-brand-dark hover:bg-black text-white px-5 py-3 rounded-full shadow-2xl font-bold text-sm flex items-center gap-2 transition transform hover:scale-105 border border-slate-700">
-        <i class="fa-solid fa-gear"></i> Panel Admin / CRM
+        <i class="fa-solid fa-gear"></i> Panel Admin
     </button>
 
     <div id="admin-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm hidden">
         <div class="bg-white rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl overflow-y-auto max-h-[90vh]">
             <div class="flex justify-between items-center mb-6 border-b pb-4">
                 <h3 class="text-xl font-extrabold text-brand-dark flex items-center gap-2">
-                    <i class="fa-solid fa-shield-halved text-brand-dark"></i> Panel de Administración & CRM
+                    <i class="fa-solid fa-shield-halved text-brand-dark"></i> Panel de Administración de Productos
                 </h3>
                 <button onclick="toggleAdminModal()" class="text-slate-400 hover:text-slate-600 text-lg"><i class="fa-solid fa-xmark"></i></button>
             </div>
 
-            <div class="flex gap-2 mb-6 border-b">
-                <button onclick="switchAdminTab('products')" id="tab-btn-products" class="pb-2 font-bold text-brand-dark border-b-2 border-brand-dark text-sm">Gestionar Productos</button>
-                <button onclick="switchAdminTab('orders')" id="tab-btn-orders" class="pb-2 font-bold text-slate-500 text-sm">Pedidos CRM (<span id="order-count">0</span>)</button>
-            </div>
-
-            <div id="admin-tab-products" class="space-y-6">
+            <div class="space-y-6">
                 <div class="bg-slate-50 p-4 rounded-2xl border">
                     <h4 class="font-bold text-sm text-brand-dark mb-3">Agregar Nuevo Producto al Catálogo</h4>
                     <form onsubmit="addNewProduct(event)" class="space-y-3">
                         <div>
                             <label class="block text-xs font-semibold text-slate-600 mb-1">Nombre del Producto</label>
-                            <input type="text" id="new-prod-name" required placeholder="Ej: Smartwatch" class="w-full px-3 py-2 border rounded-xl text-sm focus:outline-none focus:border-brand-dark">
+                            <input type="text" id="new-prod-name" required placeholder="Ej: Tarjeta NFC Personalizada" class="w-full px-3 py-2 border rounded-xl text-sm focus:outline-none focus:border-brand-dark">
                         </div>
                         <div class="grid grid-cols-2 gap-3">
                             <div>
                                 <label class="block text-xs font-semibold text-slate-600 mb-1">Precio (Lempiras L.)</label>
-                                <input type="number" id="new-prod-price" required placeholder="699" class="w-full px-3 py-2 border rounded-xl text-sm focus:outline-none focus:border-brand-dark">
+                                <input type="number" id="new-prod-price" required placeholder="499" class="w-full px-3 py-2 border rounded-xl text-sm focus:outline-none focus:border-brand-dark">
                             </div>
                             <div>
-                                <label class="block text-xs font-semibold text-slate-600 mb-1">Texto de Etiqueta</label>
-                                <input type="text" id="new-prod-badge" value="GRATIS" class="w-full px-3 py-2 border rounded-xl text-sm focus:outline-none focus:border-brand-dark">
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Mensaje para WhatsApp</label>
+                                <input type="text" id="new-prod-wsp" required placeholder="Hola, necesito info de..." class="w-full px-3 py-2 border rounded-xl text-sm focus:outline-none focus:border-brand-dark">
                             </div>
                         </div>
                         <div>
@@ -230,30 +196,20 @@
                     </form>
                 </div>
             </div>
-
-            <div id="admin-tab-orders" class="space-y-4 hidden">
-                <h4 class="font-bold text-sm text-brand-dark">Historial de Pedidos Registrados</h4>
-                <div id="admin-orders-list" class="space-y-3"></div>
-            </div>
         </div>
     </div>
 
     <!-- JavaScript Logic & State Management -->
     <script>
-        let products = JSON.parse(localStorage.getItem('zentra_products_v13')) || [
-            { id: 1, name: 'Tarjeta NFC · Reseñas de Google', price: 499, badge: 'GRATIS', image: 'googleNFC.png', outOfStock: false },
-            { id: 2, name: 'Tarjeta NFC · Seguidores de Instagram', price: 499, badge: 'GRATIS', image: 'igNFC.png', outOfStock: false },
-            { id: 3, name: 'Combo Doble · Google + Instagram', price: 799, badge: 'GRATIS', image: 'googleigNFC.png', outOfStock: false },
-            { id: 4, name: 'AirPods 4ta Gen AAA+', price: 699, badge: 'GRATIS', image: 'airpods4tagen.png', outOfStock: true }
+        let products = JSON.parse(localStorage.getItem('zentra_products_v14')) || [
+            { id: 1, name: 'Tarjeta NFC · Reseñas de Google', price: 499, wspMessage: 'Hola, necesito información y adquirir la Tarjeta NFC de Reseñas de Google.', image: 'googleNFC.png', outOfStock: false },
+            { id: 2, name: 'Tarjeta NFC · Seguidores de Instagram', price: 499, wspMessage: 'Hola, necesito información y adquirir la Tarjeta NFC de Seguidores de Instagram.', image: 'igNFC.png', outOfStock: false },
+            { id: 3, name: 'Combo Doble · Google + Instagram', price: 799, wspMessage: 'Hola, necesito información y adquirir el Combo Doble NFC (Google + Instagram).', image: 'googleigNFC.png', outOfStock: false },
+            { id: 4, name: 'AirPods 4ta Gen AAA+', price: 699, wspMessage: 'Hola, me interesan los AirPods 4ta Gen AAA+.', image: 'airpods4tagen.png', outOfStock: true }
         ];
 
-        let cart = JSON.parse(localStorage.getItem('zentra_cart_v13')) || [];
-        let orders = JSON.parse(localStorage.getItem('zentra_orders_v13')) || [];
-
         function saveState() {
-            localStorage.setItem('zentra_products_v13', JSON.stringify(products));
-            localStorage.setItem('zentra_cart_v13', JSON.stringify(cart));
-            localStorage.setItem('zentra_orders_v13', JSON.stringify(orders));
+            localStorage.setItem('zentra_products_v14', JSON.stringify(products));
         }
 
         function toggleMobileMenu() {
@@ -270,7 +226,6 @@
                     <div class="bg-white p-6 rounded-3xl border border-slate-200/85 shadow-sm hover:shadow-xl transition flex flex-col justify-between group ${isOut ? 'opacity-85' : ''}">
                         <div>
                             <div class="relative rounded-2xl overflow-hidden bg-slate-100 mb-4 aspect-square flex items-center justify-center border border-slate-100">
-                                <!-- Etiqueta universal de Envío Gratis en verde oscuro corporativo -->
                                 <span class="absolute top-3 left-3 bg-[#0f5132] text-white font-extrabold text-xs px-3.5 py-1.5 rounded-full z-10 flex items-center gap-1.5 shadow-md">
                                     <i class="fa-solid fa-truck-fast text-xs text-emerald-300"></i> GRATIS
                                 </span>
@@ -292,8 +247,8 @@
                                     <i class="fa-solid fa-clock"></i> Próximamente
                                 </button>
                             ` : `
-                                <button onclick="buyNow(${p.id})" class="w-full py-3.5 rounded-xl bg-[#0f5132] hover:bg-[#0b3c25] text-white font-extrabold text-sm transition flex items-center justify-center gap-2 shadow-md hover:shadow-lg transform active:scale-95">
-                                    <i class="fa-solid fa-bolt text-emerald-300"></i> ¡Comprar Ahora!
+                                <button onclick="buyOnWhatsApp(${p.id})" class="w-full py-3.5 rounded-xl bg-[#0f5132] hover:bg-[#0b3c25] text-white font-extrabold text-sm transition flex items-center justify-center gap-2 shadow-md hover:shadow-lg transform active:scale-95">
+                                    <i class="fa-brands fa-whatsapp text-lg text-emerald-300"></i> ¡Comprar Ahora!
                                 </button>
                             `}
                         </div>
@@ -302,127 +257,34 @@
             });
         }
 
-        function buyNow(id) {
+        function buyOnWhatsApp(id) {
             const product = products.find(p => p.id === id);
             if (product.outOfStock) return;
+
+            const phone = '50488780115';
+            const message = encodeURIComponent(product.wspMessage);
+            const whatsappUrl = `https://wa.me/${phone}?text=${message}`;
             
-            const itemInCart = cart.find(item => item.id === id);
-            if (itemInCart) {
-                itemInCart.qty++;
-            } else {
-                cart.push({ ...product, qty: 1 });
-            }
-            saveState();
-            updateBadge();
-            toggleCart();
-        }
-
-        function toggleCart() {
-            const drawer = document.getElementById('cart-drawer');
-            drawer.classList.toggle('hidden');
-            renderCart();
-        }
-
-        function updateBadge() {
-            const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
-            document.getElementById('cart-badge').innerText = totalQty;
-        }
-
-        function renderCart() {
-            const container = document.getElementById('cart-items');
-            container.innerHTML = '';
-            if (cart.length === 0) {
-                container.innerHTML = `<p class="text-center text-slate-400 py-8 text-sm">Tu carrito está vacío.</p>`;
-                document.getElementById('cart-total').innerText = 'L. 0.00';
-                return;
-            }
-
-            let total = 0;
-            cart.forEach((item, index) => {
-                total += item.price * item.qty;
-                container.innerHTML += `
-                    <div class="flex items-center justify-between bg-slate-50 p-4 rounded-2xl border">
-                        <div class="flex items-center gap-3">
-                            <img src="${item.image}" class="w-12 h-12 rounded-xl object-cover">
-                            <div>
-                                <h4 class="font-bold text-sm text-brand-dark">${item.name}</h4>
-                                <p class="text-xs text-slate-500">L. ${item.price} x ${item.qty}</p>
-                            </div>
-                        </div>
-                        <button onclick="removeFromCart(${index})" class="text-red-500 hover:text-red-700 p-2"><i class="fa-solid fa-trash-can text-sm"></i></button>
-                    </div>
-                `;
-            });
-            document.getElementById('cart-total').innerText = `L. ${total.toLocaleString()}.00`;
-        }
-
-        function removeFromCart(index) {
-            cart.splice(index, 1);
-            saveState();
-            updateBadge();
-            renderCart();
-        }
-
-        function checkout() {
-            if (cart.length === 0) return alert('El carrito está vacío');
-            const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-            const newOrder = {
-                id: Date.now(),
-                date: new Date().toLocaleDateString(),
-                items: [...cart],
-                total: total,
-                status: 'Pendiente'
-            };
-            orders.push(newOrder);
-            saveState();
-            
-            alert('¡Pedido registrado con éxito en el CRM interno!');
-            cart = [];
-            saveState();
-            updateBadge();
-            toggleCart();
-            renderAdminOrders();
+            window.open(whatsappUrl, '_blank');
         }
 
         function toggleAdminModal() {
             const modal = document.getElementById('admin-modal');
             modal.classList.toggle('hidden');
-            renderAdminOrders();
-            document.getElementById('order-count').innerText = orders.length;
-        }
-
-        function switchAdminTab(tab) {
-            const prodTab = document.getElementById('admin-tab-products');
-            const ordTab = document.getElementById('admin-tab-orders');
-            const prodBtn = document.getElementById('tab-btn-products');
-            const ordBtn = document.getElementById('tab-btn-orders');
-
-            if (tab === 'products') {
-                prodTab.classList.remove('hidden');
-                ordTab.classList.add('hidden');
-                prodBtn.className = "pb-2 font-bold text-brand-dark border-b-2 border-brand-dark text-sm";
-                ordBtn.className = "pb-2 font-bold text-slate-500 text-sm";
-            } else {
-                prodTab.classList.add('hidden');
-                ordTab.classList.remove('hidden');
-                ordBtn.className = "pb-2 font-bold text-brand-dark border-b-2 border-brand-dark text-sm";
-                prodBtn.className = "pb-2 font-bold text-slate-500 text-sm";
-                renderAdminOrders();
-            }
         }
 
         function addNewProduct(e) {
             e.preventDefault();
             const name = document.getElementById('new-prod-name').value;
             const price = parseFloat(document.getElementById('new-prod-price').value);
-            const badge = document.getElementById('new-prod-badge').value || 'GRATIS';
+            const wspMessage = document.getElementById('new-prod-wsp').value;
             const image = document.getElementById('new-prod-img').value;
 
             const newProduct = {
                 id: Date.now(),
                 name,
                 price,
-                badge,
+                wspMessage,
                 image,
                 outOfStock: false
             };
@@ -431,49 +293,12 @@
             saveState();
             renderProducts();
             e.target.reset();
-            alert('¡Producto agregado exitosamente al catálogo de Zentra!');
-        }
-
-        function renderAdminOrders() {
-            const list = document.getElementById('admin-orders-list');
-            document.getElementById('order-count').innerText = orders.length;
-            list.innerHTML = '';
-            
-            if (orders.length === 0) {
-                list.innerHTML = `<p class="text-center text-slate-400 py-6 text-sm">No hay pedidos registrados todavía en el CRM.</p>`;
-                return;
-            }
-
-            orders.forEach((order, index) => {
-                let itemsList = order.items.map(i => `${i.name} (x${i.qty})`).join(', ');
-                list.innerHTML += `
-                    <div class="bg-slate-50 p-4 rounded-2xl border flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-                        <div>
-                            <div class="flex items-center gap-2">
-                                <span class="font-bold text-sm text-brand-dark">Pedido #${order.id.toString().slice(-4)}</span>
-                                <span class="px-2 py-0.5 bg-amber-100 text-amber-800 text-xs font-semibold rounded-full">${order.status}</span>
-                            </div>
-                            <p class="text-xs text-slate-600 mt-1"><strong>Artículos:</strong> ${itemsList}</p>
-                            <p class="text-xs text-slate-400 mt-0.5">Fecha: ${order.date}</p>
-                        </div>
-                        <div class="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
-                            <span class="font-extrabold text-brand-dark text-sm">L. ${order.total.toLocaleString()}.00</span>
-                            <button onclick="deleteOrder(${index})" class="text-red-500 hover:text-red-700 p-1.5"><i class="fa-solid fa-trash-can text-sm"></i></button>
-                        </div>
-                    </div>
-                `;
-            });
-        }
-
-        function deleteOrder(index) {
-            orders.splice(index, 1);
-            saveState();
-            renderAdminOrders();
+            alert('¡Producto agregado exitosamente con su enlace personalizado de WhatsApp!');
+            toggleAdminModal();
         }
 
         window.addEventListener('DOMContentLoaded', () => {
             renderProducts();
-            updateBadge();
         });
     </script>
 </body>
