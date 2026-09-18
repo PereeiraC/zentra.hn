@@ -12,10 +12,10 @@
                 extend: {
                     colors: {
                         brand: {
-                            dark: '#222222',    /* Gris oscuro del logotipo */
-                            blue: '#333333',    /* Tono principal unificado con el logo */
-                            sky: '#555555',     /* Gris medio para detalles */
-                            light: '#F8F9FA',   /* Fondo suave y limpio */
+                            dark: '#222222',
+                            blue: '#333333',
+                            sky: '#555555',
+                            light: '#F8F9FA',
                             accent: '#222222'
                         }
                     }
@@ -38,11 +38,10 @@
         📦 Envíos Gratis a Todo Honduras 📦
     </div>
 
-    <!-- Header / Navbar con Logo Centrado -->
+    <!-- Header / Navbar -->
     <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 grid grid-cols-3 items-center">
             
-            <!-- Izquierda: Navegación de Enlaces -->
             <nav class="hidden md:flex items-center gap-6 font-medium text-slate-600 text-sm">
                 <a href="#productos" class="text-brand-dark font-bold transition">Catálogo</a>
                 <a href="#como-funciona" class="hover:text-brand-dark transition">Cómo funciona</a>
@@ -50,17 +49,14 @@
                 <a href="#contacto" class="hover:text-brand-dark transition">Contacto</a>
             </nav>
 
-            <!-- Espacio móvil para equilibrar -->
             <div class="md:hidden flex items-center"></div>
 
-            <!-- Centro: Logotipo de Zentra -->
             <div class="flex justify-center">
                 <a href="#" class="flex items-center group">
                     <img src="zentradiagonal.png" alt="Zentra Logo" class="h-10 w-auto object-contain">
                 </a>
             </div>
 
-            <!-- Derecha: Acciones (Carrito y Botón) -->
             <div class="flex items-center justify-end gap-3 sm:gap-4">
                 <button onclick="toggleCart()" class="relative p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition">
                     <i class="fa-solid fa-bag-shopping text-lg"></i>
@@ -77,121 +73,20 @@
     <section id="productos" class="py-12 lg:py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
             <div>
-                <!-- Botón de WhatsApp con CONTÁCTANOS -->
                 <div class="mb-3">
                     <a href="https://wa.me/50488780115?text=Estoy%20interesado%20en%20un%20producto" target="_blank" class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 text-brand-dark font-semibold text-xs border border-slate-200 transition shadow-sm hover:scale-[1.02]">
                         <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                         CONTÁCTANOS <i class="fa-brands fa-whatsapp text-emerald-600 ml-1"></i>
                     </a>
                 </div>
-                <!-- Título actualizado a Más Vendidos🥇 -->
                 <h2 class="text-3xl sm:text-5xl font-extrabold text-brand-dark tracking-tight">Más Vendidos🥇</h2>
-                <p class="text-slate-600 mt-2 text-lg">Elige tu solución favorita y recíbelo en la puerta de tu casa.</p>
+                <p class="text-slate-600 mt-2 text-lg">Elige tu solución favorita y recíbelo con envío gratis en todo el país.</p>
             </div>
         </div>
 
         <!-- Product Grid -->
         <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <!-- Productos cargados dinámicamente -->
-        </div>
-    </section>
-
-    <!-- 2. HERO SECTION -->
-    <section class="py-12 lg:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center bg-white rounded-3xl my-12 border border-slate-200 shadow-sm">
-        <div class="space-y-6 p-4 sm:p-8">
-            <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-brand-dark leading-tight">
-                Impulsa tu negocio y disfruta de la mejor tecnología.
-            </h1>
-            <p class="text-base sm:text-lg text-slate-600 leading-relaxed">
-                Desde tarjetas inteligentes NFC para conseguir reseñas hasta accesorios de alta calidad con envíos rápidos a todo el país.
-            </p>
-            <div class="flex flex-col sm:flex-row gap-4 pt-4">
-                <a href="#productos" class="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-brand-dark hover:bg-black text-white font-bold text-base shadow-xl transition text-center">
-                    Ver productos
-                </a>
-                <a href="#como-funciona" class="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-brand-dark font-bold text-base transition text-center">
-                    Más información
-                </a>
-            </div>
-        </div>
-
-        <div class="relative flex justify-center p-4">
-            <div class="w-full max-w-md bg-brand-light p-6 sm:p-8 rounded-3xl shadow-xl border border-slate-200 relative">
-                <div class="absolute -top-4 -left-4 bg-brand-dark text-white text-xs font-bold px-4 py-2 rounded-2xl shadow-lg">
-                    Alta Calidad Garantizada
-                </div>
-                <div class="rounded-2xl overflow-hidden shadow-md bg-white border border-slate-100 mb-6 flex justify-center">
-                    <img src="googleNFC.png" alt="Productos Zentra" class="w-full h-auto object-cover max-h-72">
-                </div>
-                <div class="bg-brand-dark text-white p-4 rounded-2xl flex items-center justify-between">
-                    <div>
-                        <p class="text-xs text-slate-300 font-medium">Envíos seguros</p>
-                        <p class="font-bold text-sm">Todo Honduras</p>
-                    </div>
-                    <i class="fa-solid fa-truck-fast text-slate-400 text-2xl animate-pulse"></i>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Stats Section -->
-    <section class="border-y border-slate-200 bg-white py-8">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-            <div>
-                <p class="text-3xl font-extrabold text-brand-dark">100%</p>
-                <p class="text-xs sm:text-sm text-slate-500 font-medium">Confiable y seguro</p>
-            </div>
-            <div>
-                <p class="text-3xl font-extrabold text-brand-dark">AAA+</p>
-                <p class="text-xs sm:text-sm text-slate-500 font-medium">Calidad superior</p>
-            </div>
-            <div>
-                <p class="text-3xl font-extrabold text-brand-dark">0</p>
-                <p class="text-xs sm:text-sm text-slate-500 font-medium">Complicaciones</p>
-            </div>
-            <div>
-                <p class="text-3xl font-extrabold text-brand-dark">24/7</p>
-                <p class="text-xs sm:text-sm text-slate-500 font-medium">Atención al cliente</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- How it works Section -->
-    <section id="como-funciona" class="py-16 bg-brand-light">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-2xl mx-auto mb-16">
-                <h2 class="text-3xl font-extrabold text-brand-dark tracking-tight">Cómo comprar</h2>
-                <p class="text-slate-600 mt-2">Un proceso rápido y sencillo adaptado para ti.</p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm relative">
-                    <div class="w-12 h-12 bg-brand-dark text-white rounded-2xl flex items-center justify-center font-bold text-lg mb-6 shadow-md">1</div>
-                    <h3 class="font-bold text-xl text-brand-dark mb-3">Elige tus productos</h3>
-                    <p class="text-slate-600 text-sm leading-relaxed">Navega por nuestro catálogo y añade lo que necesites al carrito.</p>
-                </div>
-                <div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm relative">
-                    <div class="w-12 h-12 bg-brand-dark text-white rounded-2xl flex items-center justify-center font-bold text-lg mb-6 shadow-md">2</div>
-                    <h3 class="font-bold text-xl text-brand-dark mb-3">Registra tu pedido</h3>
-                    <p class="text-slate-600 text-sm leading-relaxed">Completa los datos de tu compra de forma directa y segura.</p>
-                </div>
-                <div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm relative">
-                    <div class="w-12 h-12 bg-brand-dark text-white rounded-2xl flex items-center justify-center font-bold text-lg mb-6 shadow-md">3</div>
-                    <h3 class="font-bold text-xl text-brand-dark mb-3">Recíbelo en casa</h3>
-                    <p class="text-slate-600 text-sm leading-relaxed">Enviamos tu pedido rápidamente a cualquier punto de Honduras.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Testimonials Section -->
-    <section id="opiniones" class="py-16 lg:py-24 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="bg-brand-dark rounded-3xl p-8 sm:p-12 text-white relative overflow-hidden shadow-2xl">
-            <i class="fa-solid fa-quote-left text-slate-400 text-3xl mb-6"></i>
-            <p class="text-lg sm:text-2xl font-medium leading-relaxed mb-6">
-                "Excelente atención y los productos llegaron súper rápido. La calidad es impecable, totalmente recomendado."
-            </p>
-            <p class="text-sm text-slate-300 font-semibold">— Cliente Satisfecho en Honduras</p>
         </div>
     </section>
 
@@ -272,13 +167,11 @@
                 <button onclick="toggleAdminModal()" class="text-slate-400 hover:text-slate-600 text-lg"><i class="fa-solid fa-xmark"></i></button>
             </div>
 
-            <!-- Tabs -->
             <div class="flex gap-2 mb-6 border-b">
                 <button onclick="switchAdminTab('products')" id="tab-btn-products" class="pb-2 font-bold text-brand-dark border-b-2 border-brand-dark text-sm">Gestionar Productos</button>
                 <button onclick="switchAdminTab('orders')" id="tab-btn-orders" class="pb-2 font-bold text-slate-500 text-sm">Pedidos CRM (<span id="order-count">0</span>)</button>
             </div>
 
-            <!-- Tab Productos -->
             <div id="admin-tab-products" class="space-y-6">
                 <div class="bg-slate-50 p-4 rounded-2xl border">
                     <h4 class="font-bold text-sm text-brand-dark mb-3">Agregar Nuevo Producto al Catálogo</h4>
@@ -293,8 +186,8 @@
                                 <input type="number" id="new-prod-price" required placeholder="699" class="w-full px-3 py-2 border rounded-xl text-sm focus:outline-none focus:border-brand-dark">
                             </div>
                             <div>
-                                <label class="block text-xs font-semibold text-slate-600 mb-1">Etiqueta (Badge)</label>
-                                <input type="text" id="new-prod-badge" placeholder="Novedad" class="w-full px-3 py-2 border rounded-xl text-sm focus:outline-none focus:border-brand-dark">
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Texto de Etiqueta</label>
+                                <input type="text" id="new-prod-badge" value="GRATIS" class="w-full px-3 py-2 border rounded-xl text-sm focus:outline-none focus:border-brand-dark">
                             </div>
                         </div>
                         <div>
@@ -306,7 +199,6 @@
                 </div>
             </div>
 
-            <!-- Tab Pedidos CRM -->
             <div id="admin-tab-orders" class="space-y-4 hidden">
                 <h4 class="font-bold text-sm text-brand-dark">Historial de Pedidos Registrados</h4>
                 <div id="admin-orders-list" class="space-y-3"></div>
@@ -316,20 +208,20 @@
 
     <!-- JavaScript Logic & State Management -->
     <script>
-        let products = JSON.parse(localStorage.getItem('zentra_products_v9')) || [
-            { id: 1, name: 'Tarjeta NFC · Reseñas de Google', price: 499, badge: 'Más vendido', image: 'googleNFC.png', outOfStock: false },
-            { id: 2, name: 'Tarjeta NFC · Seguidores de Instagram', price: 499, badge: 'Nuevo', image: 'igNFC.png', outOfStock: false },
-            { id: 3, name: 'Combo Doble · Google + Instagram', price: 799, badge: 'Oferta', image: 'googleigNFC.png', outOfStock: false },
-            { id: 4, name: 'AirPods 4ta Gen AAA+', price: 699, badge: 'Agotado', image: 'airpods4tagen.png', outOfStock: true }
+        let products = JSON.parse(localStorage.getItem('zentra_products_v10')) || [
+            { id: 1, name: 'Tarjeta NFC · Reseñas de Google', price: 499, badge: 'GRATIS', image: 'googleNFC.png', outOfStock: false },
+            { id: 2, name: 'Tarjeta NFC · Seguidores de Instagram', price: 499, badge: 'GRATIS', image: 'igNFC.png', outOfStock: false },
+            { id: 3, name: 'Combo Doble · Google + Instagram', price: 799, badge: 'GRATIS', image: 'googleigNFC.png', outOfStock: false },
+            { id: 4, name: 'AirPods 4ta Gen AAA+', price: 699, badge: 'GRATIS', image: 'airpods4tagen.png', outOfStock: true }
         ];
 
-        let cart = JSON.parse(localStorage.getItem('zentra_cart_v9')) || [];
-        let orders = JSON.parse(localStorage.getItem('zentra_orders_v9')) || [];
+        let cart = JSON.parse(localStorage.getItem('zentra_cart_v10')) || [];
+        let orders = JSON.parse(localStorage.getItem('zentra_orders_v10')) || [];
 
         function saveState() {
-            localStorage.setItem('zentra_products_v9', JSON.stringify(products));
-            localStorage.setItem('zentra_cart_v9', JSON.stringify(cart));
-            localStorage.setItem('zentra_orders_v9', JSON.stringify(orders));
+            localStorage.setItem('zentra_products_v10', JSON.stringify(products));
+            localStorage.setItem('zentra_cart_v10', JSON.stringify(cart));
+            localStorage.setItem('zentra_orders_v10', JSON.stringify(orders));
         }
 
         function renderProducts() {
@@ -341,13 +233,14 @@
                     <div class="bg-white p-6 rounded-3xl border border-slate-200/85 shadow-sm hover:shadow-xl transition flex flex-col justify-between group ${isOut ? 'opacity-85' : ''}">
                         <div>
                             <div class="relative rounded-2xl overflow-hidden bg-slate-100 mb-4 aspect-square flex items-center justify-center border border-slate-100">
-                                ${p.badge ? `
-                                    <span class="absolute top-3 left-3 ${isOut ? 'bg-slate-800' : 'bg-[#ccff33] text-slate-900 font-extrabold shadow-md'} text-xs px-3 py-1.5 rounded-full z-10 flex items-center gap-1.5">
-                                        <i class="fa-solid fa-truck-fast text-xs"></i> ${p.badge}
-                                    </span>
-                                ` : ''}
+                                <!-- Etiqueta universal de Envío Gratis -->
+                                <span class="absolute top-3 left-3 bg-[#ccff33] text-slate-900 font-extrabold text-xs px-3.5 py-1.5 rounded-full z-10 flex items-center gap-1.5 shadow-md">
+                                    <i class="fa-solid fa-truck-fast text-xs"></i> GRATIS
+                                </span>
+                                
                                 <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover ${isOut ? 'grayscale-[30%] opacity-90' : 'group-hover:scale-105'} transition duration-300">
-                                ${isOut ? '<div class="absolute inset-0 bg-slate-900/10 backdrop-blur-[1px] flex items-center justify-center"><span class="bg-brand-dark/90 text-white font-extrabold text-xs tracking-wider uppercase px-4 py-1.5 rounded-full shadow-lg border border-slate-700">Temporalmente Agotado</span></div>' : ''}
+                                
+                                ${isOut ? '<div class="absolute inset-0 bg-slate-900/10 backdrop-blur-[1px] flex items-center justify-center"><span class="bg-brand-dark/90 text-white font-extrabold text-xs tracking-wider uppercase px-4 py-1.5 rounded-full shadow-lg border border-slate-700">Próximamente Disponible</span></div>' : ''}
                             </div>
                             <h3 class="font-bold text-lg text-brand-dark mb-2">${p.name}</h3>
                         </div>
@@ -355,7 +248,7 @@
                             <p class="text-xl font-extrabold text-brand-dark mb-4">L. ${p.price.toLocaleString()}.00</p>
                             ${isOut ? `
                                 <button disabled class="w-full py-3 rounded-xl bg-slate-100 text-slate-400 font-bold text-sm cursor-not-allowed flex items-center justify-center gap-2 border border-slate-200">
-                                    <i class="fa-solid fa-ban"></i> Agotado
+                                    <i class="fa-solid fa-clock"></i> Próximamente
                                 </button>
                             ` : `
                                 <button onclick="addToCart(${p.id})" class="w-full py-3 rounded-xl bg-brand-light hover:bg-brand-dark hover:text-white text-brand-dark font-bold text-sm transition flex items-center justify-center gap-2 border border-slate-200">
@@ -480,7 +373,7 @@
             e.preventDefault();
             const name = document.getElementById('new-prod-name').value;
             const price = parseFloat(document.getElementById('new-prod-price').value);
-            const badge = document.getElementById('new-prod-badge').value;
+            const badge = document.getElementById('new-prod-badge').value || 'GRATIS';
             const image = document.getElementById('new-prod-img').value;
 
             const newProduct = {
