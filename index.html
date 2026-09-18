@@ -12,11 +12,11 @@
                 extend: {
                     colors: {
                         brand: {
-                            dark: '#0B2545',
-                            blue: '#0055A5',
-                            sky: '#0085FF',
-                            light: '#F0F4F8',
-                            accent: '#FFD700'
+                            dark: '#222222',    /* Gris oscuro del logotipo */
+                            blue: '#333333',    /* Tono principal unificado con el logo */
+                            sky: '#555555',     /* Gris medio para detalles */
+                            light: '#F8F9FA',   /* Fondo suave y limpio */
+                            accent: '#222222'
                         }
                     }
                 }
@@ -31,7 +31,7 @@
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
     </style>
 </head>
-<body class="bg-brand-light text-slate-800 antialiased selection:bg-brand-blue selection:text-white">
+<body class="bg-brand-light text-slate-800 antialiased selection:bg-brand-dark selection:text-white">
 
     <!-- Top Announcement Bar -->
     <div class="bg-black text-white text-xs sm:text-sm py-2.5 px-4 text-center font-medium">
@@ -47,19 +47,19 @@
 
             <!-- Desktop Nav -->
             <nav class="hidden md:flex items-center gap-8 font-medium text-slate-600">
-                <a href="#productos" class="text-brand-blue font-bold transition">Catálogo</a>
-                <a href="#como-funciona" class="hover:text-brand-blue transition">Cómo funciona</a>
-                <a href="#opiniones" class="hover:text-brand-blue transition">Opiniones</a>
-                <a href="#contacto" class="hover:text-brand-blue transition">Contacto</a>
+                <a href="#productos" class="text-brand-dark font-bold transition">Catálogo</a>
+                <a href="#como-funciona" class="hover:text-brand-dark transition">Cómo funciona</a>
+                <a href="#opiniones" class="hover:text-brand-dark transition">Opiniones</a>
+                <a href="#contacto" class="hover:text-brand-dark transition">Contacto</a>
             </nav>
 
             <!-- Actions -->
             <div class="flex items-center gap-4">
                 <button onclick="toggleCart()" class="relative p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition">
                     <i class="fa-solid fa-bag-shopping text-lg"></i>
-                    <span id="cart-badge" class="absolute -top-1 -right-1 w-5 h-5 bg-brand-blue text-white rounded-full text-xs font-bold flex items-center justify-center">0</span>
+                    <span id="cart-badge" class="absolute -top-1 -right-1 w-5 h-5 bg-brand-dark text-white rounded-full text-xs font-bold flex items-center justify-center">0</span>
                 </button>
-                <a href="#productos" class="hidden sm:inline-flex items-center justify-center px-5 py-2.5 rounded-xl bg-brand-blue hover:bg-brand-dark text-white font-bold text-sm shadow-lg shadow-brand-blue/20 transition">
+                <a href="#productos" class="hidden sm:inline-flex items-center justify-center px-5 py-2.5 rounded-xl bg-brand-dark hover:bg-black text-white font-bold text-sm shadow-lg transition">
                     Ver catálogo
                 </a>
             </div>
@@ -70,8 +70,8 @@
     <section id="productos" class="py-12 lg:py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
             <div>
-                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 text-brand-blue font-semibold text-xs border border-blue-200 mb-3">
-                    <span class="w-2 h-2 rounded-full bg-brand-blue animate-pulse"></span>
+                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-100 text-brand-dark font-semibold text-xs border border-slate-200 mb-3">
+                    <span class="w-2 h-2 rounded-full bg-brand-dark animate-pulse"></span>
                     Catálogo Oficial Zentra
                 </div>
                 <h2 class="text-3xl sm:text-5xl font-extrabold text-brand-dark tracking-tight">Los más pedidos en Honduras</h2>
@@ -88,8 +88,8 @@
     <!-- 2. HERO SECTION -->
     <section class="py-12 lg:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center bg-white rounded-3xl my-12 border border-slate-200 shadow-sm">
         <div class="space-y-6 p-4 sm:p-8">
-            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 text-brand-blue font-semibold text-xs border border-blue-200">
-                <span class="w-2 h-2 rounded-full bg-brand-blue animate-pulse"></span>
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-100 text-brand-dark font-semibold text-xs border border-slate-200">
+                <span class="w-2 h-2 rounded-full bg-brand-dark animate-pulse"></span>
                 Tecnología NFC Profesional
             </div>
             <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-brand-dark leading-tight">
@@ -99,7 +99,7 @@
                 Tarjetas inteligentes para que tus clientes dejen su reseña en Google o te sigan en Instagram con un solo toque. Sin apps, sin buscar el link, directo al grano.
             </p>
             <div class="flex flex-col sm:flex-row gap-4 pt-4">
-                <a href="#productos" class="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-brand-blue hover:bg-brand-dark text-white font-bold text-base shadow-xl shadow-brand-blue/25 transition text-center">
+                <a href="#productos" class="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-brand-dark hover:bg-black text-white font-bold text-base shadow-xl transition text-center">
                     Comprar tarjeta NFC
                 </a>
                 <a href="#como-funciona" class="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-brand-dark font-bold text-base transition text-center">
@@ -121,7 +121,7 @@
                         <p class="text-xs text-slate-300 font-medium">Tecnología incorporada</p>
                         <p class="font-bold text-sm">Sin app • Funciona al tocar</p>
                     </div>
-                    <i class="fa-solid fa-wifi text-brand-sky text-2xl animate-pulse"></i>
+                    <i class="fa-solid fa-wifi text-slate-400 text-2xl animate-pulse"></i>
                 </div>
             </div>
         </div>
@@ -135,7 +135,7 @@
                 <p class="text-xs sm:text-sm text-slate-500 font-medium">Personalizado con tu marca</p>
             </div>
             <div>
-                <p class="text-3xl font-extrabold text-brand-blue">&lt; 3 seg</p>
+                <p class="text-3xl font-extrabold text-brand-dark">&lt; 3 seg</p>
                 <p class="text-xs sm:text-sm text-slate-500 font-medium">Tiempo de lectura NFC</p>
             </div>
             <div>
@@ -143,7 +143,7 @@
                 <p class="text-xs sm:text-sm text-slate-500 font-medium">Aplicaciones requeridas</p>
             </div>
             <div>
-                <p class="text-3xl font-extrabold text-brand-blue">24/7</p>
+                <p class="text-3xl font-extrabold text-brand-dark">24/7</p>
                 <p class="text-xs sm:text-sm text-slate-500 font-medium">Soporte técnico local</p>
             </div>
         </div>
@@ -164,7 +164,7 @@
                     <p class="text-slate-600 text-sm leading-relaxed">Le decimos a tu tarjeta a dónde apuntar: tu perfil de Google, Instagram o el que elijas.</p>
                 </div>
                 <div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm relative">
-                    <div class="w-12 h-12 bg-brand-blue text-white rounded-2xl flex items-center justify-center font-bold text-lg mb-6 shadow-md">2</div>
+                    <div class="w-12 h-12 bg-brand-dark text-white rounded-2xl flex items-center justify-center font-bold text-lg mb-6 shadow-md">2</div>
                     <h3 class="font-bold text-xl text-brand-dark mb-3">Tu cliente acerca el celular</h3>
                     <p class="text-slate-600 text-sm leading-relaxed">En el mostrador, la mesa o al despedirse. No necesita abrir cámara, solo tocar.</p>
                 </div>
@@ -180,7 +180,7 @@
     <!-- Testimonials Section -->
     <section id="opiniones" class="py-16 lg:py-24 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="bg-brand-dark rounded-3xl p-8 sm:p-12 text-white relative overflow-hidden shadow-2xl">
-            <i class="fa-solid fa-quote-left text-brand-sky text-3xl mb-6"></i>
+            <i class="fa-solid fa-quote-left text-slate-400 text-3xl mb-6"></i>
             <p class="text-lg sm:text-2xl font-medium leading-relaxed mb-6">
                 "Antes tenía que acordarme de pedir la reseña y casi nunca funcionaba. Ahora solo acerco la tarjeta y listo, mis clientes lo hacen solos."
             </p>
@@ -214,8 +214,8 @@
             <div>
                 <p class="font-bold text-white mb-4 text-sm">Newsletter</p>
                 <form onsubmit="event.preventDefault(); alert('¡Gracias por suscribirte!');" class="flex gap-2">
-                    <input type="email" placeholder="Tu correo electrónico" required class="bg-slate-800 border border-slate-700 px-4 py-2.5 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-brand-sky w-full">
-                    <button type="submit" class="bg-brand-blue hover:bg-brand-sky text-white px-4 py-2.5 rounded-xl transition">
+                    <input type="email" placeholder="Tu correo electrónico" required class="bg-slate-800 border border-slate-700 px-4 py-2.5 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-brand-dark w-full">
+                    <button type="submit" class="bg-brand-dark hover:bg-black text-white px-4 py-2.5 rounded-xl transition">
                         <i class="fa-solid fa-arrow-right text-sm"></i>
                     </button>
                 </form>
@@ -233,7 +233,7 @@
             <div class="w-screen max-w-md bg-white shadow-2xl flex flex-col">
                 <div class="p-6 border-b border-slate-200 flex items-center justify-between">
                     <h3 class="font-bold text-lg text-brand-dark flex items-center gap-2">
-                        <i class="fa-solid fa-bag-shopping text-brand-blue"></i> Tu Carrito
+                        <i class="fa-solid fa-bag-shopping text-brand-dark"></i> Tu Carrito
                     </h3>
                     <button onclick="toggleCart()" class="text-slate-400 hover:text-slate-600 text-lg p-2"><i class="fa-solid fa-xmark"></i></button>
                 </div>
@@ -241,9 +241,9 @@
                 <div class="p-6 border-t border-slate-200 bg-slate-50 space-y-4">
                     <div class="flex justify-between items-center font-bold text-lg">
                         <span>Total:</span>
-                        <span id="cart-total" class="text-brand-blue">L. 0.00</span>
+                        <span id="cart-total" class="text-brand-dark">L. 0.00</span>
                     </div>
-                    <button onclick="checkout()" class="w-full py-4 rounded-xl bg-brand-blue hover:bg-brand-dark text-white font-bold text-center shadow-lg transition">
+                    <button onclick="checkout()" class="w-full py-4 rounded-xl bg-brand-dark hover:bg-black text-white font-bold text-center shadow-lg transition">
                         Finalizar Compra / Registrar en CRM
                     </button>
                 </div>
@@ -252,7 +252,7 @@
     </div>
 
     <!-- Admin Floating Button -->
-    <button onclick="toggleAdminModal()" class="fixed bottom-6 right-6 z-50 bg-brand-dark hover:bg-brand-blue text-white px-5 py-3 rounded-full shadow-2xl font-bold text-sm flex items-center gap-2 transition transform hover:scale-105 border border-slate-700">
+    <button onclick="toggleAdminModal()" class="fixed bottom-6 right-6 z-50 bg-brand-dark hover:bg-black text-white px-5 py-3 rounded-full shadow-2xl font-bold text-sm flex items-center gap-2 transition transform hover:scale-105 border border-slate-700">
         <i class="fa-solid fa-gear"></i> Panel Admin / CRM
     </button>
 
@@ -260,14 +260,14 @@
         <div class="bg-white rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl overflow-y-auto max-h-[90vh]">
             <div class="flex justify-between items-center mb-6 border-b pb-4">
                 <h3 class="text-xl font-extrabold text-brand-dark flex items-center gap-2">
-                    <i class="fa-solid fa-shield-halved text-brand-blue"></i> Panel de Administración & CRM
+                    <i class="fa-solid fa-shield-halved text-brand-dark"></i> Panel de Administración & CRM
                 </h3>
                 <button onclick="toggleAdminModal()" class="text-slate-400 hover:text-slate-600 text-lg"><i class="fa-solid fa-xmark"></i></button>
             </div>
 
             <!-- Tabs -->
             <div class="flex gap-2 mb-6 border-b">
-                <button onclick="switchAdminTab('products')" id="tab-btn-products" class="pb-2 font-bold text-brand-blue border-b-2 border-brand-blue text-sm">Gestionar Productos</button>
+                <button onclick="switchAdminTab('products')" id="tab-btn-products" class="pb-2 font-bold text-brand-dark border-b-2 border-brand-dark text-sm">Gestionar Productos</button>
                 <button onclick="switchAdminTab('orders')" id="tab-btn-orders" class="pb-2 font-bold text-slate-500 text-sm">Pedidos CRM (<span id="order-count">0</span>)</button>
             </div>
 
@@ -278,23 +278,23 @@
                     <form onsubmit="addNewProduct(event)" class="space-y-3">
                         <div>
                             <label class="block text-xs font-semibold text-slate-600 mb-1">Nombre del Producto</label>
-                            <input type="text" id="new-prod-name" required placeholder="Ej: Tarjeta NFC Profesional" class="w-full px-3 py-2 border rounded-xl text-sm focus:outline-none focus:border-brand-blue">
+                            <input type="text" id="new-prod-name" required placeholder="Ej: Tarjeta NFC Profesional" class="w-full px-3 py-2 border rounded-xl text-sm focus:outline-none focus:border-brand-dark">
                         </div>
                         <div class="grid grid-cols-2 gap-3">
                             <div>
                                 <label class="block text-xs font-semibold text-slate-600 mb-1">Precio (Lempiras L.)</label>
-                                <input type="number" id="new-prod-price" required placeholder="450" class="w-full px-3 py-2 border rounded-xl text-sm focus:outline-none focus:border-brand-blue">
+                                <input type="number" id="new-prod-price" required placeholder="450" class="w-full px-3 py-2 border rounded-xl text-sm focus:outline-none focus:border-brand-dark">
                             </div>
                             <div>
                                 <label class="block text-xs font-semibold text-slate-600 mb-1">Etiqueta (Badge)</label>
-                                <input type="text" id="new-prod-badge" placeholder="Más vendido" class="w-full px-3 py-2 border rounded-xl text-sm focus:outline-none focus:border-brand-blue">
+                                <input type="text" id="new-prod-badge" placeholder="Más vendido" class="w-full px-3 py-2 border rounded-xl text-sm focus:outline-none focus:border-brand-dark">
                             </div>
                         </div>
                         <div>
                             <label class="block text-xs font-semibold text-slate-600 mb-1">Imagen (Ej: googleNFC.png)</label>
-                            <input type="text" id="new-prod-img" required placeholder="googleNFC.png" class="w-full px-3 py-2 border rounded-xl text-sm focus:outline-none focus:border-brand-blue">
+                            <input type="text" id="new-prod-img" required placeholder="googleNFC.png" class="w-full px-3 py-2 border rounded-xl text-sm focus:outline-none focus:border-brand-dark">
                         </div>
-                        <button type="submit" class="w-full py-2.5 bg-brand-blue hover:bg-brand-dark text-white rounded-xl font-bold text-sm transition">Agregar al Catálogo</button>
+                        <button type="submit" class="w-full py-2.5 bg-brand-dark hover:bg-black text-white rounded-xl font-bold text-sm transition">Agregar al Catálogo</button>
                     </form>
                 </div>
             </div>
@@ -309,20 +309,19 @@
 
     <!-- JavaScript Logic & State Management -->
     <script>
-        // Llave actualizada con '_v2' para forzar la carga de las nuevas imágenes de GitHub
-        let products = JSON.parse(localStorage.getItem('zentra_products_v2')) || [
+        let products = JSON.parse(localStorage.getItem('zentra_products_v3')) || [
             { id: 1, name: 'Tarjeta NFC · Reseñas de Google', price: 499, badge: 'Más vendido', image: 'googleNFC.png' },
             { id: 2, name: 'Tarjeta NFC · Seguidores de Instagram', price: 499, badge: 'Nuevo', image: 'igNFC.png' },
             { id: 3, name: 'Combo Doble · Google + Instagram', price: 799, badge: 'Oferta', image: 'googleigNFC.png' }
         ];
 
-        let cart = JSON.parse(localStorage.getItem('zentra_cart_v2')) || [];
-        let orders = JSON.parse(localStorage.getItem('zentra_orders_v2')) || [];
+        let cart = JSON.parse(localStorage.getItem('zentra_cart_v3')) || [];
+        let orders = JSON.parse(localStorage.getItem('zentra_orders_v3')) || [];
 
         function saveState() {
-            localStorage.setItem('zentra_products_v2', JSON.stringify(products));
-            localStorage.setItem('zentra_cart_v2', JSON.stringify(cart));
-            localStorage.setItem('zentra_orders_v2', JSON.stringify(orders));
+            localStorage.setItem('zentra_products_v3', JSON.stringify(products));
+            localStorage.setItem('zentra_cart_v3', JSON.stringify(cart));
+            localStorage.setItem('zentra_orders_v3', JSON.stringify(orders));
         }
 
         function renderProducts() {
@@ -339,8 +338,8 @@
                             <h3 class="font-bold text-lg text-brand-dark mb-2">${p.name}</h3>
                         </div>
                         <div>
-                            <p class="text-xl font-extrabold text-brand-blue mb-4">L. ${p.price.toLocaleString()}.00</p>
-                            <button onclick="addToCart(${p.id})" class="w-full py-3 rounded-xl bg-brand-light hover:bg-brand-blue hover:text-white text-brand-dark font-bold text-sm transition flex items-center justify-center gap-2">
+                            <p class="text-xl font-extrabold text-brand-dark mb-4">L. ${p.price.toLocaleString()}.00</p>
+                            <button onclick="addToCart(${p.id})" class="w-full py-3 rounded-xl bg-brand-light hover:bg-brand-dark hover:text-white text-brand-dark font-bold text-sm transition flex items-center justify-center gap-2 border border-slate-200">
                                 <i class="fa-solid fa-cart-plus"></i> Añadir al carrito
                             </button>
                         </div>
@@ -445,12 +444,12 @@
             if (tab === 'products') {
                 prodTab.classList.remove('hidden');
                 ordTab.classList.add('hidden');
-                prodBtn.className = "pb-2 font-bold text-brand-blue border-b-2 border-brand-blue text-sm";
+                prodBtn.className = "pb-2 font-bold text-brand-dark border-b-2 border-brand-dark text-sm";
                 ordBtn.className = "pb-2 font-bold text-slate-500 text-sm";
             } else {
                 prodTab.classList.add('hidden');
                 ordTab.classList.remove('hidden');
-                ordBtn.className = "pb-2 font-bold text-brand-blue border-b-2 border-brand-blue text-sm";
+                ordBtn.className = "pb-2 font-bold text-brand-dark border-b-2 border-brand-dark text-sm";
                 prodBtn.className = "pb-2 font-bold text-slate-500 text-sm";
                 renderAdminOrders();
             }
@@ -501,7 +500,7 @@
                             <p class="text-xs text-slate-400 mt-0.5">Fecha: ${order.date}</p>
                         </div>
                         <div class="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
-                            <span class="font-extrabold text-brand-blue text-sm">L. ${order.total.toLocaleString()}.00</span>
+                            <span class="font-extrabold text-brand-dark text-sm">L. ${order.total.toLocaleString()}.00</span>
                             <button onclick="deleteOrder(${index})" class="text-red-500 hover:text-red-700 p-1.5"><i class="fa-solid fa-trash-can text-sm"></i></button>
                         </div>
                     </div>
