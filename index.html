@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zentra — Tarjetas NFC para Negocios en Honduras</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            dark: '#0B2545',
+                            blue: '#0055A5',
+                            sky: '#0085FF',
+                            light: '#F0F4F8',
+                            accent: '#FFD700'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    </style>
+</head>
+<body class="bg-brand-light text-slate-800 antialiased selection:bg-brand-blue selection:text-white">
+
+    <!-- Top Announcement Bar -->
+    <div class="bg-black text-white text-xs sm:text-sm py-2.5 px-4 text-center font-medium">
+        📦 Envíos Gratis a Todo Honduras 📦
+    </div>
+
+    <!-- Header / Navbar -->
+    <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Nuevo Logo -->
+            <a href="#" class="flex items-center gap-2 group">
+                <img src="zentradiagonal.png" alt="Zentra Logo" class="h-9 w-auto object-contain">
+            </a>
+
+            <!-- Desktop Nav -->
+            <nav class="hidden md:flex items-center gap-8 font-medium text-slate-600">
+                <a href="#productos" class="text-brand-blue font-bold transition">Catálogo</a>
+                <a href="#como-funciona" class="hover:text-brand-blue transition">Cómo funciona</a>
+                <a href="#opiniones" class="hover:text-brand-blue transition">Opiniones</a>
+                <a href="#contacto" class="hover:text-brand-blue transition">Contacto</a>
+            </nav>
+
+            <!-- Actions -->
+            <div class="flex items-center gap-4">
+                <button onclick="toggleCart()" class="relative p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition">
+                    <i class="fa-solid fa-bag-shopping text-lg"></i>
+                    <span id="cart-badge" class="absolute -top-1 -right-1 w-5 h-5 bg-brand-blue text-white rounded-full text-xs font-bold flex items-center justify-center">0</span>
+                </button>
+                <a href="#productos" class="hidden sm:inline-flex items-center justify-center px-5 py-2.5 rounded-xl bg-brand-blue hover:bg-brand-dark text-white font-bold text-sm shadow-lg shadow-brand-blue/20 transition">
+                    Ver catálogo
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 1. PRODUCTS SECTION -->
+    <section id="productos" class="py-12 lg:py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+            <div>
+                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 text-brand-blue font-semibold text-xs border border-blue-200 mb-3">
+                    <span class="w-2 h-2 rounded-full bg-brand-blue animate-pulse"></span>
+                    Catálogo Oficial Zentra
+                </div>
+                <h2 class="text-3xl sm:text-5xl font-extrabold text-brand-dark tracking-tight">Los más pedidos en Honduras</h2>
+                <p class="text-slate-600 mt-2 text-lg">Elige tu solución NFC y comienza a recopilar reseñas y seguidores de inmediato.</p>
+            </div>
+        </div>
+
+        <!-- Product Grid -->
+        <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Productos cargados dinámicamente -->
+        </div>
+    </section>
+
+    <!-- 2. HERO / VALUE PROPOSITION SECTION -->
+    <section class="py-12 lg:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center bg-white rounded-3xl my-12 border border-slate-200 shadow-sm">
+        <div class="space-y-6 p-4 sm:p-8">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 text-brand-blue font-semibold text-xs border border-blue-200">
+                <span class="w-2 h-2 rounded-full bg-brand-blue animate-pulse"></span>
+                Tecnología NFC Profesional
+            </div>
+            <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-brand-dark leading-tight">
+                Cada cliente contento, convertido en una reseña.
+            </h1>
+            <p class="text-base sm:text-lg text-slate-600 leading-relaxed">
+                Tarjetas inteligentes para que tus clientes dejen su reseña en Google o te sigan en Instagram con un solo toque. Sin apps, sin buscar el link, directo al grano.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 pt-4">
+                <a href="#productos" class="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-brand-blue hover:bg-brand-dark text-white font-bold text-base shadow-xl shadow-brand-blue/25 transition text-center">
+                    Comprar tarjeta NFC
+                </a>
+                <a href="#como-funciona" class="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-brand-dark font-bold text-base transition text-center">
+                    Ver cómo funciona
+                </a>
+            </div>
+        </div>
+
+        <div class="relative flex justify-center p-4">
+            <div class="w-full max-w-md bg-brand-light p-6 sm:p-8 rounded-3xl shadow-xl border border-slate-200 relative">
+                <div class="absolute -top-4 -left-4 bg-brand-dark text-white text-xs font-bold px-4 py-2 rounded-2xl shadow-lg">
+                    +2.4x reseñas por mes
+                </div>
+                <div class="rounded-2xl overflow-hidden shadow-md bg-white border border-slate-100 mb-6 flex justify-center">
+                    <img src="IG GOOGLE.jpg" alt="Tarjetas NFC Zentra" class="w-full h-auto object-cover max-h-72" onerror="this.src='https://images.unsplash.com/photo-1563986768609-322da13575f3?w=500&auto=format&fit=crop&q=60'">
+                </div>
+                <div class="bg-brand-dark text-white p-4 rounded-2xl flex items-center justify-between">
+                    <div>
+                        <p class="text-xs text-slate-300 font-medium">Tecnología incorporada</p>
+                        <p class="font-bold text-sm">Sin app • Funciona al tocar</p>
+                    </div>
+                    <i class="fa-solid fa-wifi text-brand-sky text-2xl animate-pulse"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="border-y border-slate-200 bg-white py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+            <div>
+                <p class="text-3xl font-extrabold text-brand-dark">100%</p>
+                <p class="text-xs sm:text-sm text-slate-500 font-medium">Personalizado con tu marca</p>
+            </div>
+            <div>
+                <p class="text-3xl font-extrabold text-brand-blue">&lt; 3 seg</p>
+                <p class="text-xs sm:text-sm text-slate-500 font-medium">Tiempo de lectura NFC</p>
+            </div>
+            <div>
+                <p class="text-3xl font-extrabold text-brand-dark">0</p>
+                <p class="text-xs sm:text-sm text-slate-500 font-medium">Aplicaciones requeridas</p>
+            </div>
+            <div>
+                <p class="text-3xl font-extrabold text-brand-blue">24/7</p>
+                <p class="text-xs sm:text-sm text-slate-500 font-medium">Soporte técnico local</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- How it works Section -->
+    <section id="como-funciona" class="py-16 bg-brand-light">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <h2 class="text-3xl font-extrabold text-brand-dark tracking-tight">Cómo funciona</h2>
+                <p class="text-slate-600 mt-2">Tan simple que tu cliente lo hace sin que se lo tengas que explicar dos veces.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm relative">
+                    <div class="w-12 h-12 bg-brand-dark text-white rounded-2xl flex items-center justify-center font-bold text-lg mb-6 shadow-md">1</div>
+                    <h3 class="font-bold text-xl text-brand-dark mb-3">Configuras el link una vez</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">Le decimos a tu tarjeta a dónde apuntar: tu perfil de Google, Instagram o el que elijas. Toma cinco minutos.</p>
+                </div>
+                <div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm relative">
+                    <div class="w-12 h-12 bg-brand-blue text-white rounded-2xl flex items-center justify-center font-bold text-lg mb-6 shadow-md">2</div>
+                    <h3 class="font-bold text-xl text-brand-dark mb-3">Tu cliente acerca el celular</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">En el mostrador, la mesa o al despedirse. No necesita abrir cámara ni escribir nada, solo tocar.</p>
+                </div>
+                <div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm relative">
+                    <div class="w-12 h-12 bg-brand-dark text-white rounded-2xl flex items-center justify-center font-bold text-lg mb-6 shadow-md">3</div>
+                    <h3 class="font-bold text-xl text-brand-dark mb-3">La reseña se publica en segundos</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">Su celular abre la página directamente, en el momento en que está más contento con tu servicio.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="opiniones" class="py-16 lg:py-24 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-brand-dark rounded-3xl p-8 sm:p-12 text-white relative overflow-hidden shadow-2xl">
+            <div class="absolute right-0 bottom-0 translate-x-8 translate-y-8 text-white/5 text-9xl font-extrabold select-none">“</div>
+            <i class="fa-solid fa-quote-left text-brand-sky text-3xl mb-6"></i>
+            <p class="text-lg sm:text-2xl font-medium leading-relaxed mb-6">
+                "Antes tenía que acordarme de pedir la reseña y casi nunca funcionaba. Ahora solo acerco la tarjeta y listo, mis clientes lo hacen solos."
+            </p>
+            <p class="text-sm text-slate-300 font-semibold">— Propietario de Negocio en Honduras</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contacto" class="bg-brand-dark text-slate-300 pt-16 pb-12 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+            <div class="space-y-4">
+                <div class="flex items-center gap-2">
+                    <img src="zentradiagonal.png" alt="Zentra Logo" class="h-8 w-auto object-contain brightness-0 invert">
+                </div>
+                <p class="text-sm text-slate-400 leading-relaxed">
+                    Tarjetas NFC para que negocios en Honduras consigan más reseñas y más seguidores, un toque a la vez.
+                </p>
+            </div>
+            <div>
+                <p class="font-bold text-white mb-4 text-sm">Ayuda</p>
+                <ul class="space-y-2.5 text-sm">
+                    <li><a href="#" class="hover:text-white transition">Cómo comprar</a></li>
+                    <li><a href="#" class="hover:text-white transition">Medios de pago</a></li>
+                    <li><a href="#" class="hover:text-white transition">Cómo son los envíos</a></li>
+                </ul>
+            </div>
+            <div>
+                <p class="font-bold text-white mb-4 text-sm">Políticas</p>
+                <ul class="space-y-2.5 text-sm">
+                    <li><a href="#" class="hover:text-white transition">Política de envíos</a></li>
+                    <li><a href="#" class="hover:text-white transition">Privacidad</a></li>
+                    <li><a href="#" class="hover:text-white transition">Términos de servicio</a></li>
+                </ul>
+            </div>
+            <div>
+                <p class="font-bold text-white mb-4 text-sm">Newsletter</p>
+                <p class="text-xs text-slate-400 mb-3">Suscríbete para enterarte de nuevos productos.</p>
+                <form onsubmit="event.preventDefault(); alert('¡Gracias por suscribirte!');" class="flex gap-2">
+                    <input type="email" placeholder="Tu correo electrónico" required class="bg-slate-800 border border-slate-700 px-4 py-2.5 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-brand-sky w-full">
+                    <button type="submit" class="bg-brand-blue hover:bg-brand-sky text-white px-4 py-2.5 rounded-xl transition flex items-center justify-center">
+                        <i class="fa-solid fa-arrow-right text-sm"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 border-t border-slate-800 text-center text-xs text-slate-500">
+            <p>© 2026 Zentra — Honduras. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Cart Drawer Modal -->
+    <div id="cart-drawer" class="fixed inset-0 z-50 overflow-hidden hidden">
+        <div class="absolute inset-0 bg-slate-900/50 backdrop-blur-sm transition-opacity" onclick="toggleCart()"></div>
+        <div class="absolute inset-y-0 right-0 max-w-full flex pl-10">
+            <div class="w-screen max-w-md bg-white shadow-2xl flex flex-col">
+                <div class="p-6 border-b border-slate-200 flex items-center justify-between">
+                    <h3 class="font-bold text-lg text-brand-dark flex items-center gap-2">
+                        <i class="fa-solid fa-bag-shopping text-brand-blue"></i> Tu Carrito
+                    </h3>
+                    <button onclick="toggleCart()" class="text-slate-400 hover:text-slate-600 text-lg p-2"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <div id="cart-items" class="flex-1 overflow-y-auto p-6 space-y-4">
+                    <!-- Items dinámicos -->
+                </div>
+                <div class="p-6 border-t border-slate-200 bg-slate-50 space-y-4">
+                    <div class="flex justify-between items-center font-bold text-lg">
+                        <span>Total:</span>
+                        <span id="cart-total" class="text-brand-blue">L. 0.00</span>
+                    </div>
+                    <button onclick="checkout()" class="w-full py-4 rounded-xl bg-brand-blue hover:bg-brand-dark text-white font-bold text-center shadow-lg transition">
+                        Finalizar Compra / Registrar en CRM
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Floating Button & CRM Modal -->
+    <button onclick="toggleAdminModal()" class="fixed bottom-6 right-6 z-50 bg-brand-dark hover:bg-brand-blue text-white px-5 py-3 rounded-full shadow-2xl font-bold text-sm flex items-center gap-2 transition transform hover:scale-105 border border-slate-700">
+        <i class="fa-solid fa-gear"></i> Panel Admin / CRM
+    </button>
+
+    <div id="admin-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm hidden">
+        <div class="bg-white rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl overflow-y-auto max-h-[90vh]">
+            <div class="flex justify-between items-center mb-6 border-b pb-4">
+                <h3 class="text-xl font-extrabold text-brand-dark flex items-center gap-2">
+                    <i class="fa-solid fa-shield-halved text-brand-blue"></i> Panel de Administración & CRM
+                </h3>
+                <button onclick="toggleAdminModal()" class="text-slate-400 hover:text-slate-600 text-lg"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <!-- Tabs -->
+            <div class="flex gap-2 mb-6 border-b">
+                <button onclick="switchAdminTab('products')" id="tab-btn-products" class="pb-2 font-bold text-brand-blue border-b-2 border-brand-blue text-sm">Gestionar Productos</button>
+                <button onclick="switchAdminTab('orders')" id="tab-btn-orders" class="pb-2 font-bold text-slate-500 text-sm">Pedidos CRM (<span id="order-count">0</span>)</button>
+            </div>
+
+            <!-- Tab Productos -->
+            <div id="admin-tab-products" class="space-y-6">
+                <div class="bg-slate-50 p-4 rounded-2xl border">
+                    <h4 class="font-bold text-sm text-brand-dark mb-3">Agregar Nuevo Producto al Catálogo</h4>
+                    <form onsubmit="addNewProduct(event)" class="space-y-3">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Nombre del Producto</label>
+                            <input type="text" id="new-prod-name" required placeholder="Ej: Tarjeta NFC Profesional" class="w-full px-3 py-2 border rounded-xl text-sm focus:outline-none focus:border-brand-blue">
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Precio (Lempiras L.)</label>
+                                <input type="number" id="new-prod-price" required placeholder="450" class="w-full px-3 py-2 border rounded-xl text-sm focus:outline-none focus:border-brand-blue">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Etiqueta (Badge)</label>
+                                <input type="text" id="new-prod-badge" placeholder="Más vendido" class="w-full px-3 py-2 border rounded-xl text-sm focus:outline-none focus:border-brand-blue">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Imagen (Ej: IG UNIDAD_2.jpg)</label>
+                            <input type="text" id="new-prod-img" required placeholder="IG UNIDAD_2.jpg" class="w-full px-3 py-2 border rounded-xl text-sm focus:outline-none focus:border-brand-blue">
+                        </div>
+                        <button type="submit" class="w-full py-2.5 bg-brand-blue hover:bg-brand-dark text-white rounded-xl font-bold text-sm transition">Agregar al Catálogo</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Tab Pedidos CRM -->
+            <div id="admin-tab-orders" class="space-y-4 hidden">
+                <h4 class="font-bold text-sm text-brand-dark">Historial de Pedidos Registrados</h4>
+                <div id="admin-orders-list" class="space-y-3">
+                    <!-- Pedidos dinámicos -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Logic & State Management -->
+    <script>
+        let products = JSON.parse(localStorage.getItem('zentra_products')) || [
+            { id: 1, name: 'Tarjeta NFC · Reseñas de Google', price: 499, badge: 'Más vendido', image: 'GOOGLE UNIDAD.jpg' },
+            { id: 2, name: 'Tarjeta NFC · Seguidores de Instagram', price: 499, badge: 'Nuevo', image: 'IG UNIDAD_2.jpg' },
+            { id: 3, name: 'Combo Doble · Google + Instagram', price: 799, badge: 'Oferta', image: 'IG GOOGLE.jpg' }
+        ];
+
+        let cart = JSON.parse(localStorage.getItem('zentra_cart')) || [];
+        let orders = JSON.parse(localStorage.getItem('zentra_orders')) || [];
+
+        function saveState() {
+            localStorage.setItem('zentra_products', JSON.stringify(products));
+            localStorage.setItem('zentra_cart', JSON.stringify(cart));
+            localStorage.setItem('zentra_orders', JSON.stringify(orders));
+        }
+
+        function renderProducts() {
+            const grid = document.getElementById('product-grid');
+            grid.innerHTML = '';
+            products.forEach(p => {
+                grid.innerHTML += `
+                    <div class="bg-white p-6 rounded-3xl border border-slate-200/85 shadow-sm hover:shadow-xl transition flex flex-col justify-between group">
+                        <div>
+                            <div class="relative rounded-2xl overflow-hidden bg-slate-100 mb-4 aspect-square flex items-center justify-center border border-slate-100">
+                                ${p.badge ? `<span class="absolute top-3 left-3 bg-brand-dark text-white text-xs font-bold px-3 py-1 rounded-full shadow z-10">${p.badge}</span>` : ''}
+                                <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" onerror="this.src='https://images.unsplash.com/photo-1563986768609-322da13575f3?w=500&auto=format&fit=crop&q=60'">
+                            </div>
+                            <h3 class="font-bold text-lg text-brand-dark mb-2">${p.name}</h3>
+                        </div>
+                        <div>
+                            <p class="text-xl font-extrabold text-brand-blue mb-4">L. ${p.price.toLocaleString()}.00</p>
+                            <button onclick="addToCart(${p.id})" class="w-full py-3 rounded-xl bg-brand-light hover:bg-brand-blue hover:text-white text-brand-dark font-bold text-sm transition flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-cart-plus"></i> Añadir al carrito
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function toggleCart() {
+            const drawer = document.getElementById('cart-drawer');
+            drawer.classList.toggle('hidden');
+            renderCart();
+        }
+
+        function addToCart(id) {
+            const product = products.find(p => p.id === id);
+            const itemInCart = cart.find(item => item.id === id);
+            if (itemInCart) {
+                itemInCart.qty++;
+            } else {
+                cart.push({ ...product, qty: 1 });
+            }
+            saveState();
+            updateBadge();
+            toggleCart();
+        }
+
+        function updateBadge() {
+            const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
+            document.getElementById('cart-badge').innerText = totalQty;
+        }
+
+        function renderCart() {
+            const container = document.getElementById('cart-items');
+            container.innerHTML = '';
+            if (cart.length === 0) {
+                container.innerHTML = `<p class="text-center text-slate-400 py-8 text-sm">Tu carrito está vacío.</p>`;
+                document.getElementById('cart-total').innerText = 'L. 0.00';
+                return;
+            }
+
+            let total = 0;
+            cart.forEach((item, index) => {
+                total += item.price * item.qty;
+                container.innerHTML += `
+                    <div class="flex items-center justify-between bg-slate-50 p-4 rounded-2xl border">
+                        <div class="flex items-center gap-3">
+                            <img src="${item.image}" class="w-12 h-12 rounded-xl object-cover" onerror="this.src='https://images.unsplash.com/photo-1563986768609-322da13575f3?w=500&auto=format&fit=crop&q=60'">
+                            <div>
+                                <h4 class="font-bold text-sm text-brand-dark">${item.name}</h4>
+                                <p class="text-xs text-slate-500">L. ${item.price} x ${item.qty}</p>
+                            </div>
+                        </div>
+                        <button onclick="removeFromCart(${index})" class="text-red-500 hover:text-red-700 p-2"><i class="fa-solid fa-trash-can text-sm"></i></button>
+                    </div>
+                `;
+            });
+            document.getElementById('cart-total').innerText = `L. ${total.toLocaleString()}.00`;
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            saveState();
+            updateBadge();
+            renderCart();
+        }
+
+        function checkout() {
+            if (cart.length === 0) return alert('El carrito está vacío');
+            const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            const newOrder = {
+                id: Date.now(),
+                date: new Date().toLocaleDateString(),
+                items: [...cart],
+                total: total,
+                status: 'Pendiente'
+            };
+            orders.push(newOrder);
+            saveState();
+            
+            alert('¡Pedido registrado con éxito en el CRM interno!');
+            cart = [];
+            saveState();
+            updateBadge();
+            toggleCart();
+            renderAdminOrders();
+        }
+
+        function toggleAdminModal() {
+            const modal = document.getElementById('admin-modal');
+            modal.classList.toggle('hidden');
+            renderAdminOrders();
+            document.getElementById('order-count').innerText = orders.length;
+        }
+
+        function switchAdminTab(tab) {
+            const prodTab = document.getElementById('admin-tab-products');
+            const ordTab = document.getElementById('admin-tab-orders');
+            const prodBtn = document.getElementById('tab-btn-products');
+            const ordBtn = document.getElementById('tab-btn-orders');
+
+            if (tab === 'products') {
+                prodTab.classList.remove('hidden');
+                ordTab.classList.add('hidden');
+                prodBtn.className = "pb-2 font-bold text-brand-blue border-b-2 border-brand-blue text-sm";
+                ordBtn.className = "pb-2 font-bold text-slate-500 text-sm";
+            } else {
+                prodTab.classList.add('hidden');
+                ordTab.classList.remove('hidden');
+                ordBtn.className = "pb-2 font-bold text-brand-blue border-b-2 border-brand-blue text-sm";
+                prodBtn.className = "pb-2 font-bold text-slate-500 text-sm";
+                renderAdminOrders();
+            }
+        }
+
+        function addNewProduct(e) {
+            e.preventDefault();
+            const name = document.getElementById('new-prod-name').value;
+            const price = parseFloat(document.getElementById('new-prod-price').value);
+            const badge = document.getElementById('new-prod-badge').value;
+            const image = document.getElementById('new-prod-img').value;
+
+            const newProduct = {
+                id: Date.now(),
+                name,
+                price,
+                badge,
+                image
+            };
+
+            products.push(newProduct);
+            saveState();
+            renderProducts();
+            e.target.reset();
+            alert('¡Producto agregado exitosamente al catálogo de Zentra!');
+        }
+
+        function renderAdminOrders() {
+            const list = document.getElementById('admin-orders-list');
+            document.getElementById('order-count').innerText = orders.length;
+            list.innerHTML = '';
+            
+            if (orders.length === 0) {
+                list.innerHTML = `<p class="text-center text-slate-400 py-6 text-sm">No hay pedidos registrados todavía en el CRM.</p>`;
+                return;
+            }
+
+            orders.forEach((order, index) => {
+                let itemsList = order.items.map(i => `${i.name} (x${i.qty})`).join(', ');
+                list.innerHTML += `
+                    <div class="bg-slate-50 p-4 rounded-2xl border flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <span class="font-bold text-sm text-brand-dark">Pedido #${order.id.toString().slice(-4)}</span>
+                                <span class="px-2 py-0.5 bg-amber-100 text-amber-800 text-xs font-semibold rounded-full">${order.status}</span>
+                            </div>
+                            <p class="text-xs text-slate-600 mt-1"><strong>Artículos:</strong> ${itemsList}</p>
+                            <p class="text-xs text-slate-400 mt-0.5">Fecha: ${order.date}</p>
+                        </div>
+                        <div class="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
+                            <span class="font-extrabold text-brand-blue text-sm">L. ${order.total.toLocaleString()}.00</span>
+                            <button onclick="deleteOrder(${index})" class="text-red-500 hover:text-red-700 p-1.5"><i class="fa-solid fa-trash-can text-sm"></i></button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function deleteOrder(index) {
+            orders.splice(index, 1);
+            saveState();
+            renderAdminOrders();
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            renderProducts();
+            updateBadge();
+        });
+    </script>
+</body>
+</html>
