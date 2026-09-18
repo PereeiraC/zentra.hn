@@ -102,7 +102,7 @@
         <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
             <div>
                 <div class="mb-3">
-                    <a href="https://wa.me/50488780115?text=Hola,%20estoy%20interesado%20en%20sus%20productos%20NFC." target="_blank" class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 text-brand-dark font-semibold text-xs border border-slate-200 transition shadow-sm hover:scale-[1.02]">
+                    <a href="https://wa.me/50488780115?text=Hola,%20estoy%20interesado%20en%20sus%20productos." target="_blank" class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 text-brand-dark font-semibold text-xs border border-slate-200 transition shadow-sm hover:scale-[1.02]">
                         <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                         CONTÁCTANOS <i class="fa-brands fa-whatsapp text-emerald-600 ml-1"></i>
                     </a>
@@ -201,15 +201,16 @@
 
     <!-- JavaScript Logic & State Management -->
     <script>
-        let products = JSON.parse(localStorage.getItem('zentra_products_v14')) || [
+        // Versión actualizada con los AirPods disponibles (outOfStock: false)
+        let products = JSON.parse(localStorage.getItem('zentra_products_v15')) || [
             { id: 1, name: 'Tarjeta NFC · Reseñas de Google', price: 499, wspMessage: 'Hola, necesito información y adquirir la Tarjeta NFC de Reseñas de Google.', image: 'googleNFC.png', outOfStock: false },
             { id: 2, name: 'Tarjeta NFC · Seguidores de Instagram', price: 499, wspMessage: 'Hola, necesito información y adquirir la Tarjeta NFC de Seguidores de Instagram.', image: 'igNFC.png', outOfStock: false },
             { id: 3, name: 'Combo Doble · Google + Instagram', price: 799, wspMessage: 'Hola, necesito información y adquirir el Combo Doble NFC (Google + Instagram).', image: 'googleigNFC.png', outOfStock: false },
-            { id: 4, name: 'AirPods 4ta Gen AAA+', price: 699, wspMessage: 'Hola, me interesan los AirPods 4ta Gen AAA+.', image: 'airpods4tagen.png', outOfStock: true }
+            { id: 4, name: 'AirPods 4ta Gen AAA+', price: 699, wspMessage: 'Hola, necesito información y adquirir los AirPods 4ta Gen AAA+.', image: 'airpods4tagen.png', outOfStock: false }
         ];
 
         function saveState() {
-            localStorage.setItem('zentra_products_v14', JSON.stringify(products));
+            localStorage.setItem('zentra_products_v15', JSON.stringify(products));
         }
 
         function toggleMobileMenu() {
