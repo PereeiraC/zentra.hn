@@ -44,6 +44,7 @@
     <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 grid grid-cols-3 items-center">
             
+            <!-- Menú de Escritorio -->
             <nav class="hidden md:flex items-center gap-6 font-medium text-slate-600 text-sm">
                 <a href="#productos" class="text-brand-dark font-bold transition">Catálogo</a>
                 <a href="#como-funciona" class="hover:text-brand-dark transition">Cómo funciona</a>
@@ -51,14 +52,21 @@
                 <a href="#contacto" class="hover:text-brand-dark transition">Contacto</a>
             </nav>
 
-            <div class="md:hidden flex items-center"></div>
+            <!-- Botón Menú Móvil (Hamburguesa Clean) -->
+            <div class="md:hidden flex items-center">
+                <button onclick="toggleMobileMenu()" class="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition">
+                    <i class="fa-solid fa-bars text-lg"></i>
+                </button>
+            </div>
 
+            <!-- Logo Central -->
             <div class="flex justify-center">
                 <a href="#" class="flex items-center group">
                     <img src="zentradiagonal.png" alt="Zentra Logo" class="h-10 w-auto object-contain">
                 </a>
             </div>
 
+            <!-- Acciones Derecha -->
             <div class="flex items-center justify-end gap-3 sm:gap-4">
                 <button onclick="toggleCart()" class="relative p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition">
                     <i class="fa-solid fa-bag-shopping text-lg"></i>
@@ -70,6 +78,28 @@
             </div>
         </div>
     </header>
+
+    <!-- Menú Desplegable Móvil -->
+    <div id="mobile-menu" class="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm hidden flex justify-start">
+        <div class="bg-white w-4/5 max-w-xs h-full shadow-2xl p-6 flex flex-col justify-between animate-in slide-in-from-left duration-200">
+            <div>
+                <div class="flex items-center justify-between mb-8 pb-4 border-b">
+                    <img src="zentradiagonal.png" alt="Zentra Logo" class="h-8 w-auto object-contain">
+                    <button onclick="toggleMobileMenu()" class="text-slate-400 hover:text-slate-600 text-lg p-2"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <nav class="flex flex-col space-y-4 font-semibold text-slate-700 text-base">
+                    <a href="#productos" onclick="toggleMobileMenu()" class="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-100 transition"><i class="fa-solid fa-store w-5 text-brand-dark"></i> Catálogo</a>
+                    <a href="#como-funciona" onclick="toggleMobileMenu()" class="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-100 transition"><i class="fa-solid fa-circle-question w-5 text-brand-dark"></i> Cómo funciona</a>
+                    <a href="#opiniones" onclick="toggleMobileMenu()" class="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-100 transition"><i class="fa-solid fa-star w-5 text-brand-dark"></i> Opiniones</a>
+                    <a href="#contacto" onclick="toggleMobileMenu()" class="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-100 transition"><i class="fa-solid fa-headset w-5 text-brand-dark"></i> Contacto</a>
+                </nav>
+            </div>
+            <div class="pt-6 border-t text-center text-xs text-slate-400">
+                <p>Zentra — Envíos Gratis a Todo Honduras</p>
+            </div>
+        </div>
+        <div class="flex-1" onclick="toggleMobileMenu()"></div>
+    </div>
 
     <!-- 1. PRODUCTS SECTION -->
     <section id="productos" class="py-12 lg:py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -210,20 +240,25 @@
 
     <!-- JavaScript Logic & State Management -->
     <script>
-        let products = JSON.parse(localStorage.getItem('zentra_products_v12')) || [
+        let products = JSON.parse(localStorage.getItem('zentra_products_v13')) || [
             { id: 1, name: 'Tarjeta NFC · Reseñas de Google', price: 499, badge: 'GRATIS', image: 'googleNFC.png', outOfStock: false },
             { id: 2, name: 'Tarjeta NFC · Seguidores de Instagram', price: 499, badge: 'GRATIS', image: 'igNFC.png', outOfStock: false },
             { id: 3, name: 'Combo Doble · Google + Instagram', price: 799, badge: 'GRATIS', image: 'googleigNFC.png', outOfStock: false },
             { id: 4, name: 'AirPods 4ta Gen AAA+', price: 699, badge: 'GRATIS', image: 'airpods4tagen.png', outOfStock: true }
         ];
 
-        let cart = JSON.parse(localStorage.getItem('zentra_cart_v12')) || [];
-        let orders = JSON.parse(localStorage.getItem('zentra_orders_v12')) || [];
+        let cart = JSON.parse(localStorage.getItem('zentra_cart_v13')) || [];
+        let orders = JSON.parse(localStorage.getItem('zentra_orders_v13')) || [];
 
         function saveState() {
-            localStorage.setItem('zentra_products_v12', JSON.stringify(products));
-            localStorage.setItem('zentra_cart_v12', JSON.stringify(cart));
-            localStorage.setItem('zentra_orders_v12', JSON.stringify(orders));
+            localStorage.setItem('zentra_products_v13', JSON.stringify(products));
+            localStorage.setItem('zentra_cart_v13', JSON.stringify(cart));
+            localStorage.setItem('zentra_orders_v13', JSON.stringify(orders));
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
         }
 
         function renderProducts() {
