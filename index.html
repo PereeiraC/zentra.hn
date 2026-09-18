@@ -300,8 +300,8 @@
                             </div>
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-slate-600 mb-1">Imagen (Ej: IG UNIDAD_2.jpg)</label>
-                            <input type="text" id="new-prod-img" required placeholder="IG UNIDAD_2.jpg" class="w-full px-3 py-2 border rounded-xl text-sm focus:outline-none focus:border-brand-blue">
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Imagen (Ej: googleNFC.png)</label>
+                            <input type="text" id="new-prod-img" required placeholder="googleNFC.png" class="w-full px-3 py-2 border rounded-xl text-sm focus:outline-none focus:border-brand-blue">
                         </div>
                         <button type="submit" class="w-full py-2.5 bg-brand-blue hover:bg-brand-dark text-white rounded-xl font-bold text-sm transition">Agregar al Catálogo</button>
                     </form>
@@ -320,10 +320,11 @@
 
     <!-- JavaScript Logic & State Management -->
     <script>
+        // Actualizado con los nombres exactos de tus imágenes en GitHub
         let products = JSON.parse(localStorage.getItem('zentra_products')) || [
-            { id: 1, name: 'Tarjeta NFC · Reseñas de Google', price: 499, badge: 'Más vendido', image: 'GOOGLE UNIDAD.jpg' },
-            { id: 2, name: 'Tarjeta NFC · Seguidores de Instagram', price: 499, badge: 'Nuevo', image: 'IG UNIDAD_2.jpg' },
-            { id: 3, name: 'Combo Doble · Google + Instagram', price: 799, badge: 'Oferta', image: 'IG GOOGLE.jpg' }
+            { id: 1, name: 'Tarjeta NFC · Reseñas de Google', price: 499, badge: 'Más vendido', image: 'googleNFC.png' },
+            { id: 2, name: 'Tarjeta NFC · Seguidores de Instagram', price: 499, badge: 'Nuevo', image: 'igNFC.png' },
+            { id: 3, name: 'Combo Doble · Google + Instagram', price: 799, badge: 'Oferta', image: 'googleigNFC.png' }
         ];
 
         let cart = JSON.parse(localStorage.getItem('zentra_cart')) || [];
