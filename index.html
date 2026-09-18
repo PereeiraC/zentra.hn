@@ -208,20 +208,20 @@
 
     <!-- JavaScript Logic & State Management -->
     <script>
-        let products = JSON.parse(localStorage.getItem('zentra_products_v10')) || [
+        let products = JSON.parse(localStorage.getItem('zentra_products_v11')) || [
             { id: 1, name: 'Tarjeta NFC · Reseñas de Google', price: 499, badge: 'GRATIS', image: 'googleNFC.png', outOfStock: false },
             { id: 2, name: 'Tarjeta NFC · Seguidores de Instagram', price: 499, badge: 'GRATIS', image: 'igNFC.png', outOfStock: false },
             { id: 3, name: 'Combo Doble · Google + Instagram', price: 799, badge: 'GRATIS', image: 'googleigNFC.png', outOfStock: false },
             { id: 4, name: 'AirPods 4ta Gen AAA+', price: 699, badge: 'GRATIS', image: 'airpods4tagen.png', outOfStock: true }
         ];
 
-        let cart = JSON.parse(localStorage.getItem('zentra_cart_v10')) || [];
-        let orders = JSON.parse(localStorage.getItem('zentra_orders_v10')) || [];
+        let cart = JSON.parse(localStorage.getItem('zentra_cart_v11')) || [];
+        let orders = JSON.parse(localStorage.getItem('zentra_orders_v11')) || [];
 
         function saveState() {
-            localStorage.setItem('zentra_products_v10', JSON.stringify(products));
-            localStorage.setItem('zentra_cart_v10', JSON.stringify(cart));
-            localStorage.setItem('zentra_orders_v10', JSON.stringify(orders));
+            localStorage.setItem('zentra_products_v11', JSON.stringify(products));
+            localStorage.setItem('zentra_cart_v11', JSON.stringify(cart));
+            localStorage.setItem('zentra_orders_v11', JSON.stringify(orders));
         }
 
         function renderProducts() {
@@ -245,14 +245,18 @@
                             <h3 class="font-bold text-lg text-brand-dark mb-2">${p.name}</h3>
                         </div>
                         <div>
-                            <p class="text-xl font-extrabold text-brand-dark mb-4">L. ${p.price.toLocaleString()}.00</p>
+                            <div class="flex items-center gap-2 mb-4">
+                                <p class="text-xl font-extrabold text-brand-dark">L. ${p.price.toLocaleString()}.00</p>
+                                <span class="text-xs text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded-md">Envío Gratis</span>
+                            </div>
+                            
                             ${isOut ? `
-                                <button disabled class="w-full py-3 rounded-xl bg-slate-100 text-slate-400 font-bold text-sm cursor-not-allowed flex items-center justify-center gap-2 border border-slate-200">
+                                <button disabled class="w-full py-3.5 rounded-xl bg-slate-100 text-slate-400 font-bold text-sm cursor-not-allowed flex items-center justify-center gap-2 border border-slate-200">
                                     <i class="fa-solid fa-clock"></i> Próximamente
                                 </button>
                             ` : `
-                                <button onclick="addToCart(${p.id})" class="w-full py-3 rounded-xl bg-brand-light hover:bg-brand-dark hover:text-white text-brand-dark font-bold text-sm transition flex items-center justify-center gap-2 border border-slate-200">
-                                    <i class="fa-solid fa-cart-plus"></i> Añadir al carrito
+                                <button onclick="buyNow(${p.id})" class="w-full py-3.5 rounded-xl bg-[#ccff33] hover:bg-[#b3fa00] text-slate-900 font-extrabold text-sm transition flex items-center justify-center gap-2 shadow-md hover:shadow-lg transform active:scale-95">
+                                    <i class="fa-solid fa-bolt text-slate-900"></i> ¡Comprar Ahora!
                                 </button>
                             `}
                         </div>
@@ -261,15 +265,11 @@
             });
         }
 
-        function toggleCart() {
-            const drawer = document.getElementById('cart-drawer');
-            drawer.classList.toggle('hidden');
-            renderCart();
-        }
-
-        function addToCart(id) {
+        function buyNow(id) {
             const product = products.find(p => p.id === id);
             if (product.outOfStock) return;
+            
+            // Añadir al carrito automáticamente y abrir el carrito/checkout para agilizar la compra
             const itemInCart = cart.find(item => item.id === id);
             if (itemInCart) {
                 itemInCart.qty++;
@@ -279,6 +279,12 @@
             saveState();
             updateBadge();
             toggleCart();
+        }
+
+        function toggleCart() {
+            const drawer = document.getElementById('cart-drawer');
+            drawer.classList.toggle('hidden');
+            renderCart();
         }
 
         function updateBadge() {
