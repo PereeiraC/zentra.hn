@@ -139,6 +139,45 @@
   .field{ width:100%; padding:.6rem .8rem; border:1px solid var(--line); border-radius:var(--radius-sm); font-size:.875rem; background:#fff; }
   .field:focus{ outline:none; border-color:var(--green); box-shadow:0 0 0 3px rgba(15,81,50,.15); }
 
+  /* ---------- Modo administrador + CRM ---------- */
+  #toast{ z-index:200; }
+  #admin-app{ position:fixed; inset:0; z-index:95; background:var(--paper); display:none; flex-direction:column; }
+  #admin-app.open{ display:flex; }
+  .adm-top{ display:flex; align-items:center; justify-content:space-between; gap:1rem; padding:.85rem 1.25rem; background:var(--ink); color:#fff; }
+  .adm-body{ flex:1; min-height:0; display:grid; grid-template-columns:230px 1fr; }
+  .adm-nav{ background:#fff; border-right:1px solid var(--line); padding:1rem; display:flex; flex-direction:column; gap:.25rem; overflow:auto; }
+  .adm-nav button{ display:flex; align-items:center; gap:.7rem; width:100%; padding:.7rem .9rem; border-radius:12px; font-weight:700; font-size:.9rem; color:var(--muted); text-align:left; transition:.15s; }
+  .adm-nav button:hover{ background:var(--paper); color:var(--ink); }
+  .adm-nav button[aria-current="true"]{ background:var(--ink); color:#fff; }
+  .adm-main{ overflow:auto; padding:1.5rem; }
+  @media (max-width:820px){
+    .adm-body{ grid-template-columns:1fr; grid-template-rows:auto 1fr; }
+    .adm-nav{ flex-direction:row; border-right:0; border-bottom:1px solid var(--line); padding:.5rem; overflow-x:auto; }
+    .adm-nav button{ width:auto; white-space:nowrap; }
+    .adm-main{ padding:1rem; }
+  }
+  .kpi{ background:#fff; border:1px solid var(--line); border-radius:20px; padding:1.1rem 1.2rem; }
+  .kpi small{ display:block; color:var(--muted); font-weight:600; font-size:.78rem; }
+  .kpi b{ display:block; margin-top:.25rem; font-size:1.65rem; font-weight:800; letter-spacing:-.02em; }
+  .panel{ background:#fff; border:1px solid var(--line); border-radius:20px; padding:1.2rem; }
+  .tbl{ width:100%; border-collapse:collapse; font-size:.875rem; background:#fff; border:1px solid var(--line); border-radius:16px; overflow:hidden; }
+  .tbl th{ text-align:left; font-size:.72rem; color:var(--muted); font-weight:700; padding:.8rem 1rem; background:#f8f9f6; white-space:nowrap; }
+  .tbl td{ padding:.8rem 1rem; border-top:1px solid var(--line); vertical-align:middle; }
+  .tbl tbody tr{ cursor:pointer; transition:background .15s; }
+  .tbl tbody tr:hover{ background:#f8f9f6; }
+  .badge{ display:inline-block; padding:.25rem .65rem; border-radius:999px; font-size:.72rem; font-weight:800; }
+  .st-nuevo{ background:#dbeafe; color:#1d4ed8; }
+  .st-contactado{ background:#fef3c7; color:#92400e; }
+  .st-pagado{ background:#d9ece1; color:#0f5132; }
+  .st-enviado{ background:#ede9fe; color:#5b21b6; }
+  .st-entregado{ background:#dcfce7; color:#166534; }
+  .st-cancelado{ background:#fee2e2; color:#991b1b; }
+  select.st-select{ width:auto; padding:.35rem 1.6rem .35rem .7rem; font-weight:800; font-size:.75rem; border-radius:999px; border-color:transparent; cursor:pointer; }
+  .modal-back{ position:fixed; inset:0; z-index:110; background:rgba(0,0,0,.55); backdrop-filter:blur(3px); display:none; align-items:center; justify-content:center; padding:1rem; }
+  .modal-back.open{ display:flex; }
+  .modal-box{ background:#fff; border-radius:24px; max-width:660px; width:100%; max-height:92vh; overflow:auto; padding:1.5rem; box-shadow:0 30px 60px rgba(0,0,0,.35); }
+  .lbl{ display:block; font-size:.75rem; font-weight:700; margin-bottom:.25rem; color:var(--ink); }
+
   @media (prefers-reduced-motion:reduce){
     *,*::before,*::after{ animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; scroll-behavior:auto !important; }
     .sheet{ transform:none; } .nfc-card{ opacity:1; transform:translate(58%,-52%) rotate(-4deg); } .stars i{ color:#fbbc04; }
@@ -330,6 +369,13 @@
   </div>
   <div id="cart-items" class="flex-1 overflow-y-auto p-5 space-y-4"></div>
   <div class="p-5 border-t bg-[color:var(--paper)]">
+    <div class="mb-4">
+      <p class="text-xs text-[color:var(--muted)] mb-2">Opcional: déjanos tus datos y te atendemos más rápido.</p>
+      <div class="grid grid-cols-2 gap-2">
+        <input id="c-name" class="field" placeholder="Tu nombre" autocomplete="name" aria-label="Tu nombre">
+        <input id="c-phone" class="field" placeholder="Tu teléfono" inputmode="tel" autocomplete="tel" aria-label="Tu teléfono">
+      </div>
+    </div>
     <div class="flex justify-between text-sm text-[color:var(--muted)]"><span>Envío</span><span class="font-bold text-[color:var(--green)]">Gratis</span></div>
     <div class="flex justify-between items-baseline mt-2 mb-4"><span class="font-bold">Total</span><span id="cart-total" class="text-2xl font-extrabold">L. 0.00</span></div>
     <button id="checkout" class="btn btn-green w-full" onclick="checkout()"><i class="fa-brands fa-whatsapp text-lg"></i> Pedir por WhatsApp</button>
@@ -337,48 +383,41 @@
   </div>
 </aside>
 
-<!-- Admin -->
-<div id="admin-modal" class="fixed inset-0 z-[90] hidden items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-  <div class="bg-white rounded-3xl max-w-3xl w-full p-6 sm:p-8 shadow-2xl overflow-y-auto max-h-[92vh]">
-    <div class="flex justify-between items-center mb-6 pb-4 border-b">
-      <h3 class="text-xl font-extrabold"><i class="fa-solid fa-shield-halved mr-2"></i>Administrar productos</h3>
-      <button onclick="closeAdmin()" class="p-2 text-slate-500" aria-label="Cerrar"><i class="fa-solid fa-xmark text-lg"></i></button>
+<!-- Modo administrador + CRM -->
+<div id="admin-login" class="modal-back" role="dialog" aria-modal="true" aria-labelledby="login-title">
+  <form id="login-form" class="modal-box" style="max-width:380px">
+    <div class="text-center mb-5">
+      <div class="w-14 h-14 mx-auto rounded-2xl bg-[color:var(--ink)] text-white grid place-items-center text-xl mb-3"><i class="fa-solid fa-lock"></i></div>
+      <h3 id="login-title" class="text-xl font-extrabold">Modo administrador</h3>
+      <p class="text-sm text-[color:var(--muted)] mt-1">Ingresa tu PIN para continuar</p>
     </div>
-
-    <p class="text-xs font-bold text-slate-500 mb-2">Productos actuales</p>
-    <div id="admin-list" class="space-y-2 mb-8"></div>
-
-    <div class="bg-[color:var(--paper)] p-5 rounded-2xl border border-[color:var(--line)]">
-      <h4 class="font-bold mb-4">Agregar producto</h4>
-      <form id="add-form" class="space-y-3">
-        <div><label class="block text-xs font-semibold mb-1" for="n-name">Nombre</label>
-          <input class="field" id="n-name" required placeholder="Ej: Tarjeta NFC Personalizada"></div>
-        <div class="grid sm:grid-cols-3 gap-3">
-          <div><label class="block text-xs font-semibold mb-1" for="n-price">Precio (L.)</label>
-            <input class="field" id="n-price" type="number" min="0" step="any" required placeholder="499"></div>
-          <div><label class="block text-xs font-semibold mb-1" for="n-old">Precio anterior (opcional)</label>
-            <input class="field" id="n-old" type="number" min="0" step="any" placeholder="998"></div>
-          <div><label class="block text-xs font-semibold mb-1" for="n-cat">Categoría</label>
-            <select class="field" id="n-cat"><option value="nfc">Tarjetas NFC</option><option value="audio">Audio</option><option value="otros">Otros</option></select></div>
-        </div>
-        <div class="grid sm:grid-cols-2 gap-3">
-          <div><label class="block text-xs font-semibold mb-1" for="n-img">Imagen (nombre de archivo o URL)</label>
-            <input class="field" id="n-img" required placeholder="producto.png"></div>
-          <div><label class="block text-xs font-semibold mb-1" for="n-wsp">Mensaje base de WhatsApp</label>
-            <input class="field" id="n-wsp" placeholder="Hola, necesito información de..."></div>
-        </div>
-        <button class="btn btn-green w-full" type="submit">Agregar al catálogo</button>
-      </form>
+    <input id="pin-input" type="password" inputmode="numeric" autocomplete="off" class="field text-center text-lg tracking-widest" placeholder="••••" aria-label="PIN">
+    <p id="pin-err" class="hidden text-red-600 text-xs font-semibold mt-2 text-center">PIN incorrecto</p>
+    <div class="grid grid-cols-2 gap-2 mt-5">
+      <button type="button" class="btn btn-ghost" onclick="closeAdmin()">Cancelar</button>
+      <button type="submit" class="btn btn-green">Entrar</button>
     </div>
+  </form>
+</div>
 
-    <div class="mt-6 flex flex-wrap gap-2 text-sm">
-      <button class="btn btn-ghost !py-2 !px-4" onclick="exportData()"><i class="fa-solid fa-download"></i> Exportar</button>
-      <label class="btn btn-ghost !py-2 !px-4 cursor-pointer"><i class="fa-solid fa-upload"></i> Importar<input type="file" accept="application/json" class="hidden" onchange="importData(event)"></label>
-      <button class="btn btn-ghost !py-2 !px-4 !text-red-700 !border-red-300 hover:!bg-red-700 hover:!text-white" onclick="resetData()"><i class="fa-solid fa-rotate-left"></i> Restaurar catálogo original</button>
+<div id="admin-app" role="dialog" aria-modal="true" aria-label="Panel de administración">
+  <div class="adm-top">
+    <div class="flex items-center gap-3 min-w-0">
+      <i class="fa-solid fa-shield-halved text-emerald-300"></i>
+      <b class="truncate">Zentra · Administración</b>
     </div>
-    <p class="text-xs text-slate-500 mt-4 leading-relaxed">Los cambios se guardan solo en este navegador. Usa “Exportar” para respaldarlos o llevarlos a otro dispositivo.</p>
+    <div class="flex items-center gap-2 shrink-0">
+      <button class="btn !py-2 !px-3 !text-xs bg-white/10 text-white hover:bg-white/20" onclick="closeAdmin()"><i class="fa-solid fa-store"></i><span class="hidden sm:inline">Ver tienda</span></button>
+      <button class="btn !py-2 !px-3 !text-xs bg-white/10 text-white hover:bg-white/20" onclick="logoutAdmin()"><i class="fa-solid fa-right-from-bracket"></i><span class="hidden sm:inline">Salir</span></button>
+    </div>
+  </div>
+  <div class="adm-body">
+    <nav class="adm-nav" id="adm-nav" aria-label="Secciones"></nav>
+    <main class="adm-main" id="adm-main"></main>
   </div>
 </div>
+
+<div id="modal" class="modal-back" role="dialog" aria-modal="true"><div class="modal-box" id="modal-box"></div></div>
 
 <div id="toast" role="status" aria-live="polite"><i class="fa-solid fa-circle-check text-emerald-300"></i><span></span></div>
 
@@ -387,9 +426,12 @@
    CONFIGURACIÓN
    ========================================================= */
 const PHONE     = '50488780115';
-const ADMIN_PIN = '1234';          // ⚠️ Cámbialo. Es una barrera básica del lado del cliente, no seguridad real.
+const ADMIN_PIN = '1234';          // ⚠️ CÁMBIALO. Es una barrera básica del lado del cliente, no seguridad real.
+const WEBHOOK_URL = '';            // URL de tu Google Apps Script (ver Admin → Ajustes). Sin esto, los pedidos de clientes no llegan al CRM.
 const KEY_PRODUCTS = 'zentra_products_v16';
 const KEY_CART     = 'zentra_cart_v1';
+const KEY_ORDERS    = 'zentra_orders_v1';
+const KEY_CUSTOMERS = 'zentra_customers_v1';
 
 const CATEGORIES = { todos:'Todos', nfc:'Tarjetas NFC', audio:'Audio', otros:'Otros' };
 
@@ -509,7 +551,7 @@ function cartEntries(){
 function addToCart(id){
   cart[id] = (cart[id] || 0) + 1; saveCart(); renderCart();
   const p = products.find(x => x.id === id); toast(`${p.name} agregado al pedido`);
-  const b = $('#cart-btn'); b.animate([{transform:'scale(1)'},{transform:'scale(1.12)'},{transform:'scale(1)'}], {duration:300});
+  const b = $('#cart-btn'); if (b.animate) b.animate([{transform:'scale(1)'},{transform:'scale(1.12)'},{transform:'scale(1)'}], {duration:300});
 }
 function changeQty(id, d){
   cart[id] = (cart[id] || 0) + d;
@@ -549,13 +591,6 @@ function renderCart(){
      </div>`;
 }
 
-function checkout(){
-  const items = cartEntries(); if (!items.length) return;
-  const total = items.reduce((s, e) => s + e.qty * e.p.price, 0);
-  const lines = items.map(({p, qty}) => `• ${qty} × ${p.name} — ${money(p.price * qty)}`).join('\n');
-  const msg = `Hola, quiero hacer este pedido:\n\n${lines}\n\nTotal: ${money(total)} (envío gratis)\n\n¿Me ayudan a confirmarlo?`;
-  window.open(waLink(msg), '_blank', 'noopener');
-}
 
 /* Paneles */
 function toggleCart(open){
@@ -565,7 +600,10 @@ function toggleCart(open){
 }
 function toggleMenu(open){ $('#mobile-menu').classList.toggle('hidden', !open); }
 function closeAll(){ toggleCart(false); toggleMenu(false); }
-document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeAll(); closeAdmin(); } });
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Escape') return;
+  if ($('#modal').classList.contains('open')) closeModal(); else { closeAll(); closeAdmin(); }
+});
 
 /* =========================================================
    DEMO HERO (Google / Instagram)
@@ -579,32 +617,484 @@ $$('.seg button').forEach(btn => btn.addEventListener('click', () => {
 }));
 
 /* =========================================================
-   ADMIN
+   CHECKOUT (guarda el pedido en el CRM y abre WhatsApp)
+   ========================================================= */
+function checkout(){
+  const items = cartEntries(); if (!items.length) return;
+  const name  = $('#c-name').value.trim();
+  const phone = $('#c-phone').value.trim();
+  const lineItems = items.map(({p, qty}) => ({ id:p.id, name:p.name, price:p.price, qty }));
+  const total = lineItems.reduce((s, i) => s + i.price * i.qty, 0);
+
+  const order = createOrder({ name, phone, items:lineItems, status:'nuevo', source:'web' });
+  sendWebhook({ type:'order', order });
+
+  const lines = lineItems.map(i => `• ${i.qty} × ${i.name} — ${money(i.price * i.qty)}`).join('\n');
+  const msg = `Hola${name ? ', soy ' + name : ''}. Quiero hacer este pedido (${order.id}):\n\n${lines}\n\nTotal: ${money(total)} (envío gratis)\n\n¿Me ayudan a confirmarlo?`;
+  window.open(waLink(msg), '_blank', 'noopener');
+
+  cart = {}; saveCart(); renderCart(); toggleCart(false);
+  toast('Pedido enviado. Continúa la conversación en WhatsApp');
+}
+
+/* =========================================================
+   CRM · DATOS
+   ========================================================= */
+const STATUSES = {
+  nuevo:{ label:'Nuevo', cls:'st-nuevo' },
+  contactado:{ label:'Contactado', cls:'st-contactado' },
+  pagado:{ label:'Pagado', cls:'st-pagado' },
+  enviado:{ label:'Enviado', cls:'st-enviado' },
+  entregado:{ label:'Entregado', cls:'st-entregado' },
+  cancelado:{ label:'Cancelado', cls:'st-cancelado' }
+};
+const REVENUE = ['pagado', 'enviado', 'entregado'];   // estados que cuentan como venta
+
+let orders    = load(KEY_ORDERS, []);
+let customers = load(KEY_CUSTOMERS, []);
+let tab = 'dashboard', ordFilter = 'todos', ordQuery = '', cusQuery = '';
+
+const saveOrders    = () => save(KEY_ORDERS, orders);
+const saveCustomers = () => save(KEY_CUSTOMERS, customers);
+
+const uid    = p => p + Date.now().toString(36).toUpperCase() + Math.floor(Math.random() * 1296).toString(36).toUpperCase().padStart(2, '0');
+const safeId = s => String(s || '').replace(/[^A-Za-z0-9_-]/g, '');
+const normPhone = s => { const d = String(s || '').replace(/\D/g, ''); return d.length === 8 ? '504' + d : d; };
+const fmtDate = iso => {
+  const d = new Date(iso); if (isNaN(d)) return '—';
+  return d.toLocaleDateString('es-HN', { day:'2-digit', month:'short', year:'numeric' }) + ' · ' + d.toLocaleTimeString('es-HN', { hour:'2-digit', minute:'2-digit' });
+};
+
+function upsertCustomer({ name, phone, city }){
+  const np = normPhone(phone);
+  let c = np ? customers.find(x => normPhone(x.phone) === np)
+             : (name ? customers.find(x => !x.phone && x.name.toLowerCase() === name.toLowerCase()) : null);
+  if (!c) {
+    c = { id: uid('C'), name: name || 'Cliente sin nombre', phone: phone || '', city: city || '', notes: '', createdAt: new Date().toISOString() };
+    customers.push(c);
+  } else {
+    if (name && c.name === 'Cliente sin nombre') c.name = name;
+    if (city && !c.city) c.city = city;
+  }
+  saveCustomers(); return c;
+}
+
+function createOrder({ name, phone, city, items, status = 'nuevo', source = 'web', notes = '' }){
+  const c = upsertCustomer({ name, phone, city });
+  const o = {
+    id: uid('P'), createdAt: new Date().toISOString(),
+    customerId: c.id, customerName: c.name, phone: c.phone || phone || '',
+    items, total: items.reduce((s, i) => s + i.price * i.qty, 0),
+    status, notes, source
+  };
+  orders.unshift(o); saveOrders(); return o;
+}
+
+function normalizeOrder(o, c){
+  const items = (Array.isArray(o.items) ? o.items : []).map(i => ({ id:i.id, name:String(i.name || 'Producto'), price:Number(i.price) || 0, qty:Number(i.qty) || 1 }));
+  return {
+    id: safeId(o.id) || uid('P'), createdAt: o.createdAt || new Date().toISOString(),
+    customerId: c ? c.id : '', customerName: String(o.customerName || (c && c.name) || 'Cliente sin nombre'),
+    phone: String(o.phone || ''), items, total: Number(o.total) || items.reduce((s, i) => s + i.price * i.qty, 0),
+    status: STATUSES[o.status] ? o.status : 'nuevo', notes: String(o.notes || ''), source: o.source || 'web'
+  };
+}
+
+const customerOf = o => customers.find(c => c.id === o.customerId);
+const orderName  = o => (customerOf(o) || {}).name || o.customerName || 'Cliente sin nombre';
+const orderPhone = o => (customerOf(o) || {}).phone || o.phone || '';
+function custStats(c){
+  const os = orders.filter(o => o.customerId === c.id && o.status !== 'cancelado');
+  return { count: os.length, spent: os.filter(o => REVENUE.includes(o.status)).reduce((s, o) => s + o.total, 0) };
+}
+
+function sendWebhook(payload){
+  if (!WEBHOOK_URL) return;
+  try {
+    fetch(WEBHOOK_URL, { method:'POST', mode:'no-cors', headers:{ 'Content-Type':'text/plain;charset=utf-8' }, body: JSON.stringify(payload), keepalive:true }).catch(() => {});
+  } catch {}
+}
+
+async function syncOrders(silent){
+  if (!WEBHOOK_URL) { if (!silent) toast('Falta configurar WEBHOOK_URL en el código'); return; }
+  try {
+    const r = await fetch(WEBHOOK_URL, { cache:'no-store' });
+    const data = await r.json();
+    let added = 0, updated = 0;
+    (data.orders || []).forEach(raw => {
+      const id = safeId(raw.id); if (!id) return;
+      const ex = orders.find(x => x.id === id);
+      if (ex) {
+        const st = STATUSES[raw.status] ? raw.status : ex.status;
+        if (ex.status !== st || (ex.notes || '') !== String(raw.notes || '')) { ex.status = st; ex.notes = String(raw.notes || ''); updated++; }
+      } else {
+        const c = upsertCustomer({ name: raw.customerName, phone: String(raw.phone || '') });
+        orders.push(normalizeOrder(raw, c)); added++;
+      }
+    });
+    orders.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    saveOrders();
+    if ($('#admin-app').classList.contains('open')) renderAdmin();
+    if (!silent || added || updated) toast(`Sincronizado: ${added} nuevos, ${updated} actualizados`);
+  } catch {
+    if (!silent) toast('No se pudo sincronizar. Revisa la URL y que el acceso sea “Cualquier persona”');
+  }
+}
+
+function downloadCSV(name, rows){
+  const cell = v => { let s = String(v ?? ''); if (/^(=|@|[+-](?!\d))/.test(s)) s = "'" + s; return '"' + s.replace(/"/g, '""') + '"'; };
+  const blob = new Blob(['\ufeff' + rows.map(r => r.map(cell).join(',')).join('\r\n')], { type:'text/csv;charset=utf-8' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; a.click(); URL.revokeObjectURL(a.href);
+}
+
+/* =========================================================
+   ADMIN · ACCESO
    ========================================================= */
 function openAdmin(){
-  if (prompt('PIN de administrador:') !== ADMIN_PIN) { toast('PIN incorrecto'); return; }
-  renderAdmin(); const m = $('#admin-modal'); m.classList.remove('hidden'); m.classList.add('flex');
+  if (sessionStorage.getItem('zentra_admin') === '1') return showAdmin();
+  $('#pin-err').classList.add('hidden'); $('#pin-input').value = '';
+  $('#admin-login').classList.add('open'); setTimeout(() => $('#pin-input').focus(), 50);
 }
-function closeAdmin(){ const m = $('#admin-modal'); m.classList.add('hidden'); m.classList.remove('flex'); }
+$('#login-form').addEventListener('submit', e => {
+  e.preventDefault();
+  if ($('#pin-input').value === ADMIN_PIN) {
+    try { sessionStorage.setItem('zentra_admin', '1'); } catch {}
+    $('#admin-login').classList.remove('open'); showAdmin();
+  } else { $('#pin-err').classList.remove('hidden'); $('#pin-input').select(); }
+});
+function showAdmin(){
+  $('#admin-app').classList.add('open'); document.body.style.overflow = 'hidden';
+  renderAdmin(); if (WEBHOOK_URL) syncOrders(true);
+}
+function closeAdmin(){
+  $('#admin-app').classList.remove('open'); $('#admin-login').classList.remove('open'); closeModal();
+  document.body.style.overflow = '';
+}
+function logoutAdmin(){ try { sessionStorage.removeItem('zentra_admin'); } catch {} closeAdmin(); toast('Sesión cerrada'); }
 
-function refreshAll(){ saveProducts(); renderFilters(); renderProducts(); renderCart(); renderAdmin(); }
+function openModal(html){ $('#modal-box').innerHTML = html; $('#modal').classList.add('open'); }
+function closeModal(){ $('#modal').classList.remove('open'); }
+$('#modal').addEventListener('click', e => { if (e.target.id === 'modal') closeModal(); });
+
+/* =========================================================
+   ADMIN · NAVEGACIÓN
+   ========================================================= */
+const TABS = [['dashboard','fa-chart-line','Resumen'], ['pedidos','fa-receipt','Pedidos'], ['clientes','fa-users','Clientes'], ['productos','fa-box','Productos'], ['ajustes','fa-gear','Ajustes']];
+function setTab(t){ tab = t; renderAdmin(); $('#adm-main').scrollTop = 0; }
 
 function renderAdmin(){
-  $('#admin-list').innerHTML = products.map(p => `
-    <div class="flex flex-wrap items-center gap-3 p-3 border border-[color:var(--line)] rounded-xl">
-      <img src="${esc(p.image)}" alt="" class="w-12 h-12 rounded-lg object-cover bg-slate-100" onerror="this.onerror=null;this.src=PLACEHOLDER">
-      <div class="flex-1 min-w-[160px]"><p class="font-bold text-sm">${esc(p.name)}</p><p class="text-xs text-slate-500">${CATEGORIES[p.category] || 'Otros'}</p></div>
-      <label class="text-xs text-slate-500 flex items-center gap-1">L.
-        <input class="field !w-24 !py-1.5" type="number" min="0" step="any" value="${p.price}" onchange="updateProduct(${p.id},'price',this.value)"></label>
-      <label class="text-xs font-semibold flex items-center gap-2 cursor-pointer">
-        <input type="checkbox" ${p.outOfStock ? '' : 'checked'} onchange="updateProduct(${p.id},'outOfStock',!this.checked)"> Disponible</label>
-      <button class="text-red-600 hover:text-red-800 p-2" onclick="deleteProduct(${p.id})" aria-label="Eliminar ${esc(p.name)}"><i class="fa-solid fa-trash"></i></button>
-    </div>`).join('') || '<p class="text-sm text-slate-500">Aún no hay productos.</p>';
+  const nuevos = orders.filter(o => o.status === 'nuevo').length;
+  $('#adm-nav').innerHTML = TABS.map(([k, ic, l]) =>
+    `<button onclick="setTab('${k}')" aria-current="${tab === k}"><i class="fa-solid ${ic} w-5 text-center"></i>${l}` +
+    (k === 'pedidos' && nuevos ? `<span class="ml-auto bg-[color:var(--green)] text-white text-[11px] font-extrabold rounded-full px-2 py-0.5">${nuevos}</span>` : '') + `</button>`).join('');
+  const m = $('#adm-main');
+  ({ dashboard:viewDashboard, pedidos:viewOrders, clientes:viewCustomers, productos:viewProducts, ajustes:viewSettings })[tab](m);
 }
 
+const statusBadge = s => { const st = STATUSES[s] || STATUSES.nuevo; return `<span class="badge ${st.cls}">${st.label}</span>`; };
+function statusSelect(o){
+  return `<select class="field st-select ${(STATUSES[o.status] || {}).cls || ''}" onchange="setOrderStatus('${o.id}',this.value)" aria-label="Estado del pedido">` +
+    Object.entries(STATUSES).map(([k, v]) => `<option value="${k}" ${o.status === k ? 'selected' : ''}>${v.label}</option>`).join('') + `</select>`;
+}
+const itemsSummary = o => o.items.map(i => `${i.qty}× ${esc(i.name)}`).join(', ');
+
+/* =========================================================
+   ADMIN · RESUMEN
+   ========================================================= */
+function viewDashboard(m){
+  const live = orders.filter(o => o.status !== 'cancelado');
+  const paid = orders.filter(o => REVENUE.includes(o.status));
+  const revenue = paid.reduce((s, o) => s + o.total, 0);
+  const avg = paid.length ? revenue / paid.length : 0;
+
+  const days = [...Array(7)].map((_, i) => { const d = new Date(); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() - (6 - i)); return d; });
+  const perDay = days.map(d => {
+    const n = new Date(d); n.setDate(n.getDate() + 1);
+    const os = live.filter(o => { const t = new Date(o.createdAt); return t >= d && t < n; });
+    return { label: d.toLocaleDateString('es-HN', { weekday:'short' }), count: os.length };
+  });
+  const max = Math.max(1, ...perDay.map(d => d.count));
+
+  const tally = {}; live.forEach(o => o.items.forEach(i => { tally[i.name] = (tally[i.name] || 0) + i.qty; }));
+  const top = Object.entries(tally).sort((a, b) => b[1] - a[1]).slice(0, 5);
+  const topMax = top.length ? top[0][1] : 1;
+
+  m.innerHTML = `
+    <div class="flex flex-wrap items-center justify-between gap-3 mb-5">
+      <h2 class="text-3xl font-extrabold">Resumen</h2>
+      <button class="btn btn-green !py-2.5" onclick="openNewOrder()"><i class="fa-solid fa-plus"></i> Pedido manual</button>
+    </div>
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
+      <div class="kpi"><small>Ventas (pagado, enviado, entregado)</small><b>${money(revenue)}</b></div>
+      <div class="kpi"><small>Pedidos nuevos</small><b>${orders.filter(o => o.status === 'nuevo').length}</b></div>
+      <div class="kpi"><small>Ticket promedio</small><b>${money(avg)}</b></div>
+      <div class="kpi"><small>Clientes</small><b>${customers.length}</b></div>
+    </div>
+    <div class="panel mb-6">
+      <p class="font-bold mb-3">Embudo de pedidos</p>
+      <div class="flex flex-wrap gap-2">
+        ${Object.entries(STATUSES).map(([k, v]) => `<button class="badge ${v.cls}" style="font-size:.8rem;padding:.4rem .9rem" onclick="ordFilter='${k}';setTab('pedidos')">${v.label} · ${orders.filter(o => o.status === k).length}</button>`).join('')}
+      </div>
+    </div>
+    <div class="grid lg:grid-cols-2 gap-6 mb-6">
+      <div class="panel">
+        <p class="font-bold mb-4">Pedidos de los últimos 7 días</p>
+        <div class="flex items-end gap-2 h-44">
+          ${perDay.map(d => `<div class="flex-1 h-full flex flex-col justify-end items-center gap-1">
+            <span class="text-xs font-bold">${d.count || ''}</span>
+            <div class="w-full rounded-t-lg bg-[color:var(--green)]" style="height:${Math.max(3, d.count / max * 70)}%;opacity:${d.count ? 1 : .2}"></div>
+            <span class="text-[11px] text-[color:var(--muted)]">${esc(d.label)}</span></div>`).join('')}
+        </div>
+      </div>
+      <div class="panel">
+        <p class="font-bold mb-4">Productos más pedidos</p>
+        ${top.length ? top.map(([n, q]) => `<div class="mb-3"><div class="flex justify-between text-sm mb-1"><span class="truncate pr-3">${esc(n)}</span><b>${q}</b></div>
+          <div class="h-2 rounded-full bg-[color:var(--paper)]"><div class="h-2 rounded-full bg-[color:var(--green)]" style="width:${q / topMax * 100}%"></div></div></div>`).join('')
+          : '<p class="text-sm text-[color:var(--muted)]">Todavía no hay datos.</p>'}
+      </div>
+    </div>
+    <div class="flex items-center justify-between mb-3"><p class="font-bold">Últimos pedidos</p><button class="text-sm font-bold underline" onclick="setTab('pedidos')">Ver todos</button></div>
+    <div class="overflow-x-auto">${orders.length ? ordersTable(orders.slice(0, 5)) : emptyBox('Aún no hay pedidos. Aparecerán aquí cuando un cliente envíe el suyo, o registra uno manual con el botón de arriba.')}</div>`;
+}
+const emptyBox = t => `<div class="panel text-center text-sm text-[color:var(--muted)] py-10">${t}</div>`;
+
+/* =========================================================
+   ADMIN · PEDIDOS
+   ========================================================= */
+function ordersTable(list){
+  return `<table class="tbl"><thead><tr><th>Pedido</th><th>Cliente</th><th>Artículos</th><th>Total</th><th>Estado</th></tr></thead><tbody>` +
+    list.map(o => `<tr onclick="openOrder('${o.id}')">
+      <td><b>${esc(o.id)}</b><br><span class="text-xs text-[color:var(--muted)]">${fmtDate(o.createdAt)}</span></td>
+      <td>${esc(orderName(o))}<br><span class="text-xs text-[color:var(--muted)]">${esc(orderPhone(o))}</span></td>
+      <td><div class="max-w-[240px] truncate" title="${esc(o.items.map(i => i.qty + '× ' + i.name).join(', '))}">${itemsSummary(o)}</div></td>
+      <td class="font-bold whitespace-nowrap">${money(o.total)}</td>
+      <td onclick="event.stopPropagation()">${statusSelect(o)}</td></tr>`).join('') + `</tbody></table>`;
+}
+
+function viewOrders(m){
+  m.innerHTML = `
+    <div class="flex flex-wrap items-center justify-between gap-3 mb-5">
+      <h2 class="text-3xl font-extrabold">Pedidos</h2>
+      <div class="flex gap-2">
+        <button class="btn btn-ghost !py-2.5" onclick="exportOrdersCSV()"><i class="fa-solid fa-file-csv"></i> CSV</button>
+        <button class="btn btn-green !py-2.5" onclick="openNewOrder()"><i class="fa-solid fa-plus"></i> Pedido manual</button>
+      </div>
+    </div>
+    <div class="flex flex-wrap gap-2 mb-4">
+      <input class="field !w-full sm:!w-72" placeholder="Buscar por cliente, teléfono, código…" value="${esc(ordQuery)}" oninput="ordQuery=this.value;renderOrdList()" aria-label="Buscar pedidos">
+      <select class="field !w-auto" onchange="ordFilter=this.value;renderOrdList()" aria-label="Filtrar por estado">
+        <option value="todos">Todos los estados</option>
+        ${Object.entries(STATUSES).map(([k, v]) => `<option value="${k}" ${ordFilter === k ? 'selected' : ''}>${v.label}</option>`).join('')}
+      </select>
+    </div>
+    <div id="ord-list" class="overflow-x-auto"></div>`;
+  renderOrdList();
+}
+function renderOrdList(){
+  const el = $('#ord-list'); if (!el) return;
+  const q = ordQuery.trim().toLowerCase();
+  const list = orders.filter(o => (ordFilter === 'todos' || o.status === ordFilter) &&
+    (!q || [o.id, orderName(o), orderPhone(o), o.items.map(i => i.name).join(' ')].join(' ').toLowerCase().includes(q)));
+  el.innerHTML = list.length ? ordersTable(list) : emptyBox('No hay pedidos con esos filtros.');
+}
+
+function setOrderStatus(id, val){
+  const o = orders.find(x => x.id === id); if (!o || !STATUSES[val]) return;
+  o.status = val; saveOrders(); sendWebhook({ type:'update', order:o }); renderAdmin(); toast('Estado actualizado');
+}
+function setOrderNotes(id, val){
+  const o = orders.find(x => x.id === id); if (!o) return;
+  o.notes = val; saveOrders(); sendWebhook({ type:'update', order:o }); toast('Nota guardada');
+}
+function deleteOrder(id){
+  if (!confirm('¿Eliminar este pedido? Esta acción no se puede deshacer.')) return;
+  orders = orders.filter(o => o.id !== id); saveOrders(); closeModal(); renderAdmin(); toast('Pedido eliminado');
+}
+
+function customerMsg(o){
+  const first = orderName(o).split(' ')[0]; const hi = first && first !== 'Cliente' ? ' ' + first : '';
+  const by = {
+    nuevo:' Recibimos tu pedido y queremos confirmar los datos contigo.',
+    contactado:' ¿Pudiste revisar la información que te enviamos?',
+    pagado:' Confirmamos tu pago, ¡gracias! Estamos preparando tu envío.',
+    enviado:' Tu pedido ya va en camino.',
+    entregado:' ¿Todo llegó bien? Si te gustó, una reseña nos ayudaría muchísimo.',
+    cancelado:''
+  };
+  return `Hola${hi}, te escribimos de Zentra por tu pedido ${o.id}.` + (by[o.status] || '');
+}
+
+function openOrder(id){
+  const o = orders.find(x => x.id === id); if (!o) return;
+  const phone = orderPhone(o);
+  openModal(`
+    <div class="flex justify-between items-start gap-3 mb-4">
+      <div><h3 class="text-xl font-extrabold">Pedido ${esc(o.id)}</h3>
+        <p class="text-xs text-[color:var(--muted)]">${fmtDate(o.createdAt)} · ${o.source === 'manual' ? 'Registro manual' : 'Desde la tienda'}</p></div>
+      <button onclick="closeModal()" class="p-2 text-slate-500" aria-label="Cerrar"><i class="fa-solid fa-xmark text-lg"></i></button>
+    </div>
+    <div class="flex flex-wrap items-center gap-3 mb-4">${statusSelect(o)}
+      <button class="text-sm font-bold underline" onclick="openCustomer('${esc(o.customerId)}')">${esc(orderName(o))}</button>
+      <span class="text-sm text-[color:var(--muted)]">${esc(phone)}</span></div>
+    <div class="border border-[color:var(--line)] rounded-2xl divide-y divide-[color:var(--line)] mb-4">
+      ${o.items.map(i => `<div class="flex justify-between gap-3 p-3 text-sm"><span>${i.qty} × ${esc(i.name)}</span><b class="whitespace-nowrap">${money(i.price * i.qty)}</b></div>`).join('')}
+      <div class="flex justify-between p-3 font-extrabold"><span>Total</span><span>${money(o.total)}</span></div>
+    </div>
+    <label class="lbl" for="o-notes">Notas internas</label>
+    <textarea id="o-notes" class="field" rows="3" placeholder="Dirección, método de pago, observaciones…" onchange="setOrderNotes('${o.id}',this.value)">${esc(o.notes)}</textarea>
+    <div class="flex flex-wrap gap-2 mt-5">
+      ${phone ? `<a class="btn btn-green" target="_blank" rel="noopener" href="https://wa.me/${normPhone(phone)}?text=${encodeURIComponent(customerMsg(o))}"><i class="fa-brands fa-whatsapp text-lg"></i> Escribir al cliente</a>` : ''}
+      <button class="btn btn-ghost !text-red-700 !border-red-300 hover:!bg-red-700 hover:!text-white ml-auto" onclick="deleteOrder('${o.id}')"><i class="fa-solid fa-trash"></i> Eliminar</button>
+    </div>`);
+}
+
+function openNewOrder(cid){
+  const c = cid ? customers.find(x => x.id === cid) : null;
+  openModal(`
+    <div class="flex justify-between items-center mb-4"><h3 class="text-xl font-extrabold">Registrar pedido</h3>
+      <button onclick="closeModal()" class="p-2 text-slate-500" aria-label="Cerrar"><i class="fa-solid fa-xmark text-lg"></i></button></div>
+    <p class="text-sm text-[color:var(--muted)] mb-4">Úsalo para pedidos que llegaron por WhatsApp, llamada o en persona.</p>
+    <div class="grid sm:grid-cols-3 gap-3 mb-4">
+      <div><label class="lbl" for="no-name">Nombre</label><input id="no-name" class="field" value="${esc(c ? c.name : '')}"></div>
+      <div><label class="lbl" for="no-phone">Teléfono</label><input id="no-phone" class="field" inputmode="tel" value="${esc(c ? c.phone : '')}"></div>
+      <div><label class="lbl" for="no-city">Ciudad</label><input id="no-city" class="field" value="${esc(c ? c.city : '')}"></div>
+    </div>
+    <p class="lbl">Productos</p>
+    <div class="border border-[color:var(--line)] rounded-2xl divide-y divide-[color:var(--line)] mb-4">
+      ${products.map(p => `<div class="flex items-center gap-3 p-3"><span class="flex-1 text-sm">${esc(p.name)}<br><span class="text-xs text-[color:var(--muted)]">${money(p.price)}</span></span>
+        <input id="q-${p.id}" type="number" min="0" value="0" class="field !w-20 text-center" aria-label="Cantidad de ${esc(p.name)}"></div>`).join('')}
+    </div>
+    <div class="grid sm:grid-cols-2 gap-3">
+      <div><label class="lbl" for="no-status">Estado</label><select id="no-status" class="field">
+        ${Object.entries(STATUSES).map(([k, v]) => `<option value="${k}">${v.label}</option>`).join('')}</select></div>
+      <div><label class="lbl" for="no-notes">Notas</label><input id="no-notes" class="field"></div>
+    </div>
+    <div class="flex gap-2 mt-5"><button class="btn btn-green flex-1" onclick="saveNewOrder()">Guardar pedido</button><button class="btn btn-ghost" onclick="closeModal()">Cancelar</button></div>`);
+}
+function saveNewOrder(){
+  const name = $('#no-name').value.trim(), phone = $('#no-phone').value.trim(), city = $('#no-city').value.trim();
+  const items = products.map(p => ({ id:p.id, name:p.name, price:p.price, qty:Math.floor(Number($('#q-' + p.id).value)) || 0 })).filter(i => i.qty > 0);
+  if (!items.length) { toast('Agrega al menos un producto'); return; }
+  if (!name && !phone) { toast('Escribe el nombre o el teléfono'); return; }
+  const o = createOrder({ name, phone, city, items, status:$('#no-status').value, source:'manual', notes:$('#no-notes').value.trim() });
+  sendWebhook({ type:'order', order:o }); closeModal(); renderAdmin(); toast('Pedido registrado');
+}
+function exportOrdersCSV(){
+  downloadCSV('zentra-pedidos.csv', [['ID','Fecha','Cliente','Teléfono','Artículos','Total','Estado','Origen','Notas'],
+    ...orders.map(o => [o.id, o.createdAt, orderName(o), orderPhone(o), o.items.map(i => i.qty + 'x ' + i.name).join(' | '), o.total, STATUSES[o.status].label, o.source, o.notes])]);
+}
+
+/* =========================================================
+   ADMIN · CLIENTES
+   ========================================================= */
+function viewCustomers(m){
+  m.innerHTML = `
+    <div class="flex flex-wrap items-center justify-between gap-3 mb-5">
+      <h2 class="text-3xl font-extrabold">Clientes</h2>
+      <div class="flex gap-2">
+        <button class="btn btn-ghost !py-2.5" onclick="exportCustomersCSV()"><i class="fa-solid fa-file-csv"></i> CSV</button>
+        <button class="btn btn-green !py-2.5" onclick="openCustomer()"><i class="fa-solid fa-plus"></i> Cliente</button>
+      </div>
+    </div>
+    <input class="field !w-full sm:!w-72 mb-4" placeholder="Buscar por nombre, teléfono, ciudad…" value="${esc(cusQuery)}" oninput="cusQuery=this.value;renderCusList()" aria-label="Buscar clientes">
+    <div id="cus-list" class="overflow-x-auto"></div>`;
+  renderCusList();
+}
+function renderCusList(){
+  const el = $('#cus-list'); if (!el) return;
+  const q = cusQuery.trim().toLowerCase();
+  const list = customers.filter(c => !q || [c.name, c.phone, c.city, c.notes].join(' ').toLowerCase().includes(q))
+    .sort((a, b) => custStats(b).spent - custStats(a).spent || a.name.localeCompare(b.name));
+  el.innerHTML = list.length ? `<table class="tbl"><thead><tr><th>Cliente</th><th>Teléfono</th><th>Pedidos</th><th>Comprado</th><th></th></tr></thead><tbody>` +
+    list.map(c => { const s = custStats(c); return `<tr onclick="openCustomer('${c.id}')">
+      <td><b>${esc(c.name)}</b>${c.city ? `<br><span class="text-xs text-[color:var(--muted)]">${esc(c.city)}</span>` : ''}</td>
+      <td>${esc(c.phone)}</td><td>${s.count}</td><td class="font-bold whitespace-nowrap">${money(s.spent)}</td>
+      <td onclick="event.stopPropagation()">${c.phone ? `<a target="_blank" rel="noopener" href="https://wa.me/${normPhone(c.phone)}" class="text-emerald-700 text-xl" aria-label="WhatsApp de ${esc(c.name)}"><i class="fa-brands fa-whatsapp"></i></a>` : ''}</td></tr>`; }).join('') + `</tbody></table>`
+    : emptyBox('Aún no hay clientes. Se crean solos con cada pedido, o agrégalos manualmente.');
+}
+
+function openCustomer(id){
+  const c = id ? customers.find(x => x.id === id) : null;
+  if (id && !c) { toast('Este cliente ya no existe'); return; }
+  const hist = c ? orders.filter(o => o.customerId === c.id) : [];
+  openModal(`
+    <div class="flex justify-between items-center mb-4"><h3 class="text-xl font-extrabold">${c ? 'Cliente' : 'Nuevo cliente'}</h3>
+      <button onclick="closeModal()" class="p-2 text-slate-500" aria-label="Cerrar"><i class="fa-solid fa-xmark text-lg"></i></button></div>
+    <div class="grid sm:grid-cols-2 gap-3">
+      <div><label class="lbl" for="cu-name">Nombre</label><input id="cu-name" class="field" value="${esc(c ? c.name : '')}"></div>
+      <div><label class="lbl" for="cu-phone">Teléfono / WhatsApp</label><input id="cu-phone" class="field" inputmode="tel" value="${esc(c ? c.phone : '')}"></div>
+      <div class="sm:col-span-2"><label class="lbl" for="cu-city">Ciudad</label><input id="cu-city" class="field" value="${esc(c ? c.city : '')}"></div>
+      <div class="sm:col-span-2"><label class="lbl" for="cu-notes">Notas</label><textarea id="cu-notes" class="field" rows="3" placeholder="Preferencias, negocio, seguimiento…">${esc(c ? c.notes : '')}</textarea></div>
+    </div>
+    ${c ? `<p class="lbl mt-5">Historial (${hist.length})</p>
+      <div class="border border-[color:var(--line)] rounded-2xl divide-y divide-[color:var(--line)] max-h-48 overflow-auto">
+      ${hist.length ? hist.map(o => `<button class="w-full flex justify-between items-center gap-3 p-3 text-sm text-left hover:bg-[color:var(--paper)]" onclick="openOrder('${o.id}')">
+        <span><b>${esc(o.id)}</b> · ${fmtDate(o.createdAt)}</span><span class="flex items-center gap-2">${statusBadge(o.status)}<b>${money(o.total)}</b></span></button>`).join('')
+        : '<p class="p-3 text-sm text-[color:var(--muted)]">Sin pedidos todavía.</p>'}</div>` : ''}
+    <div class="flex flex-wrap gap-2 mt-5">
+      <button class="btn btn-green" onclick="saveCustomer('${c ? c.id : ''}')">Guardar</button>
+      ${c ? `<button class="btn btn-ghost" onclick="openNewOrder('${c.id}')"><i class="fa-solid fa-plus"></i> Nuevo pedido</button>` : ''}
+      ${c && c.phone ? `<a class="btn btn-ghost" target="_blank" rel="noopener" href="https://wa.me/${normPhone(c.phone)}"><i class="fa-brands fa-whatsapp text-lg"></i> WhatsApp</a>` : ''}
+      ${c ? `<button class="btn btn-ghost !text-red-700 !border-red-300 hover:!bg-red-700 hover:!text-white ml-auto" onclick="deleteCustomer('${c.id}')"><i class="fa-solid fa-trash"></i></button>` : ''}
+    </div>`);
+}
+function saveCustomer(id){
+  const name = $('#cu-name').value.trim();
+  if (!name) { toast('El nombre es obligatorio'); return; }
+  const data = { name, phone:$('#cu-phone').value.trim(), city:$('#cu-city').value.trim(), notes:$('#cu-notes').value.trim() };
+  if (id) { Object.assign(customers.find(x => x.id === id), data); }
+  else { customers.push({ id:uid('C'), createdAt:new Date().toISOString(), ...data }); }
+  saveCustomers(); closeModal(); renderAdmin(); toast('Cliente guardado');
+}
+function deleteCustomer(id){
+  if (!confirm('¿Eliminar este cliente? Sus pedidos se conservan.')) return;
+  customers = customers.filter(c => c.id !== id); saveCustomers(); closeModal(); renderAdmin(); toast('Cliente eliminado');
+}
+function exportCustomersCSV(){
+  downloadCSV('zentra-clientes.csv', [['Nombre','Teléfono','Ciudad','Pedidos','Comprado','Notas','Creado'],
+    ...customers.map(c => { const s = custStats(c); return [c.name, c.phone, c.city, s.count, s.spent, c.notes, c.createdAt]; })]);
+}
+
+/* =========================================================
+   ADMIN · PRODUCTOS
+   ========================================================= */
+function refreshAll(){ saveProducts(); renderFilters(); renderProducts(); renderCart(); if ($('#admin-app').classList.contains('open')) renderAdmin(); }
+
+function viewProducts(m){
+  m.innerHTML = `
+    <h2 class="text-3xl font-extrabold mb-5">Productos</h2>
+    <div class="space-y-2 mb-8">
+      ${products.map(p => `<div class="panel !p-3 flex flex-wrap items-center gap-3">
+        <img src="${esc(p.image)}" alt="" class="w-12 h-12 rounded-lg object-cover bg-slate-100" onerror="this.onerror=null;this.src=PLACEHOLDER">
+        <div class="flex-1 min-w-[180px]"><input class="field !py-1.5 font-bold" value="${esc(p.name)}" onchange="updateProduct(${p.id},'name',this.value)" aria-label="Nombre">
+          <span class="text-xs text-[color:var(--muted)]">${CATEGORIES[p.category] || 'Otros'}</span></div>
+        <label class="text-xs text-slate-500 flex items-center gap-1">L.<input class="field !w-24 !py-1.5" type="number" min="0" step="any" value="${p.price}" onchange="updateProduct(${p.id},'price',this.value)"></label>
+        <label class="text-xs font-semibold flex items-center gap-2 cursor-pointer"><input type="checkbox" ${p.outOfStock ? '' : 'checked'} onchange="updateProduct(${p.id},'outOfStock',!this.checked)"> Disponible</label>
+        <button class="text-red-600 hover:text-red-800 p-2" onclick="deleteProduct(${p.id})" aria-label="Eliminar ${esc(p.name)}"><i class="fa-solid fa-trash"></i></button>
+      </div>`).join('') || '<p class="text-sm text-slate-500">Aún no hay productos.</p>'}
+    </div>
+    <div class="panel">
+      <h3 class="font-bold mb-4">Agregar producto</h3>
+      <form onsubmit="addProduct(event)" class="space-y-3">
+        <div><label class="lbl" for="n-name">Nombre</label><input class="field" id="n-name" required placeholder="Ej: Tarjeta NFC Personalizada"></div>
+        <div class="grid sm:grid-cols-3 gap-3">
+          <div><label class="lbl" for="n-price">Precio (L.)</label><input class="field" id="n-price" type="number" min="0" step="any" required placeholder="499"></div>
+          <div><label class="lbl" for="n-old">Precio anterior (opcional)</label><input class="field" id="n-old" type="number" min="0" step="any" placeholder="998"></div>
+          <div><label class="lbl" for="n-cat">Categoría</label><select class="field" id="n-cat"><option value="nfc">Tarjetas NFC</option><option value="audio">Audio</option><option value="otros">Otros</option></select></div>
+        </div>
+        <div class="grid sm:grid-cols-2 gap-3">
+          <div><label class="lbl" for="n-img">Imagen (archivo o URL)</label><input class="field" id="n-img" required placeholder="producto.png"></div>
+          <div><label class="lbl" for="n-wsp">Mensaje base de WhatsApp</label><input class="field" id="n-wsp" placeholder="Hola, necesito información de..."></div>
+        </div>
+        <button class="btn btn-green w-full" type="submit">Agregar al catálogo</button>
+      </form>
+    </div>`;
+}
 function updateProduct(id, field, value){
   const p = products.find(x => x.id === id); if (!p) return;
-  p[field] = field === 'price' ? (Number(value) || 0) : value;
+  if (field === 'price') p[field] = Number(value) || 0;
+  else if (field === 'name') { p[field] = String(value).trim() || p.name; }
+  else p[field] = value;
   refreshAll(); toast('Cambio guardado');
 }
 function deleteProduct(id){
@@ -612,39 +1102,133 @@ function deleteProduct(id){
   if (!p || !confirm(`¿Eliminar "${p.name}" del catálogo?`)) return;
   products = products.filter(x => x.id !== id); delete cart[id]; saveCart(); refreshAll(); toast('Producto eliminado');
 }
-
-$('#add-form').addEventListener('submit', e => {
+function addProduct(e){
   e.preventDefault();
   const name = $('#n-name').value.trim();
   products.push(normalize({
-    id: Date.now(), name,
-    price: $('#n-price').value, oldPrice: $('#n-old').value || null,
+    id: Date.now(), name, price: $('#n-price').value, oldPrice: $('#n-old').value || null,
     category: $('#n-cat').value, image: $('#n-img').value.trim(),
     wspMessage: $('#n-wsp').value.trim() || `Hola, necesito información y adquirir ${name}.`
   }));
-  e.target.reset(); refreshAll(); toast('Producto agregado al catálogo');
-});
-
-function exportData(){
-  const blob = new Blob([JSON.stringify(products, null, 2)], { type:'application/json' });
-  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'zentra-catalogo.json'; a.click();
-  URL.revokeObjectURL(a.href);
+  refreshAll(); toast('Producto agregado al catálogo');
 }
-function importData(e){
+
+/* =========================================================
+   ADMIN · AJUSTES
+   ========================================================= */
+const APPS_SCRIPT = `const SHEET = 'Pedidos';
+
+function getSheet_() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  let sh = ss.getSheetByName(SHEET);
+  if (!sh) {
+    sh = ss.insertSheet(SHEET);
+    sh.appendRow(['id','fecha','cliente','telefono','items','total','estado','notas','origen']);
+  }
+  return sh;
+}
+
+function doPost(e) {
+  const data = JSON.parse(e.postData.contents);
+  const sh = getSheet_();
+  const o = data.order;
+  if (data.type === 'order') {
+    sh.appendRow([o.id, o.createdAt, o.customerName, o.phone, JSON.stringify(o.items), o.total, o.status, o.notes || '', o.source]);
+  }
+  if (data.type === 'update') {
+    const ids = sh.getRange('A:A').getValues().flat();
+    const i = ids.indexOf(o.id);
+    if (i > 0) sh.getRange(i + 1, 7, 1, 2).setValues([[o.status, o.notes || '']]);
+  }
+  return ContentService.createTextOutput('ok');
+}
+
+function doGet() {
+  const rows = getSheet_().getDataRange().getValues().slice(1);
+  const orders = rows.map(r => ({
+    id: r[0], createdAt: r[1], customerName: r[2], phone: String(r[3]),
+    items: JSON.parse(r[4] || '[]'), total: r[5], status: r[6], notes: r[7], source: r[8]
+  }));
+  return ContentService.createTextOutput(JSON.stringify({ orders }))
+    .setMimeType(ContentService.MimeType.JSON);
+}`;
+
+function viewSettings(m){
+  m.innerHTML = `
+    <h2 class="text-3xl font-extrabold mb-5">Ajustes</h2>
+    ${ADMIN_PIN === '1234' ? `<div class="panel !border-amber-300 !bg-amber-50 text-sm mb-4"><b>Estás usando el PIN por defecto (1234).</b> Cámbialo en la constante <code>ADMIN_PIN</code> al inicio del código.</div>` : ''}
+
+    <div class="panel mb-4">
+      <p class="font-bold mb-1">Conexión con Google Sheets</p>
+      <p class="text-sm text-[color:var(--muted)] mb-3">${WEBHOOK_URL
+        ? '<b class="text-[color:var(--green)]">Activa.</b> Cada pedido de la tienda se guarda en tu hoja y aquí lo puedes traer con “Sincronizar”.'
+        : '<b class="text-amber-700">No configurada.</b> Sin esto, los pedidos de tus clientes <b>no llegan a este panel</b> (se guardan solo en el navegador de cada persona). Puedes registrar pedidos a mano mientras tanto.'}</p>
+      <div class="flex flex-wrap gap-2">
+        <button class="btn btn-green !py-2.5" onclick="syncOrders(false)" ${WEBHOOK_URL ? '' : 'disabled'}><i class="fa-solid fa-rotate"></i> Sincronizar ahora</button>
+        <button class="btn btn-ghost !py-2.5" onclick="copyScript()"><i class="fa-regular fa-copy"></i> Copiar código de Apps Script</button>
+      </div>
+      <details class="mt-4 text-sm"><summary class="cursor-pointer font-bold">Cómo activarla (5 minutos)</summary>
+        <ol class="list-decimal pl-5 mt-3 space-y-1.5 text-[color:var(--muted)]">
+          <li>Crea una hoja de cálculo nueva en Google Sheets.</li>
+          <li>Ve a <b>Extensiones → Apps Script</b>, borra lo que haya y pega el código copiado.</li>
+          <li><b>Implementar → Nueva implementación → Aplicación web</b>. Ejecutar como: <b>Yo</b>. Quién tiene acceso: <b>Cualquier persona</b>.</li>
+          <li>Copia la URL que termina en <code>/exec</code> y pégala en la constante <code>WEBHOOK_URL</code> al inicio de este archivo.</li>
+        </ol>
+        <pre id="script-box" class="mt-3 p-3 rounded-xl bg-[color:var(--ink)] text-slate-200 text-xs overflow-auto max-h-64"></pre>
+      </details>
+    </div>
+
+    <div class="panel mb-4">
+      <p class="font-bold mb-1">Respaldo</p>
+      <p class="text-sm text-[color:var(--muted)] mb-3">Todo se guarda en este navegador. Exporta un respaldo para no perder tus datos o llevarlos a otro dispositivo.</p>
+      <div class="flex flex-wrap gap-2">
+        <button class="btn btn-ghost !py-2.5" onclick="exportAll()"><i class="fa-solid fa-download"></i> Exportar todo</button>
+        <label class="btn btn-ghost !py-2.5 cursor-pointer"><i class="fa-solid fa-upload"></i> Importar<input type="file" accept="application/json" class="hidden" onchange="importAll(event)"></label>
+      </div>
+    </div>
+
+    <div class="panel !border-red-200">
+      <p class="font-bold mb-3 text-red-700">Zona de peligro</p>
+      <div class="flex flex-wrap gap-2">
+        <button class="btn btn-ghost !py-2.5" onclick="resetCatalog()"><i class="fa-solid fa-rotate-left"></i> Restaurar catálogo original</button>
+        <button class="btn btn-ghost !py-2.5 !text-red-700 !border-red-300 hover:!bg-red-700 hover:!text-white" onclick="wipeCRM()"><i class="fa-solid fa-trash"></i> Borrar pedidos y clientes</button>
+      </div>
+    </div>`;
+  const box = $('#script-box'); if (box) box.textContent = APPS_SCRIPT;
+}
+function copyScript(){
+  (navigator.clipboard ? navigator.clipboard.writeText(APPS_SCRIPT) : Promise.reject())
+    .then(() => toast('Código copiado'))
+    .catch(() => { const d = $('details', $('#adm-main')); if (d) d.open = true; toast('Selecciona y copia el código de abajo'); });
+}
+function exportAll(){
+  const blob = new Blob([JSON.stringify({ version:1, products, orders, customers }, null, 2)], { type:'application/json' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'zentra-respaldo.json'; a.click(); URL.revokeObjectURL(a.href);
+}
+function importAll(e){
   const file = e.target.files[0]; if (!file) return;
   const reader = new FileReader();
   reader.onload = () => {
     try {
       const data = JSON.parse(reader.result);
-      if (!Array.isArray(data)) throw new Error();
-      products = data.map(normalize); cart = {}; saveCart(); refreshAll(); toast('Catálogo importado');
-    } catch { toast('El archivo no es un catálogo válido'); }
+      if (Array.isArray(data)) { products = data.map(normalize); }
+      else {
+        if (Array.isArray(data.products))  products  = data.products.map(normalize);
+        if (Array.isArray(data.customers)) customers = data.customers.map(c => ({ id:safeId(c.id) || uid('C'), name:String(c.name || 'Cliente sin nombre'), phone:String(c.phone || ''), city:String(c.city || ''), notes:String(c.notes || ''), createdAt:c.createdAt || new Date().toISOString() }));
+        if (Array.isArray(data.orders))    orders    = data.orders.map(o => normalizeOrder(o, customers.find(c => c.id === safeId(o.customerId))));
+      }
+      cart = {}; saveCart(); saveCustomers(); saveOrders(); refreshAll(); toast('Respaldo importado');
+    } catch { toast('El archivo no es un respaldo válido'); }
   };
   reader.readAsText(file); e.target.value = '';
 }
-function resetData(){
+function resetCatalog(){
   if (!confirm('Esto reemplaza tu catálogo actual por el original. ¿Continuar?')) return;
   products = DEFAULTS.map(normalize); cart = {}; saveCart(); refreshAll(); toast('Catálogo restaurado');
+}
+function wipeCRM(){
+  if (!confirm('Se borrarán TODOS los pedidos y clientes de este navegador. ¿Continuar?')) return;
+  orders = []; customers = []; saveOrders(); saveCustomers(); renderAdmin(); toast('CRM vaciado');
 }
 
 /* =========================================================
