@@ -1,306 +1,659 @@
 <!DOCTYPE html>
 <html lang="es" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zentra — Catálogo y Soluciones NFC</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            dark: '#222222',
-                            blue: '#333333',
-                            sky: '#555555',
-                            light: '#F8F9FA',
-                            accent: '#222222',
-                            corporateGreen: '#0f5132',
-                            corporateGreenHover: '#0b3c25'
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts: Plus Jakarta Sans -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zentra — Tarjetas NFC y accesorios con envío gratis en Honduras</title>
+<meta name="description" content="Tarjetas NFC para conseguir reseñas de Google y seguidores de Instagram con un solo toque. Envío gratis a todo Honduras.">
+<meta name="theme-color" content="#0f5132">
+<meta property="og:title" content="Zentra — Tarjetas NFC y accesorios">
+<meta property="og:description" content="Reseñas de Google y seguidores de Instagram con un solo toque. Envío gratis a todo Honduras.">
+<meta property="og:type" content="website">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --ink:#15181a;
+    --paper:#f3f4f1;
+    --white:#ffffff;
+    --green:#0f5132;
+    --green-d:#0b3c25;
+    --mint:#d9ece1;
+    --line:#dfe2db;
+    --muted:#5b625d;
+    --radius-lg:28px;
+    --radius-md:16px;
+    --radius-sm:10px;
+  }
+  *{ -webkit-tap-highlight-color:transparent; }
+  body{ font-family:'Plus Jakarta Sans',system-ui,sans-serif; background:var(--paper); color:var(--ink); }
+  h1,h2,h3.display{ font-family:'Bricolage Grotesque','Plus Jakarta Sans',sans-serif; letter-spacing:-.025em; }
+  :focus-visible{ outline:3px solid var(--green); outline-offset:3px; border-radius:8px; }
+  ::selection{ background:var(--green); color:#fff; }
+
+  /* ---------- Botones ---------- */
+  .btn{ display:inline-flex; align-items:center; justify-content:center; gap:.5rem; font-weight:800; font-size:.9rem;
+        padding:.9rem 1.4rem; border-radius:14px; transition:transform .15s, background .2s, box-shadow .2s; cursor:pointer; border:0; }
+  .btn:active{ transform:scale(.97); }
+  .btn-green{ background:var(--green); color:#fff; box-shadow:0 8px 20px -8px rgba(15,81,50,.6); }
+  .btn-green:hover{ background:var(--green-d); }
+  .btn-ghost{ background:transparent; color:var(--ink); border:1.5px solid var(--ink); }
+  .btn-ghost:hover{ background:var(--ink); color:#fff; }
+  .btn[disabled]{ background:#e6e8e3; color:#8b918c; box-shadow:none; cursor:not-allowed; }
+
+  /* ---------- Hero: demo del toque NFC ---------- */
+  .demo{ position:relative; width:100%; max-width:440px; aspect-ratio:1/1.05; margin-inline:auto; }
+  .demo::before{ content:""; position:absolute; inset:6% 4% 2% 4%; background:var(--mint); border-radius:48% 52% 45% 55% / 55% 45% 55% 45%; }
+  .phone{ position:absolute; left:50%; top:4%; transform:translateX(-50%) rotate(4deg); width:52%; aspect-ratio:9/18.5;
+          background:var(--ink); border-radius:34px; padding:9px; box-shadow:0 30px 50px -20px rgba(0,0,0,.45); }
+  .screen{ position:relative; width:100%; height:100%; background:#fff; border-radius:26px; overflow:hidden; }
+  .screen-idle{ position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:.5rem;
+                color:#98a09a; font-size:.72rem; font-weight:600; text-align:center; padding:1rem; }
+  .screen-idle i{ font-size:1.6rem; color:#c3c9c4; }
+  .sheet{ position:absolute; left:0; right:0; bottom:0; height:78%; background:#fff; border-radius:22px 22px 0 0;
+          box-shadow:0 -10px 30px rgba(0,0,0,.14); padding:1.1rem .9rem; display:flex; flex-direction:column; align-items:center; gap:.55rem;
+          transform:translateY(105%); animation:sheet 7s ease-in-out infinite; }
+  .sheet .who{ width:44px; height:44px; border-radius:50%; background:var(--green); color:#fff; display:grid; place-items:center; font-weight:800; }
+  .sheet .name{ font-weight:800; font-size:.8rem; }
+  .sheet .sub{ font-size:.66rem; color:var(--muted); }
+  .stars{ display:flex; gap:.2rem; font-size:1.15rem; color:#d6dad6; }
+  .stars i{ animation:star 7s linear infinite; }
+  .stars i:nth-child(2){ animation-delay:.12s } .stars i:nth-child(3){ animation-delay:.24s }
+  .stars i:nth-child(4){ animation-delay:.36s } .stars i:nth-child(5){ animation-delay:.48s }
+  .fake-btn{ margin-top:auto; width:100%; text-align:center; font-size:.72rem; font-weight:800; padding:.6rem; border-radius:10px; color:#fff; background:#1a73e8; }
+  .demo[data-mode="google"] .only-ig{ display:none; }
+  .demo[data-mode="instagram"] .only-google{ display:none; }
+  .demo[data-mode="instagram"] .who{ background:linear-gradient(45deg,#f9a03f,#e1306c,#833ab4); }
+  .demo[data-mode="instagram"] .fake-btn{ background:#0095f6; animation:follow 7s ease-in-out infinite; }
+  .fake-btn .after{ display:none; }
+
+  .nfc-card{ position:absolute; left:6%; bottom:14%; width:52%; aspect-ratio:1.586; border-radius:16px; background:linear-gradient(135deg,#1f2426,#0d0f10);
+             color:#fff; padding:.8rem .9rem; display:flex; flex-direction:column; justify-content:space-between;
+             box-shadow:0 20px 35px -12px rgba(0,0,0,.55); transform:translate(-30px,30px) rotate(-10deg); opacity:0; animation:tap 7s ease-in-out infinite; z-index:3; }
+  .nfc-card b{ font-family:'Bricolage Grotesque',sans-serif; font-size:1.1rem; letter-spacing:-.02em; }
+  .nfc-card small{ font-size:.55rem; opacity:.65; }
+  .nfc-card i{ align-self:flex-end; transform:rotate(90deg); opacity:.85; }
+  .ripple{ position:absolute; left:50%; top:38%; width:60px; height:60px; margin:-30px 0 0 -30px; border-radius:50%; border:3px solid var(--green);
+           opacity:0; z-index:2; animation:ripple 7s ease-out infinite; }
+
+  @keyframes tap{
+    0%{ opacity:0; transform:translate(-40px,40px) rotate(-14deg); }
+    10%{ opacity:1; }
+    30%,62%{ opacity:1; transform:translate(58%,-52%) rotate(-4deg); }
+    78%,100%{ opacity:0; transform:translate(-40px,40px) rotate(-14deg); }
+  }
+  @keyframes ripple{ 0%,30%{ opacity:0; transform:scale(.3); } 33%{ opacity:.6; } 50%,100%{ opacity:0; transform:scale(3.6); } }
+  @keyframes sheet{ 0%,44%{ transform:translateY(105%); } 54%,88%{ transform:translateY(0); } 96%,100%{ transform:translateY(105%); } }
+  @keyframes star{ 0%,58%{ color:#d6dad6; } 62%,100%{ color:#fbbc04; } 96%{ color:#fbbc04; } }
+  @keyframes follow{ 0%,66%{ background:#0095f6; color:#fff; } 70%,100%{ background:#e6e8e3; color:var(--ink); } }
+
+  .seg{ display:inline-flex; background:#fff; border:1px solid var(--line); border-radius:999px; padding:4px; gap:2px; }
+  .seg button{ padding:.5rem 1rem; border-radius:999px; font-size:.8rem; font-weight:700; color:var(--muted); transition:.2s; }
+  .seg button[aria-pressed="true"]{ background:var(--ink); color:#fff; }
+
+  /* ---------- Producto ---------- */
+  .card{ background:#fff; border:1px solid var(--line); border-radius:var(--radius-lg); padding:1rem; display:flex; flex-direction:column; transition:box-shadow .25s, transform .25s; }
+  .card:hover{ box-shadow:0 24px 40px -24px rgba(21,24,26,.35); transform:translateY(-3px); }
+  .card-media{ position:relative; aspect-ratio:1/1; border-radius:20px; overflow:hidden; background:#eceee9; }
+  .card-media img{ width:100%; height:100%; object-fit:cover; transition:transform .5s; }
+  .card:hover .card-media img{ transform:scale(1.04); }
+  .chip{ position:absolute; top:.75rem; left:.75rem; z-index:2; background:var(--green); color:#fff; font-weight:800; font-size:.72rem; padding:.35rem .75rem; border-radius:999px; display:flex; gap:.4rem; align-items:center; }
+  .chip.save{ left:auto; right:.75rem; background:var(--ink); }
+  .filter{ padding:.55rem 1.1rem; border-radius:999px; border:1px solid var(--line); background:#fff; font-weight:700; font-size:.85rem; color:var(--muted); transition:.2s; }
+  .filter:hover{ border-color:var(--ink); color:var(--ink); }
+  .filter[aria-pressed="true"]{ background:var(--ink); border-color:var(--ink); color:#fff; }
+  .soldout .card-media img{ filter:grayscale(.6); opacity:.7; }
+
+  /* ---------- Carrito ---------- */
+  #overlay{ position:fixed; inset:0; background:rgba(21,24,26,.55); backdrop-filter:blur(3px); opacity:0; pointer-events:none; transition:opacity .25s; z-index:60; }
+  #overlay.open{ opacity:1; pointer-events:auto; }
+  #cart{ position:fixed; top:0; right:0; height:100%; width:min(100%,430px); background:#fff; z-index:70; transform:translateX(100%); transition:transform .3s cubic-bezier(.2,.8,.2,1);
+         display:flex; flex-direction:column; box-shadow:-20px 0 50px rgba(0,0,0,.2); }
+  #cart.open{ transform:none; }
+  .qty{ display:inline-flex; align-items:center; border:1px solid var(--line); border-radius:10px; overflow:hidden; }
+  .qty button{ width:32px; height:32px; font-weight:800; }
+  .qty button:hover{ background:var(--paper); }
+  .qty span{ min-width:28px; text-align:center; font-weight:700; font-size:.85rem; }
+
+  /* ---------- FAQ ---------- */
+  details.faq{ border-bottom:1px solid var(--line); }
+  details.faq summary{ list-style:none; cursor:pointer; display:flex; justify-content:space-between; align-items:center; gap:1rem; padding:1.15rem 0; font-weight:700; }
+  details.faq summary::-webkit-details-marker{ display:none; }
+  details.faq summary i{ transition:transform .25s; color:var(--muted); }
+  details.faq[open] summary i{ transform:rotate(45deg); }
+  details.faq p{ padding:0 0 1.2rem; color:var(--muted); line-height:1.65; max-width:62ch; }
+
+  /* ---------- Toast ---------- */
+  #toast{ position:fixed; left:50%; bottom:1.5rem; transform:translate(-50%,120%); background:var(--ink); color:#fff; padding:.8rem 1.2rem; border-radius:14px;
+          font-weight:600; font-size:.85rem; z-index:100; transition:transform .3s; display:flex; gap:.6rem; align-items:center; }
+  #toast.show{ transform:translate(-50%,0); }
+
+  /* ---------- Admin ---------- */
+  .field{ width:100%; padding:.6rem .8rem; border:1px solid var(--line); border-radius:var(--radius-sm); font-size:.875rem; background:#fff; }
+  .field:focus{ outline:none; border-color:var(--green); box-shadow:0 0 0 3px rgba(15,81,50,.15); }
+
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{ animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; scroll-behavior:auto !important; }
+    .sheet{ transform:none; } .nfc-card{ opacity:1; transform:translate(58%,-52%) rotate(-4deg); } .stars i{ color:#fbbc04; }
+  }
+</style>
 </head>
-<body class="bg-brand-light text-slate-800 antialiased selection:bg-brand-dark selection:text-white">
 
-    <!-- Top Announcement Bar -->
-    <div class="bg-black text-white text-xs sm:text-sm py-2.5 px-4 text-center font-medium">
-        📦 Envíos Gratis a Todo Honduras 📦
+<body class="antialiased">
+
+<!-- Anuncio -->
+<div class="bg-[color:var(--ink)] text-white text-xs sm:text-sm py-2.5 px-4 text-center font-semibold">
+  <i class="fa-solid fa-truck-fast text-emerald-300 mr-1.5"></i> Envío gratis a todo Honduras en todos los productos
+</div>
+
+<!-- Header -->
+<header class="sticky top-0 z-40 bg-[color:var(--paper)]/90 backdrop-blur-md border-b border-[color:var(--line)]">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-[72px] grid grid-cols-[1fr_auto_1fr] items-center">
+    <nav class="hidden md:flex items-center gap-7 text-sm font-semibold text-[color:var(--muted)]" aria-label="Principal">
+      <a href="#productos" class="hover:text-[color:var(--ink)] transition">Catálogo</a>
+      <a href="#como-funciona" class="hover:text-[color:var(--ink)] transition">Cómo funciona</a>
+      <a href="#preguntas" class="hover:text-[color:var(--ink)] transition">Preguntas</a>
+      <a href="#contacto" class="hover:text-[color:var(--ink)] transition">Contacto</a>
+    </nav>
+    <button class="md:hidden justify-self-start p-2.5 rounded-xl bg-white border border-[color:var(--line)]" onclick="toggleMenu(true)" aria-label="Abrir menú"><i class="fa-solid fa-bars"></i></button>
+
+    <a href="#" aria-label="Zentra, inicio"><img src="zentradiagonal.png" alt="Zentra" class="h-9 w-auto object-contain"></a>
+
+    <div class="justify-self-end">
+      <button id="cart-btn" class="relative btn btn-ghost !py-2.5 !px-4" onclick="toggleCart(true)" aria-label="Abrir pedido">
+        <i class="fa-solid fa-bag-shopping"></i><span class="hidden sm:inline">Mi pedido</span>
+        <span id="cart-count" class="hidden absolute -top-2 -right-2 min-w-[22px] h-[22px] px-1 rounded-full bg-[color:var(--green)] text-white text-xs font-extrabold grid place-items-center">0</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Menú móvil -->
+<div id="mobile-menu" class="fixed inset-0 z-[80] hidden">
+  <div class="absolute inset-0 bg-black/50" onclick="toggleMenu(false)"></div>
+  <div class="relative bg-white w-4/5 max-w-xs h-full p-6 flex flex-col shadow-2xl">
+    <div class="flex items-center justify-between pb-4 mb-4 border-b">
+      <img src="zentradiagonal.png" alt="Zentra" class="h-8">
+      <button onclick="toggleMenu(false)" class="p-2 text-slate-500" aria-label="Cerrar menú"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <nav class="flex flex-col gap-1 font-semibold">
+      <a onclick="toggleMenu(false)" href="#productos" class="p-3 rounded-xl hover:bg-slate-100"><i class="fa-solid fa-store w-6"></i> Catálogo</a>
+      <a onclick="toggleMenu(false)" href="#como-funciona" class="p-3 rounded-xl hover:bg-slate-100"><i class="fa-solid fa-wifi w-6"></i> Cómo funciona</a>
+      <a onclick="toggleMenu(false)" href="#preguntas" class="p-3 rounded-xl hover:bg-slate-100"><i class="fa-solid fa-circle-question w-6"></i> Preguntas</a>
+      <a onclick="toggleMenu(false)" href="#contacto" class="p-3 rounded-xl hover:bg-slate-100"><i class="fa-solid fa-headset w-6"></i> Contacto</a>
+    </nav>
+  </div>
+</div>
+
+<main>
+<!-- HERO -->
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-14 lg:pt-16 lg:pb-24 grid lg:grid-cols-2 gap-10 lg:gap-6 items-center">
+  <div>
+    <h1 class="text-5xl sm:text-6xl lg:text-7xl font-extrabold leading-[.98]">Tus clientes te dejan su reseña con un toque.</h1>
+    <p class="mt-6 text-lg text-[color:var(--muted)] max-w-[46ch] leading-relaxed">
+      Tarjetas NFC que abren tu perfil de Google o Instagram al acercar el celular. Sin apps, sin buscar tu negocio, sin escribir nada.
+    </p>
+    <div class="mt-8 flex flex-wrap gap-3">
+      <a href="#productos" class="btn btn-green"><i class="fa-solid fa-credit-card"></i> Ver tarjetas</a>
+      <a href="#como-funciona" class="btn btn-ghost">Cómo funciona</a>
+    </div>
+    <ul class="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm font-semibold text-[color:var(--muted)]">
+      <li><i class="fa-solid fa-circle-check text-[color:var(--green)] mr-1.5"></i>Envío gratis en todo el país</li>
+      <li><i class="fa-solid fa-circle-check text-[color:var(--green)] mr-1.5"></i>Compras por WhatsApp</li>
+      <li><i class="fa-solid fa-circle-check text-[color:var(--green)] mr-1.5"></i>Funciona sin app</li>
+    </ul>
+  </div>
+
+  <div>
+    <div id="demo" class="demo" data-mode="google" aria-label="Demostración: al acercar la tarjeta al celular se abre una pantalla de reseña" role="img">
+      <div class="phone"><div class="screen">
+        <div class="screen-idle"><i class="fa-solid fa-mobile-screen"></i>Acerca la tarjeta</div>
+        <div class="sheet">
+          <div class="who">Z</div>
+          <div class="name">Tu negocio</div>
+          <div class="sub only-google">¿Cómo fue tu experiencia?</div>
+          <div class="sub only-ig">@tunegocio</div>
+          <div class="stars only-google"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+          <div class="fake-btn"><span class="only-google">Escribir reseña</span><span class="only-ig">Seguir</span></div>
+        </div>
+      </div></div>
+      <div class="ripple"></div>
+      <div class="nfc-card"><b>zentra</b><i class="fa-solid fa-wifi"></i><small>Acércalo al celular</small></div>
+    </div>
+    <div class="mt-6 flex justify-center">
+      <div class="seg" role="group" aria-label="Elige la demostración">
+        <button type="button" aria-pressed="true" data-mode="google"><i class="fa-brands fa-google mr-1.5"></i>Google</button>
+        <button type="button" aria-pressed="false" data-mode="instagram"><i class="fa-brands fa-instagram mr-1.5"></i>Instagram</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTOS -->
+<section id="productos" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 lg:py-20 scroll-mt-20">
+  <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+    <div>
+      <h2 class="text-4xl sm:text-5xl font-extrabold">Más vendidos</h2>
+      <p class="text-[color:var(--muted)] mt-3 text-lg max-w-[50ch]">Agrega lo que quieras al pedido y lo confirmamos por WhatsApp. Envío gratis en todo Honduras.</p>
+    </div>
+    <div class="flex flex-wrap gap-2" id="filters" role="group" aria-label="Filtrar productos"></div>
+  </div>
+  <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"></div>
+  <p id="empty" class="hidden text-center text-[color:var(--muted)] py-16">No hay productos en esta categoría todavía.</p>
+</section>
+
+<!-- CÓMO FUNCIONA -->
+<section id="como-funciona" class="bg-[color:var(--ink)] text-white scroll-mt-20">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
+    <h2 class="text-4xl sm:text-5xl font-extrabold max-w-[18ch] leading-tight">De tu pedido a tu primera reseña, en tres pasos</h2>
+    <ol class="mt-12 grid md:grid-cols-3 gap-6">
+      <li class="border border-white/15 rounded-[24px] p-7">
+        <div class="font-display text-5xl font-extrabold text-emerald-300" style="font-family:'Bricolage Grotesque'">1</div>
+        <h3 class="mt-4 text-xl font-bold">Eliges tu tarjeta</h3>
+        <p class="mt-2 text-slate-300 leading-relaxed">Google para reseñas, Instagram para seguidores, o el combo doble para las dos.</p>
+      </li>
+      <li class="border border-white/15 rounded-[24px] p-7">
+        <div class="font-display text-5xl font-extrabold text-emerald-300" style="font-family:'Bricolage Grotesque'">2</div>
+        <h3 class="mt-4 text-xl font-bold">Nos envías tu enlace</h3>
+        <p class="mt-2 text-slate-300 leading-relaxed">Por WhatsApp nos pasas el enlace de tu negocio en Google o tu usuario de Instagram y coordinamos el envío.</p>
+      </li>
+      <li class="border border-white/15 rounded-[24px] p-7">
+        <div class="font-display text-5xl font-extrabold text-emerald-300" style="font-family:'Bricolage Grotesque'">3</div>
+        <h3 class="mt-4 text-xl font-bold">Tu cliente acerca el celular</h3>
+        <p class="mt-2 text-slate-300 leading-relaxed">Se abre tu perfil al instante. Deja la reseña o te sigue sin buscarte ni escribir tu nombre.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="preguntas" class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24 scroll-mt-20">
+  <h2 class="text-4xl sm:text-5xl font-extrabold mb-8">Preguntas frecuentes</h2>
+  <details class="faq"><summary>¿Necesito una app para usar la tarjeta?<i class="fa-solid fa-plus"></i></summary>
+    <p>No. Tus clientes solo acercan la parte trasera del celular a la tarjeta y se abre el enlace en el navegador. Funciona con la mayoría de celulares recientes que tienen NFC.</p></details>
+  <details class="faq"><summary>¿Cómo compro?<i class="fa-solid fa-plus"></i></summary>
+    <p>Agrega los productos a tu pedido y presiona “Pedir por WhatsApp”. Se abre una conversación con el detalle ya escrito y desde ahí confirmamos todo contigo.</p></details>
+  <details class="faq"><summary>¿Cuánto cuesta el envío?<i class="fa-solid fa-plus"></i></summary>
+    <p>Nada. El envío es gratis a todo Honduras en todos los productos.</p></details>
+  <details class="faq"><summary>¿Cómo pago?<i class="fa-solid fa-plus"></i></summary>
+    <p>Coordinamos el pago directamente contigo por WhatsApp al confirmar tu pedido.</p></details>
+  <details class="faq"><summary>¿Qué datos necesitan para preparar mi tarjeta?<i class="fa-solid fa-plus"></i></summary>
+    <p>El enlace de tu negocio en Google (para reseñas) o tu usuario de Instagram. Te lo pedimos por WhatsApp cuando confirmes el pedido.</p></details>
+</section>
+</main>
+
+<!-- Footer -->
+<footer id="contacto" class="bg-[color:var(--ink)] text-slate-300 pt-16 pb-10 scroll-mt-20">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-3 gap-10 pb-10 border-b border-white/10">
+    <div class="space-y-4">
+      <img src="zentradiagonal.png" alt="Zentra" class="h-8 w-auto brightness-0 invert">
+      <p class="text-sm text-slate-400 leading-relaxed max-w-[38ch]">Soluciones tecnológicas y accesorios de calidad con envío gratis a todo Honduras.</p>
+    </div>
+    <div>
+      <p class="font-bold text-white mb-4 text-sm">Navegación</p>
+      <ul class="space-y-2.5 text-sm">
+        <li><a class="hover:text-white" href="#productos">Catálogo</a></li>
+        <li><a class="hover:text-white" href="#como-funciona">Cómo funciona</a></li>
+        <li><a class="hover:text-white" href="#preguntas">Preguntas frecuentes</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="font-bold text-white mb-4 text-sm">¿Dudas? Escríbenos</p>
+      <a id="footer-wsp" target="_blank" rel="noopener" class="btn btn-green"><i class="fa-brands fa-whatsapp text-lg"></i> Hablar por WhatsApp</a>
+    </div>
+  </div>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 flex flex-wrap items-center justify-between gap-3 text-xs text-slate-500">
+    <p>© 2026 Zentra — Honduras. Todos los derechos reservados.</p>
+    <button onclick="openAdmin()" class="hover:text-slate-300"><i class="fa-solid fa-lock mr-1"></i>Admin</button>
+  </div>
+</footer>
+
+<!-- Botón flotante de WhatsApp -->
+<a id="float-wsp" target="_blank" rel="noopener" aria-label="Escribir por WhatsApp"
+   class="fixed bottom-5 right-5 z-30 w-14 h-14 rounded-full bg-[#25D366] text-white grid place-items-center text-3xl shadow-2xl hover:scale-105 transition">
+  <i class="fa-brands fa-whatsapp"></i>
+</a>
+
+<!-- Carrito -->
+<div id="overlay" onclick="closeAll()"></div>
+<aside id="cart" aria-label="Mi pedido" aria-hidden="true">
+  <div class="flex items-center justify-between p-5 border-b">
+    <h2 class="text-xl font-extrabold">Mi pedido</h2>
+    <button onclick="toggleCart(false)" class="p-2 text-slate-500 hover:text-slate-900" aria-label="Cerrar pedido"><i class="fa-solid fa-xmark text-lg"></i></button>
+  </div>
+  <div id="cart-items" class="flex-1 overflow-y-auto p-5 space-y-4"></div>
+  <div class="p-5 border-t bg-[color:var(--paper)]">
+    <div class="flex justify-between text-sm text-[color:var(--muted)]"><span>Envío</span><span class="font-bold text-[color:var(--green)]">Gratis</span></div>
+    <div class="flex justify-between items-baseline mt-2 mb-4"><span class="font-bold">Total</span><span id="cart-total" class="text-2xl font-extrabold">L. 0.00</span></div>
+    <button id="checkout" class="btn btn-green w-full" onclick="checkout()"><i class="fa-brands fa-whatsapp text-lg"></i> Pedir por WhatsApp</button>
+    <button id="clear-cart" class="w-full mt-2 text-xs text-[color:var(--muted)] hover:text-slate-900 py-2" onclick="clearCart()">Vaciar pedido</button>
+  </div>
+</aside>
+
+<!-- Admin -->
+<div id="admin-modal" class="fixed inset-0 z-[90] hidden items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+  <div class="bg-white rounded-3xl max-w-3xl w-full p-6 sm:p-8 shadow-2xl overflow-y-auto max-h-[92vh]">
+    <div class="flex justify-between items-center mb-6 pb-4 border-b">
+      <h3 class="text-xl font-extrabold"><i class="fa-solid fa-shield-halved mr-2"></i>Administrar productos</h3>
+      <button onclick="closeAdmin()" class="p-2 text-slate-500" aria-label="Cerrar"><i class="fa-solid fa-xmark text-lg"></i></button>
     </div>
 
-    <!-- Header / Navbar -->
-    <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 grid grid-cols-3 items-center">
-            
-            <!-- Menú de Escritorio -->
-            <nav class="hidden md:flex items-center gap-6 font-medium text-slate-600 text-sm">
-                <a href="#productos" class="text-brand-dark font-bold transition">Catálogo</a>
-                <a href="#como-funciona" class="hover:text-brand-dark transition">Cómo funciona</a>
-                <a href="#opiniones" class="hover:text-brand-dark transition">Opiniones</a>
-                <a href="#contacto" class="hover:text-brand-dark transition">Contacto</a>
-            </nav>
+    <p class="text-xs font-bold text-slate-500 mb-2">Productos actuales</p>
+    <div id="admin-list" class="space-y-2 mb-8"></div>
 
-            <!-- Botón Menú Móvil (Hamburguesa Clean) -->
-            <div class="md:hidden flex items-center">
-                <button onclick="toggleMobileMenu()" class="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition">
-                    <i class="fa-solid fa-bars text-lg"></i>
-                </button>
-            </div>
-
-            <!-- Logo Central -->
-            <div class="flex justify-center">
-                <a href="#" class="flex items-center group">
-                    <img src="zentradiagonal.png" alt="Zentra Logo" class="h-10 w-auto object-contain">
-                </a>
-            </div>
-
-            <!-- Acciones Derecha -->
-            <div class="flex items-center justify-end gap-3 sm:gap-4">
-                <a href="#productos" class="inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-brand-dark hover:bg-black text-white font-bold text-xs sm:text-sm shadow-lg transition">
-                    Ver catálogo
-                </a>
-            </div>
+    <div class="bg-[color:var(--paper)] p-5 rounded-2xl border border-[color:var(--line)]">
+      <h4 class="font-bold mb-4">Agregar producto</h4>
+      <form id="add-form" class="space-y-3">
+        <div><label class="block text-xs font-semibold mb-1" for="n-name">Nombre</label>
+          <input class="field" id="n-name" required placeholder="Ej: Tarjeta NFC Personalizada"></div>
+        <div class="grid sm:grid-cols-3 gap-3">
+          <div><label class="block text-xs font-semibold mb-1" for="n-price">Precio (L.)</label>
+            <input class="field" id="n-price" type="number" min="0" step="any" required placeholder="499"></div>
+          <div><label class="block text-xs font-semibold mb-1" for="n-old">Precio anterior (opcional)</label>
+            <input class="field" id="n-old" type="number" min="0" step="any" placeholder="998"></div>
+          <div><label class="block text-xs font-semibold mb-1" for="n-cat">Categoría</label>
+            <select class="field" id="n-cat"><option value="nfc">Tarjetas NFC</option><option value="audio">Audio</option><option value="otros">Otros</option></select></div>
         </div>
-    </header>
-
-    <!-- Menú Desplegable Móvil -->
-    <div id="mobile-menu" class="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm hidden flex justify-start">
-        <div class="bg-white w-4/5 max-w-xs h-full shadow-2xl p-6 flex flex-col justify-between animate-in slide-in-from-left duration-200">
-            <div>
-                <div class="flex items-center justify-between mb-8 pb-4 border-b">
-                    <img src="zentradiagonal.png" alt="Zentra Logo" class="h-8 w-auto object-contain">
-                    <button onclick="toggleMobileMenu()" class="text-slate-400 hover:text-slate-600 text-lg p-2"><i class="fa-solid fa-xmark"></i></button>
-                </div>
-                <nav class="flex flex-col space-y-4 font-semibold text-slate-700 text-base">
-                    <a href="#productos" onclick="toggleMobileMenu()" class="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-100 transition"><i class="fa-solid fa-store w-5 text-brand-dark"></i> Catálogo</a>
-                    <a href="#como-funciona" onclick="toggleMobileMenu()" class="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-100 transition"><i class="fa-solid fa-circle-question w-5 text-brand-dark"></i> Cómo funciona</a>
-                    <a href="#opiniones" onclick="toggleMobileMenu()" class="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-100 transition"><i class="fa-solid fa-star w-5 text-brand-dark"></i> Opiniones</a>
-                    <a href="#contacto" onclick="toggleMobileMenu()" class="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-100 transition"><i class="fa-solid fa-headset w-5 text-brand-dark"></i> Contacto</a>
-                </nav>
-            </div>
-            <div class="pt-6 border-t text-center text-xs text-slate-400">
-                <p>Zentra — Envíos Gratis a Todo Honduras</p>
-            </div>
+        <div class="grid sm:grid-cols-2 gap-3">
+          <div><label class="block text-xs font-semibold mb-1" for="n-img">Imagen (nombre de archivo o URL)</label>
+            <input class="field" id="n-img" required placeholder="producto.png"></div>
+          <div><label class="block text-xs font-semibold mb-1" for="n-wsp">Mensaje base de WhatsApp</label>
+            <input class="field" id="n-wsp" placeholder="Hola, necesito información de..."></div>
         </div>
-        <div class="flex-1" onclick="toggleMobileMenu()"></div>
+        <button class="btn btn-green w-full" type="submit">Agregar al catálogo</button>
+      </form>
     </div>
 
-    <!-- 1. PRODUCTS SECTION -->
-    <section id="productos" class="py-12 lg:py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
-            <div>
-                <div class="mb-3">
-                    <a href="https://wa.me/50488780115?text=Hola,%20estoy%20interesado%20en%20sus%20productos." target="_blank" class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 text-brand-dark font-semibold text-xs border border-slate-200 transition shadow-sm hover:scale-[1.02]">
-                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                        CONTÁCTANOS <i class="fa-brands fa-whatsapp text-emerald-600 ml-1"></i>
-                    </a>
-                </div>
-                <h2 class="text-3xl sm:text-5xl font-extrabold text-brand-dark tracking-tight">Más Vendidos🥇</h2>
-                <p class="text-slate-600 mt-2 text-lg">Elige tu solución favorita y recíbelo con envío gratis en todo el país.</p>
-            </div>
-        </div>
-
-        <!-- Product Grid -->
-        <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <!-- Productos cargados dinámicamente -->
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer id="contacto" class="bg-brand-dark text-slate-300 pt-16 pb-12 border-t border-slate-800">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
-            <div class="space-y-4">
-                <img src="zentradiagonal.png" alt="Zentra Logo" class="h-8 w-auto object-contain brightness-0 invert">
-                <p class="text-sm text-slate-400 leading-relaxed">
-                    Soluciones tecnológicas y accesorios de alta calidad con envíos a todo Honduras.
-                </p>
-            </div>
-            <div>
-                <p class="font-bold text-white mb-4 text-sm">Ayuda</p>
-                <ul class="space-y-2.5 text-sm">
-                    <li><a href="#" class="hover:text-white transition">Cómo comprar</a></li>
-                    <li><a href="#" class="hover:text-white transition">Medios de pago</a></li>
-                </ul>
-            </div>
-            <div>
-                <p class="font-bold text-white mb-4 text-sm">Políticas</p>
-                <ul class="space-y-2.5 text-sm">
-                    <li><a href="#" class="hover:text-white transition">Política de envíos</a></li>
-                    <li><a href="#" class="hover:text-white transition">Privacidad</a></li>
-                </ul>
-            </div>
-            <div>
-                <p class="font-bold text-white mb-4 text-sm">Newsletter</p>
-                <form onsubmit="event.preventDefault(); alert('¡Gracias por suscribirte!');" class="flex gap-2">
-                    <input type="email" placeholder="Tu correo electrónico" required class="bg-slate-800 border border-slate-700 px-4 py-2.5 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-brand-dark w-full">
-                    <button type="submit" class="bg-brand-dark hover:bg-black text-white px-4 py-2.5 rounded-xl transition">
-                        <i class="fa-solid fa-arrow-right text-sm"></i>
-                    </button>
-                </form>
-            </div>
-        </div>
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 border-t border-slate-800 text-center text-xs text-slate-500">
-            <p>© 2026 Zentra — Honduras. Todos los derechos reservados.</p>
-        </div>
-    </footer>
-
-    <!-- Admin Floating Button -->
-    <button onclick="toggleAdminModal()" class="fixed bottom-6 right-6 z-50 bg-brand-dark hover:bg-black text-white px-5 py-3 rounded-full shadow-2xl font-bold text-sm flex items-center gap-2 transition transform hover:scale-105 border border-slate-700">
-        <i class="fa-solid fa-gear"></i> Panel Admin
-    </button>
-
-    <div id="admin-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm hidden">
-        <div class="bg-white rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl overflow-y-auto max-h-[90vh]">
-            <div class="flex justify-between items-center mb-6 border-b pb-4">
-                <h3 class="text-xl font-extrabold text-brand-dark flex items-center gap-2">
-                    <i class="fa-solid fa-shield-halved text-brand-dark"></i> Panel de Administración de Productos
-                </h3>
-                <button onclick="toggleAdminModal()" class="text-slate-400 hover:text-slate-600 text-lg"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-
-            <div class="space-y-6">
-                <div class="bg-slate-50 p-4 rounded-2xl border">
-                    <h4 class="font-bold text-sm text-brand-dark mb-3">Agregar Nuevo Producto al Catálogo</h4>
-                    <form onsubmit="addNewProduct(event)" class="space-y-3">
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-600 mb-1">Nombre del Producto</label>
-                            <input type="text" id="new-prod-name" required placeholder="Ej: Tarjeta NFC Personalizada" class="w-full px-3 py-2 border rounded-xl text-sm focus:outline-none focus:border-brand-dark">
-                        </div>
-                        <div class="grid grid-cols-2 gap-3">
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-600 mb-1">Precio (Lempiras L.)</label>
-                                <input type="number" id="new-prod-price" required placeholder="499" class="w-full px-3 py-2 border rounded-xl text-sm focus:outline-none focus:border-brand-dark">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-600 mb-1">Mensaje para WhatsApp</label>
-                                <input type="text" id="new-prod-wsp" required placeholder="Hola, necesito info de..." class="w-full px-3 py-2 border rounded-xl text-sm focus:outline-none focus:border-brand-dark">
-                            </div>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-600 mb-1">Imagen (Ej: producto.png)</label>
-                            <input type="text" id="new-prod-img" required placeholder="producto.png" class="w-full px-3 py-2 border rounded-xl text-sm focus:outline-none focus:border-brand-dark">
-                        </div>
-                        <button type="submit" class="w-full py-2.5 bg-brand-dark hover:bg-black text-white rounded-xl font-bold text-sm transition">Agregar al Catálogo</button>
-                    </form>
-                </div>
-            </div>
-        </div>
+    <div class="mt-6 flex flex-wrap gap-2 text-sm">
+      <button class="btn btn-ghost !py-2 !px-4" onclick="exportData()"><i class="fa-solid fa-download"></i> Exportar</button>
+      <label class="btn btn-ghost !py-2 !px-4 cursor-pointer"><i class="fa-solid fa-upload"></i> Importar<input type="file" accept="application/json" class="hidden" onchange="importData(event)"></label>
+      <button class="btn btn-ghost !py-2 !px-4 !text-red-700 !border-red-300 hover:!bg-red-700 hover:!text-white" onclick="resetData()"><i class="fa-solid fa-rotate-left"></i> Restaurar catálogo original</button>
     </div>
+    <p class="text-xs text-slate-500 mt-4 leading-relaxed">Los cambios se guardan solo en este navegador. Usa “Exportar” para respaldarlos o llevarlos a otro dispositivo.</p>
+  </div>
+</div>
 
-    <!-- JavaScript Logic & State Management -->
-    <script>
-        // Versión actualizada con los AirPods disponibles (outOfStock: false)
-        let products = JSON.parse(localStorage.getItem('zentra_products_v15')) || [
-            { id: 1, name: 'Tarjeta NFC · Reseñas de Google', price: 499, wspMessage: 'Hola, necesito información y adquirir la Tarjeta NFC de Reseñas de Google.', image: 'googleNFC.png', outOfStock: false },
-            { id: 2, name: 'Tarjeta NFC · Seguidores de Instagram', price: 499, wspMessage: 'Hola, necesito información y adquirir la Tarjeta NFC de Seguidores de Instagram.', image: 'igNFC.png', outOfStock: false },
-            { id: 3, name: 'Combo Doble · Google + Instagram', price: 799, wspMessage: 'Hola, necesito información y adquirir el Combo Doble NFC (Google + Instagram).', image: 'googleigNFC.png', outOfStock: false },
-            { id: 4, name: 'AirPods 4ta Gen AAA+', price: 699, wspMessage: 'Hola, necesito información y adquirir los AirPods 4ta Gen AAA+.', image: 'airpods4tagen.png', outOfStock: false }
-        ];
+<div id="toast" role="status" aria-live="polite"><i class="fa-solid fa-circle-check text-emerald-300"></i><span></span></div>
 
-        function saveState() {
-            localStorage.setItem('zentra_products_v15', JSON.stringify(products));
-        }
+<script>
+/* =========================================================
+   CONFIGURACIÓN
+   ========================================================= */
+const PHONE     = '50488780115';
+const ADMIN_PIN = '1234';          // ⚠️ Cámbialo. Es una barrera básica del lado del cliente, no seguridad real.
+const KEY_PRODUCTS = 'zentra_products_v16';
+const KEY_CART     = 'zentra_cart_v1';
 
-        function toggleMobileMenu() {
-            const menu = document.getElementById('mobile-menu');
-            menu.classList.toggle('hidden');
-        }
+const CATEGORIES = { todos:'Todos', nfc:'Tarjetas NFC', audio:'Audio', otros:'Otros' };
 
-        function renderProducts() {
-            const grid = document.getElementById('product-grid');
-            grid.innerHTML = '';
-            products.forEach(p => {
-                const isOut = p.outOfStock;
-                grid.innerHTML += `
-                    <div class="bg-white p-6 rounded-3xl border border-slate-200/85 shadow-sm hover:shadow-xl transition flex flex-col justify-between group ${isOut ? 'opacity-85' : ''}">
-                        <div>
-                            <div class="relative rounded-2xl overflow-hidden bg-slate-100 mb-4 aspect-square flex items-center justify-center border border-slate-100">
-                                <span class="absolute top-3 left-3 bg-[#0f5132] text-white font-extrabold text-xs px-3.5 py-1.5 rounded-full z-10 flex items-center gap-1.5 shadow-md">
-                                    <i class="fa-solid fa-truck-fast text-xs text-emerald-300"></i> GRATIS
-                                </span>
-                                
-                                <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover ${isOut ? 'grayscale-[30%] opacity-90' : 'group-hover:scale-105'} transition duration-300">
-                                
-                                ${isOut ? '<div class="absolute inset-0 bg-slate-900/10 backdrop-blur-[1px] flex items-center justify-center"><span class="bg-brand-dark/90 text-white font-extrabold text-xs tracking-wider uppercase px-4 py-1.5 rounded-full shadow-lg border border-slate-700">Próximamente Disponible</span></div>' : ''}
-                            </div>
-                            <h3 class="font-bold text-lg text-brand-dark mb-2">${p.name}</h3>
-                        </div>
-                        <div>
-                            <div class="flex items-center gap-2 mb-4">
-                                <p class="text-xl font-extrabold text-brand-dark">L. ${p.price.toLocaleString()}.00</p>
-                                <span class="text-xs text-[#0f5132] font-bold bg-emerald-50 px-2 py-0.5 rounded-md">Envío Gratis</span>
-                            </div>
-                            
-                            ${isOut ? `
-                                <button disabled class="w-full py-3.5 rounded-xl bg-slate-100 text-slate-400 font-bold text-sm cursor-not-allowed flex items-center justify-center gap-2 border border-slate-200">
-                                    <i class="fa-solid fa-clock"></i> Próximamente
-                                </button>
-                            ` : `
-                                <button onclick="buyOnWhatsApp(${p.id})" class="w-full py-3.5 rounded-xl bg-[#0f5132] hover:bg-[#0b3c25] text-white font-extrabold text-sm transition flex items-center justify-center gap-2 shadow-md hover:shadow-lg transform active:scale-95">
-                                    <i class="fa-brands fa-whatsapp text-lg text-emerald-300"></i> ¡Comprar Ahora!
-                                </button>
-                            `}
-                        </div>
-                    </div>
-                `;
-            });
-        }
+const DEFAULTS = [
+  { id:1, name:'Tarjeta NFC · Reseñas de Google',        price:499, oldPrice:null, category:'nfc',   wspMessage:'Hola, necesito información y adquirir la Tarjeta NFC de Reseñas de Google.', image:'googleNFC.png',      outOfStock:false },
+  { id:2, name:'Tarjeta NFC · Seguidores de Instagram',  price:499, oldPrice:null, category:'nfc',   wspMessage:'Hola, necesito información y adquirir la Tarjeta NFC de Seguidores de Instagram.', image:'igNFC.png',   outOfStock:false },
+  { id:3, name:'Combo Doble · Google + Instagram',       price:799, oldPrice:998,  category:'nfc',   wspMessage:'Hola, necesito información y adquirir el Combo Doble NFC (Google + Instagram).', image:'googleigNFC.png', outOfStock:false },
+  { id:4, name:'AirPods 4ta Gen AAA+',                   price:699, oldPrice:null, category:'audio', wspMessage:'Hola, necesito información y adquirir los AirPods 4ta Gen AAA+.', image:'airpods4tagen.png',    outOfStock:false }
+];
 
-        function buyOnWhatsApp(id) {
-            const product = products.find(p => p.id === id);
-            if (product.outOfStock) return;
+/* =========================================================
+   UTILIDADES
+   ========================================================= */
+const $  = (s, r=document) => r.querySelector(s);
+const $$ = (s, r=document) => [...r.querySelectorAll(s)];
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const money = n => 'L. ' + Number(n).toLocaleString('en-US', { minimumFractionDigits:2, maximumFractionDigits:2 });
+const PLACEHOLDER = 'data:image/svg+xml;utf8,' + encodeURIComponent(
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><rect width="200" height="200" fill="#eceee9"/><text x="100" y="108" font-family="sans-serif" font-size="14" fill="#9aa19b" text-anchor="middle">Sin imagen</text></svg>');
 
-            const phone = '50488780115';
-            const message = encodeURIComponent(product.wspMessage);
-            const whatsappUrl = `https://wa.me/${phone}?text=${message}`;
-            
-            window.open(whatsappUrl, '_blank');
-        }
+function load(key, fallback){ try{ const v = JSON.parse(localStorage.getItem(key)); return v ?? fallback; }catch{ return fallback; } }
+function save(key, value){ try{ localStorage.setItem(key, JSON.stringify(value)); }catch{} }
 
-        function toggleAdminModal() {
-            const modal = document.getElementById('admin-modal');
-            modal.classList.toggle('hidden');
-        }
+function normalize(p){
+  const name = String(p.name || 'Producto');
+  return {
+    id: p.id ?? Date.now() + Math.floor(Math.random()*1000),
+    name,
+    price: Number(p.price) || 0,
+    oldPrice: p.oldPrice ? Number(p.oldPrice) : null,
+    category: p.category || (/nfc/i.test(name) ? 'nfc' : /airpod|audio|aud[ií]fono/i.test(name) ? 'audio' : 'otros'),
+    wspMessage: p.wspMessage || `Hola, necesito información y adquirir ${name}.`,
+    image: p.image || '',
+    outOfStock: !!p.outOfStock
+  };
+}
 
-        function addNewProduct(e) {
-            e.preventDefault();
-            const name = document.getElementById('new-prod-name').value;
-            const price = parseFloat(document.getElementById('new-prod-price').value);
-            const wspMessage = document.getElementById('new-prod-wsp').value;
-            const image = document.getElementById('new-prod-img').value;
+/* =========================================================
+   ESTADO
+   ========================================================= */
+let products = load(KEY_PRODUCTS, null) || load('zentra_products_v15', null) || DEFAULTS;
+products = products.map(normalize);
+let cart = load(KEY_CART, {});          // { id: cantidad }
+let filter = 'todos';
 
-            const newProduct = {
-                id: Date.now(),
-                name,
-                price,
-                wspMessage,
-                image,
-                outOfStock: false
-            };
+const saveProducts = () => save(KEY_PRODUCTS, products);
+const saveCart     = () => save(KEY_CART, cart);
+const waLink = text => `https://wa.me/${PHONE}?text=${encodeURIComponent(text)}`;
 
-            products.push(newProduct);
-            saveState();
-            renderProducts();
-            e.target.reset();
-            alert('¡Producto agregado exitosamente con su enlace personalizado de WhatsApp!');
-            toggleAdminModal();
-        }
+let toastTimer;
+function toast(msg){
+  const t = $('#toast'); $('span', t).textContent = msg;
+  t.classList.add('show'); clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+}
 
-        window.addEventListener('DOMContentLoaded', () => {
-            renderProducts();
-        });
-    </script>
+/* =========================================================
+   CATÁLOGO
+   ========================================================= */
+function renderFilters(){
+  const used = new Set(products.map(p => p.category));
+  const keys = ['todos', ...Object.keys(CATEGORIES).filter(k => k !== 'todos' && used.has(k))];
+  $('#filters').innerHTML = keys.map(k =>
+    `<button class="filter" data-filter="${k}" aria-pressed="${k === filter}">${CATEGORIES[k]}</button>`).join('');
+  if (!keys.includes(filter)) filter = 'todos';
+}
+
+function renderProducts(){
+  const list = products.filter(p => filter === 'todos' || p.category === filter);
+  $('#empty').classList.toggle('hidden', list.length > 0);
+  $('#product-grid').innerHTML = list.map(p => {
+    const save = p.oldPrice && p.oldPrice > p.price ? p.oldPrice - p.price : 0;
+    return `
+    <article class="card ${p.outOfStock ? 'soldout' : ''}">
+      <div class="card-media">
+        <span class="chip"><i class="fa-solid fa-truck-fast text-emerald-300"></i> Envío gratis</span>
+        ${save ? `<span class="chip save">Ahorras ${money(save).replace('.00','')}</span>` : ''}
+        <img src="${esc(p.image)}" alt="${esc(p.name)}" loading="lazy" onerror="this.onerror=null;this.src=PLACEHOLDER">
+        ${p.outOfStock ? '<div class="absolute inset-0 grid place-items-center bg-black/10"><span class="bg-[color:var(--ink)] text-white text-xs font-extrabold px-4 py-2 rounded-full">Próximamente</span></div>' : ''}
+      </div>
+      <h3 class="mt-4 font-bold text-lg leading-snug">${esc(p.name)}</h3>
+      <div class="mt-2 mb-4 flex items-baseline gap-2">
+        <span class="text-2xl font-extrabold">${money(p.price)}</span>
+        ${save ? `<span class="text-sm text-[color:var(--muted)] line-through">${money(p.oldPrice)}</span>` : ''}
+      </div>
+      <div class="mt-auto flex gap-2">
+        ${p.outOfStock
+          ? `<button class="btn w-full" disabled><i class="fa-solid fa-clock"></i> Próximamente</button>`
+          : `<button class="btn btn-green flex-1" data-action="add" data-id="${p.id}"><i class="fa-solid fa-plus"></i> Agregar</button>
+             <button class="btn btn-ghost !px-4" data-action="buy" data-id="${p.id}" aria-label="Comprar ${esc(p.name)} por WhatsApp" title="Comprar ya por WhatsApp"><i class="fa-brands fa-whatsapp text-lg"></i></button>`}
+      </div>
+    </article>`;
+  }).join('');
+}
+
+$('#filters').addEventListener('click', e => {
+  const b = e.target.closest('[data-filter]'); if (!b) return;
+  filter = b.dataset.filter; renderFilters(); renderProducts();
+});
+
+$('#product-grid').addEventListener('click', e => {
+  const b = e.target.closest('[data-action]'); if (!b) return;
+  const id = Number(b.dataset.id);
+  if (b.dataset.action === 'add') { addToCart(id); }
+  if (b.dataset.action === 'buy') { const p = products.find(x => x.id === id); if (p && !p.outOfStock) window.open(waLink(p.wspMessage), '_blank', 'noopener'); }
+});
+
+/* =========================================================
+   CARRITO
+   ========================================================= */
+function cartEntries(){
+  return Object.entries(cart)
+    .map(([id, qty]) => ({ p: products.find(x => x.id === Number(id)), qty }))
+    .filter(e => e.p && !e.p.outOfStock && e.qty > 0);
+}
+
+function addToCart(id){
+  cart[id] = (cart[id] || 0) + 1; saveCart(); renderCart();
+  const p = products.find(x => x.id === id); toast(`${p.name} agregado al pedido`);
+  const b = $('#cart-btn'); b.animate([{transform:'scale(1)'},{transform:'scale(1.12)'},{transform:'scale(1)'}], {duration:300});
+}
+function changeQty(id, d){
+  cart[id] = (cart[id] || 0) + d;
+  if (cart[id] <= 0) delete cart[id];
+  saveCart(); renderCart();
+}
+function clearCart(){ cart = {}; saveCart(); renderCart(); }
+
+function renderCart(){
+  const items = cartEntries();
+  const count = items.reduce((s, e) => s + e.qty, 0);
+  const total = items.reduce((s, e) => s + e.qty * e.p.price, 0);
+  const badge = $('#cart-count');
+  badge.textContent = count; badge.classList.toggle('hidden', count === 0);
+  $('#cart-total').textContent = money(total);
+  $('#checkout').disabled = count === 0;
+  $('#clear-cart').classList.toggle('hidden', count === 0);
+
+  $('#cart-items').innerHTML = items.length ? items.map(({p, qty}) => `
+    <div class="flex gap-3 items-center">
+      <img src="${esc(p.image)}" alt="" class="w-16 h-16 rounded-xl object-cover bg-slate-100 shrink-0" onerror="this.onerror=null;this.src=PLACEHOLDER">
+      <div class="flex-1 min-w-0">
+        <p class="font-bold text-sm leading-snug">${esc(p.name)}</p>
+        <p class="text-sm text-[color:var(--muted)]">${money(p.price)}</p>
+      </div>
+      <div class="qty" role="group" aria-label="Cantidad">
+        <button onclick="changeQty(${p.id},-1)" aria-label="Quitar uno">−</button>
+        <span>${qty}</span>
+        <button onclick="changeQty(${p.id},1)" aria-label="Agregar uno">+</button>
+      </div>
+    </div>`).join('')
+  : `<div class="text-center py-16 text-[color:var(--muted)]">
+       <i class="fa-solid fa-bag-shopping text-4xl mb-4 text-slate-300"></i>
+       <p class="font-semibold text-[color:var(--ink)]">Tu pedido está vacío</p>
+       <p class="text-sm mt-1">Agrega una tarjeta del catálogo para empezar.</p>
+       <button class="btn btn-ghost mt-5" onclick="toggleCart(false);location.hash='#productos'">Ver catálogo</button>
+     </div>`;
+}
+
+function checkout(){
+  const items = cartEntries(); if (!items.length) return;
+  const total = items.reduce((s, e) => s + e.qty * e.p.price, 0);
+  const lines = items.map(({p, qty}) => `• ${qty} × ${p.name} — ${money(p.price * qty)}`).join('\n');
+  const msg = `Hola, quiero hacer este pedido:\n\n${lines}\n\nTotal: ${money(total)} (envío gratis)\n\n¿Me ayudan a confirmarlo?`;
+  window.open(waLink(msg), '_blank', 'noopener');
+}
+
+/* Paneles */
+function toggleCart(open){
+  $('#cart').classList.toggle('open', open); $('#overlay').classList.toggle('open', open);
+  $('#cart').setAttribute('aria-hidden', String(!open));
+  document.body.style.overflow = open ? 'hidden' : '';
+}
+function toggleMenu(open){ $('#mobile-menu').classList.toggle('hidden', !open); }
+function closeAll(){ toggleCart(false); toggleMenu(false); }
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeAll(); closeAdmin(); } });
+
+/* =========================================================
+   DEMO HERO (Google / Instagram)
+   ========================================================= */
+$$('.seg button').forEach(btn => btn.addEventListener('click', () => {
+  $$('.seg button').forEach(b => b.setAttribute('aria-pressed', String(b === btn)));
+  const demo = $('#demo');
+  demo.dataset.mode = btn.dataset.mode;
+  // Reinicia las animaciones
+  demo.style.display = 'none'; void demo.offsetHeight; demo.style.display = '';
+}));
+
+/* =========================================================
+   ADMIN
+   ========================================================= */
+function openAdmin(){
+  if (prompt('PIN de administrador:') !== ADMIN_PIN) { toast('PIN incorrecto'); return; }
+  renderAdmin(); const m = $('#admin-modal'); m.classList.remove('hidden'); m.classList.add('flex');
+}
+function closeAdmin(){ const m = $('#admin-modal'); m.classList.add('hidden'); m.classList.remove('flex'); }
+
+function refreshAll(){ saveProducts(); renderFilters(); renderProducts(); renderCart(); renderAdmin(); }
+
+function renderAdmin(){
+  $('#admin-list').innerHTML = products.map(p => `
+    <div class="flex flex-wrap items-center gap-3 p-3 border border-[color:var(--line)] rounded-xl">
+      <img src="${esc(p.image)}" alt="" class="w-12 h-12 rounded-lg object-cover bg-slate-100" onerror="this.onerror=null;this.src=PLACEHOLDER">
+      <div class="flex-1 min-w-[160px]"><p class="font-bold text-sm">${esc(p.name)}</p><p class="text-xs text-slate-500">${CATEGORIES[p.category] || 'Otros'}</p></div>
+      <label class="text-xs text-slate-500 flex items-center gap-1">L.
+        <input class="field !w-24 !py-1.5" type="number" min="0" step="any" value="${p.price}" onchange="updateProduct(${p.id},'price',this.value)"></label>
+      <label class="text-xs font-semibold flex items-center gap-2 cursor-pointer">
+        <input type="checkbox" ${p.outOfStock ? '' : 'checked'} onchange="updateProduct(${p.id},'outOfStock',!this.checked)"> Disponible</label>
+      <button class="text-red-600 hover:text-red-800 p-2" onclick="deleteProduct(${p.id})" aria-label="Eliminar ${esc(p.name)}"><i class="fa-solid fa-trash"></i></button>
+    </div>`).join('') || '<p class="text-sm text-slate-500">Aún no hay productos.</p>';
+}
+
+function updateProduct(id, field, value){
+  const p = products.find(x => x.id === id); if (!p) return;
+  p[field] = field === 'price' ? (Number(value) || 0) : value;
+  refreshAll(); toast('Cambio guardado');
+}
+function deleteProduct(id){
+  const p = products.find(x => x.id === id);
+  if (!p || !confirm(`¿Eliminar "${p.name}" del catálogo?`)) return;
+  products = products.filter(x => x.id !== id); delete cart[id]; saveCart(); refreshAll(); toast('Producto eliminado');
+}
+
+$('#add-form').addEventListener('submit', e => {
+  e.preventDefault();
+  const name = $('#n-name').value.trim();
+  products.push(normalize({
+    id: Date.now(), name,
+    price: $('#n-price').value, oldPrice: $('#n-old').value || null,
+    category: $('#n-cat').value, image: $('#n-img').value.trim(),
+    wspMessage: $('#n-wsp').value.trim() || `Hola, necesito información y adquirir ${name}.`
+  }));
+  e.target.reset(); refreshAll(); toast('Producto agregado al catálogo');
+});
+
+function exportData(){
+  const blob = new Blob([JSON.stringify(products, null, 2)], { type:'application/json' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'zentra-catalogo.json'; a.click();
+  URL.revokeObjectURL(a.href);
+}
+function importData(e){
+  const file = e.target.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const data = JSON.parse(reader.result);
+      if (!Array.isArray(data)) throw new Error();
+      products = data.map(normalize); cart = {}; saveCart(); refreshAll(); toast('Catálogo importado');
+    } catch { toast('El archivo no es un catálogo válido'); }
+  };
+  reader.readAsText(file); e.target.value = '';
+}
+function resetData(){
+  if (!confirm('Esto reemplaza tu catálogo actual por el original. ¿Continuar?')) return;
+  products = DEFAULTS.map(normalize); cart = {}; saveCart(); refreshAll(); toast('Catálogo restaurado');
+}
+
+/* =========================================================
+   INIT
+   ========================================================= */
+window.addEventListener('DOMContentLoaded', () => {
+  $('#footer-wsp').href = waLink('Hola, estoy interesado en sus productos.');
+  $('#float-wsp').href  = waLink('Hola, estoy interesado en sus productos.');
+  renderFilters(); renderProducts(); renderCart();
+  if (location.hash === '#admin') openAdmin();
+});
+</script>
 </body>
 </html>
