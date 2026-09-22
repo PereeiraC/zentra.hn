@@ -428,18 +428,19 @@
 const PHONE     = '50488780115';
 const ADMIN_PIN = '200324';        // Barrera básica del lado del cliente, no seguridad real.
 const WEBHOOK_URL = '';            // URL de tu Google Apps Script (ver Admin → Ajustes). Sin esto, los pedidos de clientes no llegan al CRM.
-const KEY_PRODUCTS = 'zentra_products_v16';
+const KEY_PRODUCTS = 'zentra_products_v17';
 const KEY_CART     = 'zentra_cart_v1';
 const KEY_ORDERS    = 'zentra_orders_v1';
 const KEY_CUSTOMERS = 'zentra_customers_v1';
+const KEY_SECRET    = 'zentra_secret_v1';   // clave de publicación (solo en el navegador del admin)
 
 const CATEGORIES = { todos:'Todos', nfc:'Tarjetas NFC', audio:'Audio', otros:'Otros' };
 
 const DEFAULTS = [
-  { id:1, name:'Tarjeta NFC · Reseñas de Google',        price:499, oldPrice:null, category:'nfc',   wspMessage:'Hola, necesito información y adquirir la Tarjeta NFC de Reseñas de Google.', image:'googleNFC.png',      outOfStock:false },
-  { id:2, name:'Tarjeta NFC · Seguidores de Instagram',  price:499, oldPrice:null, category:'nfc',   wspMessage:'Hola, necesito información y adquirir la Tarjeta NFC de Seguidores de Instagram.', image:'igNFC.png',   outOfStock:false },
-  { id:3, name:'Combo Doble · Google + Instagram',       price:799, oldPrice:998,  category:'nfc',   wspMessage:'Hola, necesito información y adquirir el Combo Doble NFC (Google + Instagram).', image:'googleigNFC.png', outOfStock:false },
-  { id:4, name:'AirPods 4ta Gen AAA+',                   price:699, oldPrice:null, category:'audio', wspMessage:'Hola, necesito información y adquirir los AirPods 4ta Gen AAA+.', image:'airpods4tagen.png',    outOfStock:false }
+  { id:1, name:'Tarjeta NFC · Reseñas de Google',        price:419, oldPrice:null, category:'nfc',   wspMessage:'Hola, necesito información y adquirir la Tarjeta NFC de Reseñas de Google.', image:'googleNFC.png',      outOfStock:false },
+  { id:2, name:'Tarjeta NFC · Seguidores de Instagram',  price:419, oldPrice:null, category:'nfc',   wspMessage:'Hola, necesito información y adquirir la Tarjeta NFC de Seguidores de Instagram.', image:'igNFC.png',   outOfStock:false },
+  { id:3, name:'Combo Doble · Google + Instagram',       price:629, oldPrice:838,  category:'nfc',   wspMessage:'Hola, necesito información y adquirir el Combo Doble NFC (Google + Instagram).', image:'googleigNFC.png', outOfStock:false },
+  { id:4, name:'AirPods 4ta Gen AAA+',                   price:649, oldPrice:null, category:'audio', wspMessage:'Hola, necesito información y adquirir los AirPods 4ta Gen AAA+.', image:'airpods4tagen.png',    outOfStock:false }
 ];
 
 /* =========================================================
@@ -472,7 +473,7 @@ function normalize(p){
 /* =========================================================
    ESTADO
    ========================================================= */
-let products = load(KEY_PRODUCTS, null) || load('zentra_products_v15', null) || DEFAULTS;
+let products = load(KEY_PRODUCTS, null) || DEFAULTS;
 products = products.map(normalize);
 let cart = load(KEY_CART, {});          // { id: cantidad }
 let filter = 'todos';
@@ -711,15 +712,17 @@ function custStats(c){
 function sendWebhook(payload){
   if (!WEBHOOK_URL) return;
   try {
-    fetch(WEBHOOK_URL, { method:'POST', mode:'no-cors', headers:{ 'Content-Type':'text/plain;charset=utf-8' }, body: JSON.stringify(payload), keepalive:true }).catch(() => {});
+    fetch(WEBHOOK_URL, { method:'POST', mode:'no-cors', headers:{ 'Content-Type':'text/plain;charset=utf-8' }, body: JSON.stringify(payload.type === 'update' ? { ...payload, key:getSecret() } : payload), keepalive:true }).catch(() => {});
   } catch {}
 }
 
 async function syncOrders(silent){
   if (!WEBHOOK_URL) { if (!silent) toast('Falta configurar WEBHOOK_URL en el código'); return; }
+  if (!getSecret()) { if (!silent) toast('Falta la clave de publicación (Ajustes)'); return; }
   try {
-    const r = await fetch(WEBHOOK_URL, { cache:'no-store' });
+    const r = await fetch(catalogUrl('action=orders&key=' + encodeURIComponent(getSecret()) + '&t=' + Date.now()), { cache:'no-store' });
     const data = await r.json();
+    if (data.error) throw new Error(data.error);
     let added = 0, updated = 0;
     (data.orders || []).forEach(raw => {
       const id = safeId(raw.id); if (!id) return;
@@ -764,7 +767,7 @@ $('#login-form').addEventListener('submit', e => {
 });
 function showAdmin(){
   $('#admin-app').classList.add('open'); document.body.style.overflow = 'hidden';
-  renderAdmin(); if (WEBHOOK_URL) syncOrders(true);
+  renderAdmin(); if (WEBHOOK_URL && getSecret()) syncOrders(true);
 }
 function closeAdmin(){
   $('#admin-app').classList.remove('open'); $('#admin-login').classList.remove('open'); closeModal();
@@ -1058,11 +1061,12 @@ function exportCustomersCSV(){
 /* =========================================================
    ADMIN · PRODUCTOS
    ========================================================= */
-function refreshAll(){ saveProducts(); renderFilters(); renderProducts(); renderCart(); if ($('#admin-app').classList.contains('open')) renderAdmin(); }
+function refreshAll(){ saveProducts(); renderFilters(); renderProducts(); renderCart(); if ($('#admin-app').classList.contains('open')) renderAdmin(); publishCatalogSoon(); }
 
 function viewProducts(m){
   m.innerHTML = `
     <h2 class="text-3xl font-extrabold mb-5">Productos</h2>
+    ${catalogNotice()}
     <div class="space-y-2 mb-8">
       ${products.map(p => `<div class="panel !p-3 flex flex-wrap items-center gap-3">
         <img src="${esc(p.image)}" alt="" class="w-12 h-12 rounded-lg object-cover bg-slate-100" onerror="this.onerror=null;this.src=PLACEHOLDER">
@@ -1116,63 +1120,100 @@ function addProduct(e){
 /* =========================================================
    ADMIN · AJUSTES
    ========================================================= */
-const APPS_SCRIPT = `const SHEET = 'Pedidos';
+const APPS_SCRIPT = `const SHEET_ORDERS  = 'Pedidos';
+const SHEET_CATALOG = 'Catalogo';
+const SECRET = 'CAMBIA-ESTA-CLAVE';   // inventa una clave larga y escríbela igual en Admin > Ajustes
 
-function getSheet_() {
+function sheet_(name, header) {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
-  let sh = ss.getSheetByName(SHEET);
-  if (!sh) {
-    sh = ss.insertSheet(SHEET);
-    sh.appendRow(['id','fecha','cliente','telefono','items','total','estado','notas','origen']);
-  }
+  let sh = ss.getSheetByName(name);
+  if (!sh) { sh = ss.insertSheet(name); sh.appendRow(header); }
   return sh;
+}
+function orders_() {
+  return sheet_(SHEET_ORDERS, ['id','fecha','cliente','telefono','items','total','estado','notas','origen']);
+}
+function json_(obj) {
+  return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(ContentService.MimeType.JSON);
 }
 
 function doPost(e) {
   const data = JSON.parse(e.postData.contents);
-  const sh = getSheet_();
-  const o = data.order;
-  if (data.type === 'order') {
-    sh.appendRow([o.id, o.createdAt, o.customerName, o.phone, JSON.stringify(o.items), o.total, o.status, o.notes || '', o.source]);
+
+  // Catálogo: solo con clave
+  if (data.type === 'catalog') {
+    if (data.key !== SECRET) return json_({ error: 'forbidden' });
+    sheet_(SHEET_CATALOG, ['json','actualizado'])
+      .getRange(2, 1, 1, 2).setValues([[JSON.stringify(data.products), new Date().toISOString()]]);
+    return json_({ ok: true });
   }
+
+  const o = data.order;
+  if (!o) return json_({ error: 'bad request' });
+
+  // Pedido nuevo: lo envían los clientes desde la tienda
+  if (data.type === 'order') {
+    orders_().appendRow([o.id, o.createdAt, o.customerName, o.phone, JSON.stringify(o.items), o.total, o.status, o.notes || '', o.source]);
+  }
+  // Cambio de estado o nota: solo con clave
   if (data.type === 'update') {
+    if (data.key !== SECRET) return json_({ error: 'forbidden' });
+    const sh = orders_();
     const ids = sh.getRange('A:A').getValues().flat();
     const i = ids.indexOf(o.id);
     if (i > 0) sh.getRange(i + 1, 7, 1, 2).setValues([[o.status, o.notes || '']]);
   }
-  return ContentService.createTextOutput('ok');
+  return json_({ ok: true });
 }
 
-function doGet() {
-  const rows = getSheet_().getDataRange().getValues().slice(1);
-  const orders = rows.map(r => ({
-    id: r[0], createdAt: r[1], customerName: r[2], phone: String(r[3]),
-    items: JSON.parse(r[4] || '[]'), total: r[5], status: r[6], notes: r[7], source: r[8]
-  }));
-  return ContentService.createTextOutput(JSON.stringify({ orders }))
-    .setMimeType(ContentService.MimeType.JSON);
+function doGet(e) {
+  const p = e.parameter || {};
+
+  // Catálogo: público (la tienda lo lee para mostrar los precios)
+  if (p.action === 'catalog') {
+    const v = sheet_(SHEET_CATALOG, ['json','actualizado']).getRange(2, 1).getValue();
+    return json_({ products: v ? JSON.parse(v) : [] });
+  }
+  // Pedidos: solo con clave (contienen datos de clientes)
+  if (p.action === 'orders' && p.key === SECRET) {
+    const rows = orders_().getDataRange().getValues().slice(1);
+    return json_({ orders: rows.map(r => ({
+      id: r[0], createdAt: r[1], customerName: r[2], phone: String(r[3]),
+      items: JSON.parse(r[4] || '[]'), total: r[5], status: r[6], notes: r[7], source: r[8]
+    })) });
+  }
+  return json_({ error: 'forbidden' });
 }`;
 
 function viewSettings(m){
+  const hasKey = !!getSecret();
   m.innerHTML = `
     <h2 class="text-3xl font-extrabold mb-5">Ajustes</h2>
     ${ADMIN_PIN === '1234' ? `<div class="panel !border-amber-300 !bg-amber-50 text-sm mb-4"><b>Estás usando el PIN por defecto (1234).</b> Cámbialo en la constante <code>ADMIN_PIN</code> al inicio del código.</div>` : ''}
 
     <div class="panel mb-4">
-      <p class="font-bold mb-1">Conexión con Google Sheets</p>
+      <p class="font-bold mb-1">Sincronización con Google Sheets</p>
       <p class="text-sm text-[color:var(--muted)] mb-3">${WEBHOOK_URL
-        ? '<b class="text-[color:var(--green)]">Activa.</b> Cada pedido de la tienda se guarda en tu hoja y aquí lo puedes traer con “Sincronizar”.'
-        : '<b class="text-amber-700">No configurada.</b> Sin esto, los pedidos de tus clientes <b>no llegan a este panel</b> (se guardan solo en el navegador de cada persona). Puedes registrar pedidos a mano mientras tanto.'}</p>
+        ? '<b class="text-[color:var(--green)]">Conectada.</b> Los precios y productos se comparten con todos los dispositivos (celular incluido) y los pedidos de la tienda llegan a tu hoja.'
+        : '<b class="text-amber-700">No configurada.</b> Sin esto, los cambios de precios se guardan solo en este navegador (por eso no se ven en el celular) y los pedidos de tus clientes <b>no llegan a este panel</b>.'}</p>
+      <label class="lbl" for="set-key">Clave de publicación</label>
+      <div class="flex gap-2 mb-1">
+        <input id="set-key" type="password" class="field" autocomplete="off" placeholder="${hasKey ? '•••••••• (guardada en este navegador)' : 'La misma que pusiste en SECRET del script'}">
+        <button class="btn btn-green !py-2.5" onclick="saveSecret()">Guardar</button>
+      </div>
+      <p class="text-xs text-[color:var(--muted)] mb-4">Se guarda solo en este navegador, no en el código de la página. Sin ella nadie más puede cambiar tus precios.</p>
       <div class="flex flex-wrap gap-2">
-        <button class="btn btn-green !py-2.5" onclick="syncOrders(false)" ${WEBHOOK_URL ? '' : 'disabled'}><i class="fa-solid fa-rotate"></i> Sincronizar ahora</button>
+        <button class="btn btn-green !py-2.5" onclick="publishCatalog(true)" ${WEBHOOK_URL ? '' : 'disabled'}><i class="fa-solid fa-cloud-arrow-up"></i> Publicar catálogo</button>
+        <button class="btn btn-ghost !py-2.5" onclick="syncOrders(false)" ${WEBHOOK_URL ? '' : 'disabled'}><i class="fa-solid fa-rotate"></i> Sincronizar pedidos</button>
         <button class="btn btn-ghost !py-2.5" onclick="copyScript()"><i class="fa-regular fa-copy"></i> Copiar código de Apps Script</button>
       </div>
       <details class="mt-4 text-sm"><summary class="cursor-pointer font-bold">Cómo activarla (5 minutos)</summary>
         <ol class="list-decimal pl-5 mt-3 space-y-1.5 text-[color:var(--muted)]">
           <li>Crea una hoja de cálculo nueva en Google Sheets.</li>
-          <li>Ve a <b>Extensiones → Apps Script</b>, borra lo que haya y pega el código copiado.</li>
-          <li><b>Implementar → Nueva implementación → Aplicación web</b>. Ejecutar como: <b>Yo</b>. Quién tiene acceso: <b>Cualquier persona</b>.</li>
-          <li>Copia la URL que termina en <code>/exec</code> y pégala en la constante <code>WEBHOOK_URL</code> al inicio de este archivo.</li>
+          <li>Ve a <b>Extensiones → Apps Script</b>, borra lo que haya y pega el código copiado. Cambia <code>CAMBIA-ESTA-CLAVE</code> por una clave larga tuya.</li>
+          <li><b>Implementar → Nueva implementación → Aplicación web</b>. Ejecutar como: <b>Yo</b>. Quién tiene acceso: <b>Cualquier persona</b>. Si ya tenías una implementación anterior, edítala y elige <b>Nueva versión</b> (el código cambió).</li>
+          <li>Copia la URL que termina en <code>/exec</code>, pégala en la constante <code>WEBHOOK_URL</code> al inicio de este archivo y vuelve a subirlo a tu hosting.</li>
+          <li>Entra aquí, escribe la misma clave, presiona <b>Guardar</b> y luego <b>Publicar catálogo</b>.</li>
         </ol>
         <pre id="script-box" class="mt-3 p-3 rounded-xl bg-[color:var(--ink)] text-slate-200 text-xs overflow-auto max-h-64"></pre>
       </details>
@@ -1180,7 +1221,7 @@ function viewSettings(m){
 
     <div class="panel mb-4">
       <p class="font-bold mb-1">Respaldo</p>
-      <p class="text-sm text-[color:var(--muted)] mb-3">Todo se guarda en este navegador. Exporta un respaldo para no perder tus datos o llevarlos a otro dispositivo.</p>
+      <p class="text-sm text-[color:var(--muted)] mb-3">Tus pedidos y clientes se guardan en este navegador. Exporta un respaldo para no perderlos o llevarlos a otro dispositivo.</p>
       <div class="flex flex-wrap gap-2">
         <button class="btn btn-ghost !py-2.5" onclick="exportAll()"><i class="fa-solid fa-download"></i> Exportar todo</button>
         <label class="btn btn-ghost !py-2.5 cursor-pointer"><i class="fa-solid fa-upload"></i> Importar<input type="file" accept="application/json" class="hidden" onchange="importAll(event)"></label>
@@ -1195,6 +1236,56 @@ function viewSettings(m){
       </div>
     </div>`;
   const box = $('#script-box'); if (box) box.textContent = APPS_SCRIPT;
+}
+
+/* ---------- Catálogo compartido (todos los dispositivos) ---------- */
+const getSecret = () => { try { return localStorage.getItem(KEY_SECRET) || ''; } catch { return ''; } };
+function saveSecret(){
+  const v = $('#set-key').value.trim(); if (!v) { toast('Escribe la clave'); return; }
+  try { localStorage.setItem(KEY_SECRET, v); } catch {}
+  renderAdmin(); toast('Clave guardada en este navegador');
+}
+const catalogUrl = q => WEBHOOK_URL + (WEBHOOK_URL.includes('?') ? '&' : '?') + q;
+
+async function fetchRemoteCatalog(){
+  const r = await fetch(catalogUrl('action=catalog&t=' + Date.now()), { cache:'no-store' });
+  const d = await r.json();
+  return Array.isArray(d.products) ? d.products : null;
+}
+async function loadRemoteCatalog(){
+  if (!WEBHOOK_URL) return;
+  try {
+    const list = await fetchRemoteCatalog();
+    if (list && list.length) {
+      products = list.map(normalize); saveProducts();
+      renderFilters(); renderProducts(); renderCart();
+      if ($('#admin-app').classList.contains('open')) renderAdmin();
+    }
+  } catch {}
+}
+
+let publishTimer;
+function publishCatalogSoon(){ if (!WEBHOOK_URL) return; clearTimeout(publishTimer); publishTimer = setTimeout(() => publishCatalog(false), 800); }
+async function publishCatalog(manual){
+  if (!WEBHOOK_URL) { if (manual) toast('Falta configurar WEBHOOK_URL en el código'); return; }
+  const key = getSecret();
+  if (!key) { toast('Falta la clave de publicación (Ajustes). El cambio quedó solo en este navegador'); return; }
+  const sig = list => JSON.stringify(list.map(p => [p.id, p.name, p.price, p.oldPrice || null, !!p.outOfStock, p.image, p.category]));
+  const mine = sig(products);
+  try {
+    fetch(WEBHOOK_URL, { method:'POST', mode:'no-cors', headers:{ 'Content-Type':'text/plain;charset=utf-8' }, body: JSON.stringify({ type:'catalog', key, products }) }).catch(() => {});
+    for (let i = 0; i < 4; i++) {
+      await new Promise(r => setTimeout(r, 1500));
+      const remote = await fetchRemoteCatalog();
+      if (remote && sig(remote.map(normalize)) === mine) { toast('Catálogo publicado en todos los dispositivos'); return; }
+    }
+    toast('No se pudo publicar. Revisa la clave y que hayas actualizado el Apps Script');
+  } catch { toast('No se pudo publicar el catálogo'); }
+}
+function catalogNotice(){
+  if (!WEBHOOK_URL) return `<div class="panel !border-amber-300 !bg-amber-50 text-sm mb-4"><b>Los cambios solo se guardan en este navegador.</b> Para que los precios se actualicen en el celular y en todos los dispositivos, conecta Google Sheets en <button class="underline font-bold" onclick="setTab('ajustes')">Ajustes</button>.</div>`;
+  if (!getSecret()) return `<div class="panel !border-amber-300 !bg-amber-50 text-sm mb-4"><b>Falta la clave de publicación.</b> Agrégala en <button class="underline font-bold" onclick="setTab('ajustes')">Ajustes</button> para que los cambios lleguen a todos los dispositivos.</div>`;
+  return `<div class="panel !border-emerald-300 !bg-emerald-50 text-sm mb-4 flex flex-wrap items-center justify-between gap-2"><span><b>Sincronizado.</b> Cada cambio se publica para todos los dispositivos.</span><button class="btn btn-ghost !py-2 !px-3 !text-xs" onclick="publishCatalog(true)">Publicar ahora</button></div>`;
 }
 function copyScript(){
   (navigator.clipboard ? navigator.clipboard.writeText(APPS_SCRIPT) : Promise.reject())
@@ -1238,6 +1329,7 @@ window.addEventListener('DOMContentLoaded', () => {
   $('#footer-wsp').href = waLink('Hola, estoy interesado en sus productos.');
   $('#float-wsp').href  = waLink('Hola, estoy interesado en sus productos.');
   renderFilters(); renderProducts(); renderCart();
+  loadRemoteCatalog();
   if (location.hash === '#admin') openAdmin();
 });
 </script>
