@@ -517,7 +517,7 @@ function renderProducts(){
         <span class="chip"><i class="fa-solid fa-truck-fast text-emerald-300"></i> Envío gratis</span>
         ${save ? `<span class="chip save">Ahorras ${money(save).replace('.00','')}</span>` : ''}
         <img src="${esc(p.image)}" alt="${esc(p.name)}" loading="lazy" onerror="this.onerror=null;this.src=PLACEHOLDER">
-        ${p.outOfStock ? '<div class="absolute inset-0 grid place-items-center bg-black/10"><span class="bg-[color:var(--ink)] text-white text-xs font-extrabold px-4 py-2 rounded-full">Próximamente</span></div>' : ''}
+        ${p.outOfStock ? '<div class="absolute inset-0 grid place-items-center bg-black/10"><span class="bg-[color:var(--ink)] text-white text-xs font-extrabold px-4 py-2 rounded-full">Agotado</span></div>' : ''}
       </div>
       ${p.limited && !p.outOfStock ? `<span class="badge-limited"><i class="fa-solid fa-circle text-[6px]"></i> Oferta por tiempo limitado</span>` : ''}
       <h3 class="mt-4 font-bold text-lg leading-snug">${esc(p.name)}</h3>
@@ -527,7 +527,7 @@ function renderProducts(){
       </div>
       <div class="mt-auto flex gap-2">
         ${p.outOfStock
-          ? `<button class="btn w-full" disabled><i class="fa-solid fa-clock"></i> Próximamente</button>`
+          ? `<button class="btn w-full" disabled><i class="fa-solid fa-ban"></i> Agotado</button>`
           : `<button class="btn btn-green flex-1" data-action="add" data-id="${p.id}"><i class="fa-solid fa-plus"></i> Agregar</button>
              <button class="btn btn-ghost !px-4" data-action="buy" data-id="${p.id}" aria-label="Comprar ${esc(p.name)} por WhatsApp" title="Comprar ya por WhatsApp"><i class="fa-brands fa-whatsapp text-lg"></i></button>`}
       </div>
@@ -1342,3 +1342,4 @@ window.addEventListener('DOMContentLoaded', () => {
 </script>
 </body>
 </html>
+
