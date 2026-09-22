@@ -106,6 +106,10 @@
   .card:hover .card-media img{ transform:scale(1.04); }
   .chip{ position:absolute; top:.75rem; left:.75rem; z-index:2; background:var(--green); color:#fff; font-weight:800; font-size:.72rem; padding:.35rem .75rem; border-radius:999px; display:flex; gap:.4rem; align-items:center; }
   .chip.save{ left:auto; right:.75rem; background:var(--ink); }
+  .badge-limited{ display:inline-flex; align-items:center; gap:.35rem; font-size:.68rem; font-weight:800; text-transform:uppercase; letter-spacing:.03em;
+                   color:#b91c1c; background:#fee2e2; padding:.3rem .65rem; border-radius:999px; margin-bottom:.5rem; }
+  .badge-limited i{ animation:pulse-dot 1.4s ease-in-out infinite; }
+  @keyframes pulse-dot{ 0%,100%{ opacity:1; } 50%{ opacity:.35; } }
   .filter{ padding:.55rem 1.1rem; border-radius:999px; border:1px solid var(--line); background:#fff; font-weight:700; font-size:.85rem; color:var(--muted); transition:.2s; }
   .filter:hover{ border-color:var(--ink); color:var(--ink); }
   .filter[aria-pressed="true"]{ background:var(--ink); border-color:var(--ink); color:#fff; }
@@ -428,7 +432,7 @@
 const PHONE     = '50488780115';
 const ADMIN_PIN = '200324';        // Barrera básica del lado del cliente, no seguridad real.
 const WEBHOOK_URL = '';            // URL de tu Google Apps Script (ver Admin → Ajustes). Sin esto, los pedidos de clientes no llegan al CRM.
-const KEY_PRODUCTS = 'zentra_products_v17';
+const KEY_PRODUCTS = 'zentra_products_v18';
 const KEY_CART     = 'zentra_cart_v1';
 const KEY_ORDERS    = 'zentra_orders_v1';
 const KEY_CUSTOMERS = 'zentra_customers_v1';
@@ -440,7 +444,8 @@ const DEFAULTS = [
   { id:1, name:'Tarjeta NFC · Reseñas de Google',        price:419, oldPrice:null, category:'nfc',   wspMessage:'Hola, necesito información y adquirir la Tarjeta NFC de Reseñas de Google.', image:'googleNFC.png',      outOfStock:false },
   { id:2, name:'Tarjeta NFC · Seguidores de Instagram',  price:419, oldPrice:null, category:'nfc',   wspMessage:'Hola, necesito información y adquirir la Tarjeta NFC de Seguidores de Instagram.', image:'igNFC.png',   outOfStock:false },
   { id:3, name:'Combo Doble · Google + Instagram',       price:629, oldPrice:838,  category:'nfc',   wspMessage:'Hola, necesito información y adquirir el Combo Doble NFC (Google + Instagram).', image:'googleigNFC.png', outOfStock:false },
-  { id:4, name:'AirPods 4ta Gen AAA+',                   price:649, oldPrice:null, category:'audio', wspMessage:'Hola, necesito información y adquirir los AirPods 4ta Gen AAA+.', image:'airpods4tagen.png',    outOfStock:false }
+  { id:4, name:'AirPods 4ta Gen AAA+',                   price:590, oldPrice:649, category:'audio', limited:true, wspMessage:'Hola, necesito información y adquirir los AirPods 4ta Gen AAA+ en oferta.', image:'airpods4tagen.png',    outOfStock:false },
+  { id:5, name:'AirPods Pro 2 AAA+',                     price:590, oldPrice:849, category:'audio', limited:true, wspMessage:'Hola, necesito información y adquirir los AirPods Pro 2 AAA+ en oferta.', image:'airpodspro2.png',       outOfStock:false }
 ];
 
 /* =========================================================
@@ -466,7 +471,8 @@ function normalize(p){
     category: p.category || (/nfc/i.test(name) ? 'nfc' : /airpod|audio|aud[ií]fono/i.test(name) ? 'audio' : 'otros'),
     wspMessage: p.wspMessage || `Hola, necesito información y adquirir ${name}.`,
     image: p.image || '',
-    outOfStock: !!p.outOfStock
+    outOfStock: !!p.outOfStock,
+    limited: !!p.limited
   };
 }
 
@@ -513,6 +519,7 @@ function renderProducts(){
         <img src="${esc(p.image)}" alt="${esc(p.name)}" loading="lazy" onerror="this.onerror=null;this.src=PLACEHOLDER">
         ${p.outOfStock ? '<div class="absolute inset-0 grid place-items-center bg-black/10"><span class="bg-[color:var(--ink)] text-white text-xs font-extrabold px-4 py-2 rounded-full">Próximamente</span></div>' : ''}
       </div>
+      ${p.limited && !p.outOfStock ? `<span class="badge-limited"><i class="fa-solid fa-circle text-[6px]"></i> Oferta por tiempo limitado</span>` : ''}
       <h3 class="mt-4 font-bold text-lg leading-snug">${esc(p.name)}</h3>
       <div class="mt-2 mb-4 flex items-baseline gap-2">
         <span class="text-2xl font-extrabold">${money(p.price)}</span>
