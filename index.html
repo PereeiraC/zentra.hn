@@ -122,6 +122,32 @@
   .filter:hover{ border-color:var(--ink); color:var(--ink); }
   .filter[aria-pressed="true"]{ background:var(--ink); border-color:var(--ink); color:#fff; }
   .soldout .card-media img{ filter:grayscale(.6); opacity:.7; }
+  @media (max-width:639px){
+    #product-grid{ display:flex; overflow-x:auto; scroll-snap-type:x mandatory; gap:1rem; padding-bottom:.75rem; -webkit-overflow-scrolling:touch; }
+    #product-grid .card{ min-width:82%; scroll-snap-align:start; }
+  }
+  .ribbon-new{ position:absolute; top:.75rem; right:.75rem; z-index:2; background:var(--ink); color:#fff; font-weight:800; font-size:.68rem; text-transform:uppercase; letter-spacing:.04em; padding:.35rem .7rem; border-radius:999px; }
+
+  /* ---------- Banda "Somos Zentra" ---------- */
+  .mission{ position:relative; background:var(--ink); color:#fff; overflow:hidden; }
+  .mission::before{
+    content:""; position:absolute; inset:0;
+    background-image: radial-gradient(circle at 15% 20%, rgba(15,81,50,.4), transparent 45%),
+                       radial-gradient(circle at 85% 80%, rgba(15,81,50,.3), transparent 45%),
+                       repeating-linear-gradient(135deg, rgba(255,255,255,.035) 0 2px, transparent 2px 26px);
+  }
+  .mission > *{ position:relative; z-index:1; }
+
+  /* ---------- Bloques de venta por producto ---------- */
+  .pitch{ display:grid; gap:2.5rem; align-items:center; }
+  @media (min-width:1024px){ .pitch{ grid-template-columns:1fr 1fr; } .pitch.reverse > *:first-child{ order:2; } }
+  .pitch-visual{ position:relative; aspect-ratio:4/3; border-radius:var(--radius-lg); background:var(--paper); border:1px solid var(--line); display:flex; align-items:center; justify-content:center; overflow:hidden; }
+  .pitch-tap{ position:relative; width:70%; aspect-ratio:1; }
+  .pitch-tap .ring{ position:absolute; inset:0; border-radius:50%; border:2px solid var(--green); opacity:0; animation:pitch-ring 2.4s ease-out infinite; }
+  .pitch-tap .ring:nth-child(2){ animation-delay:.8s; }
+  .pitch-tap .ring:nth-child(3){ animation-delay:1.6s; }
+  .pitch-tap .core{ position:absolute; inset:32%; border-radius:20px; background:var(--ink); color:#fff; display:flex; align-items:center; justify-content:center; font-size:1.8rem; box-shadow:0 20px 35px -15px rgba(0,0,0,.4); }
+  @keyframes pitch-ring{ 0%{ transform:scale(.5); opacity:.9; } 100%{ transform:scale(1.9); opacity:0; } }
 
   /* ---------- Carrito ---------- */
   #overlay{ position:fixed; inset:0; background:rgba(21,24,26,.55); backdrop-filter:blur(3px); opacity:0; pointer-events:none; transition:opacity .25s; z-index:60; }
@@ -217,11 +243,18 @@
 
     <a href="#" aria-label="Zentra, inicio"><img src="zentradiagonal.png" alt="Zentra" class="h-9 w-auto object-contain"></a>
 
-    <div class="justify-self-end">
+    <div class="justify-self-end flex items-center gap-2">
+      <button class="btn btn-ghost !py-2.5 !px-3" onclick="toggleSearch()" aria-label="Buscar productos"><i class="fa-solid fa-magnifying-glass"></i></button>
       <button id="cart-btn" class="relative btn btn-ghost !py-2.5 !px-4" onclick="toggleCart(true)" aria-label="Abrir pedido">
         <i class="fa-solid fa-bag-shopping"></i><span class="hidden sm:inline">Mi pedido</span>
         <span id="cart-count" class="hidden absolute -top-2 -right-2 min-w-[22px] h-[22px] px-1 rounded-full bg-[color:var(--green)] text-white text-xs font-extrabold grid place-items-center">0</span>
       </button>
+    </div>
+  </div>
+  <div id="search-bar" class="hidden border-t border-[color:var(--line)] bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex gap-2">
+      <input id="search-input" type="search" placeholder="Buscar en el catálogo…" class="field flex-1" oninput="searchQuery=this.value;renderProducts()" aria-label="Buscar productos">
+      <button class="btn btn-ghost !px-4" onclick="toggleSearch()" aria-label="Cerrar búsqueda"><i class="fa-solid fa-xmark"></i></button>
     </div>
   </div>
 </header>
@@ -289,15 +322,45 @@
 
 <!-- PRODUCTOS -->
 <section id="productos" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 lg:py-20 scroll-mt-20">
-  <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+  <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-3">
     <div>
-      <h2 class="text-4xl sm:text-5xl font-extrabold">Más vendidos</h2>
+      <h2 class="text-4xl sm:text-5xl font-extrabold">Más Vendidos 🏅</h2>
       <p class="text-[color:var(--muted)] mt-3 text-lg max-w-[50ch]">Agrega lo que quieras al pedido y lo confirmamos por WhatsApp. Envío gratis en todo Honduras.</p>
     </div>
     <div class="flex flex-wrap gap-2" id="filters" role="group" aria-label="Filtrar productos"></div>
   </div>
+  <p class="text-sm font-semibold text-[color:var(--muted)] mb-7">🏆 Elegidos por nuestros propios clientes</p>
   <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"></div>
   <p id="empty" class="hidden text-center text-[color:var(--muted)] py-16">No hay productos en esta categoría todavía.</p>
+</section>
+
+<!-- BLOQUES DE VENTA POR PRODUCTO -->
+<section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-14 space-y-16 lg:space-y-24">
+  <div class="pitch">
+    <div class="pitch-visual">
+      <div class="pitch-tap"><span class="ring"></span><span class="ring"></span><span class="ring"></span>
+        <span class="core"><i class="fa-solid fa-star"></i></span></div>
+    </div>
+    <div>
+      <p class="font-bold uppercase tracking-wide text-sm mb-2" style="color:var(--green)">¿Cansado de pedir reseñas y que nadie las deje?</p>
+      <h3 class="text-3xl sm:text-4xl font-extrabold leading-tight">Tarjeta NFC de reseñas</h3>
+      <p class="mt-4 text-[color:var(--muted)] text-lg leading-relaxed max-w-[46ch]">Tu cliente acerca el celular en el mostrador y se abre tu perfil de Google al instante. Nada de escribir el nombre del negocio ni buscarlo — la reseña queda a un toque de distancia.</p>
+      <button class="btn btn-green mt-6" onclick="goToCategory('nfc')">VER MÁS <span>👀</span></button>
+    </div>
+  </div>
+
+  <div class="pitch reverse">
+    <div class="pitch-visual">
+      <div class="pitch-tap"><span class="ring"></span><span class="ring"></span><span class="ring"></span>
+        <span class="core"><i class="fa-solid fa-headphones"></i></span></div>
+    </div>
+    <div>
+      <p class="font-bold uppercase tracking-wide text-sm mb-2" style="color:var(--green)">¿Buscás el mismo sonido premium sin pagar de más?</p>
+      <h3 class="text-3xl sm:text-4xl font-extrabold leading-tight">AirPods en oferta limitada</h3>
+      <p class="mt-4 text-[color:var(--muted)] text-lg leading-relaxed max-w-[46ch]">Mismo diseño, mismo ajuste, mismo sonido que esperas — a una fracción del precio. Por tiempo limitado y con envío gratis a todo Honduras.</p>
+      <button class="btn btn-green mt-6" onclick="goToCategory('audio')">VER MÁS <span>👀</span></button>
+    </div>
+  </div>
 </section>
 
 <!-- CÓMO FUNCIONA -->
@@ -338,26 +401,54 @@
   <details class="faq"><summary>¿Qué datos necesitan para preparar mi tarjeta?<i class="fa-solid fa-plus"></i></summary>
     <p>El enlace de tu negocio en Google (para reseñas) o tu usuario de Instagram. Te lo pedimos por WhatsApp cuando confirmes el pedido.</p></details>
 </section>
+
+<!-- SOMOS ZENTRA -->
+<section class="mission py-20 lg:py-28 text-center px-4">
+  <p class="text-sm font-extrabold uppercase tracking-[.2em] text-white/50 mb-4">Nuestra misión</p>
+  <h2 class="text-4xl sm:text-6xl font-extrabold max-w-[16ch] mx-auto leading-tight">Somos Zentra</h2>
+  <p class="mt-6 text-white/70 text-lg max-w-[52ch] mx-auto leading-relaxed">
+    El primer catálogo hondureño de <b class="text-white">soluciones NFC</b> para negocios que quieren crecer su reputación
+    sin depender de suerte, y accesorios de calidad a un precio justo.
+  </p>
+</section>
 </main>
 
 <!-- Footer -->
 <footer id="contacto" class="bg-[color:var(--ink)] text-slate-300 pt-16 pb-10 scroll-mt-20">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-3 gap-10 pb-10 border-b border-white/10">
-    <div class="space-y-4">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid sm:grid-cols-2 lg:grid-cols-4 gap-10 pb-10 border-b border-white/10">
+    <div class="space-y-4 lg:col-span-1">
       <img src="zentradiagonal.png" alt="Zentra" class="h-8 w-auto brightness-0 invert">
-      <p class="text-sm text-slate-400 leading-relaxed max-w-[38ch]">Soluciones tecnológicas y accesorios de calidad con envío gratis a todo Honduras.</p>
+      <p class="text-sm text-slate-400 leading-relaxed max-w-[38ch]">Zentra® — Tecnología, confianza y envío gratis a todo Honduras.</p>
+      <div class="flex gap-3 pt-1 text-lg">
+        <a href="#" class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 grid place-items-center transition" aria-label="Instagram de Zentra"><i class="fa-brands fa-instagram"></i></a>
+        <a href="#" class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 grid place-items-center transition" aria-label="TikTok de Zentra"><i class="fa-brands fa-tiktok"></i></a>
+        <a href="#" class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 grid place-items-center transition" aria-label="Facebook de Zentra"><i class="fa-brands fa-facebook"></i></a>
+      </div>
     </div>
     <div>
-      <p class="font-bold text-white mb-4 text-sm">Navegación</p>
+      <p class="font-bold text-white mb-4 text-sm">Ayuda</p>
       <ul class="space-y-2.5 text-sm">
-        <li><a class="hover:text-white" href="#productos">Catálogo</a></li>
+        <li><a class="hover:text-white" href="#preguntas">Cómo comprar</a></li>
+        <li><a class="hover:text-white" href="#preguntas">Métodos de pago</a></li>
         <li><a class="hover:text-white" href="#como-funciona">Cómo funciona</a></li>
-        <li><a class="hover:text-white" href="#preguntas">Preguntas frecuentes</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="font-bold text-white mb-4 text-sm">Nuestras políticas</p>
+      <ul class="space-y-2.5 text-sm">
+        <li><a class="hover:text-white" href="#">Política de envíos</a></li>
+        <li><a class="hover:text-white" href="#">Cambios y devoluciones</a></li>
+        <li><a class="hover:text-white" href="#">Privacidad</a></li>
       </ul>
     </div>
     <div>
       <p class="font-bold text-white mb-4 text-sm">¿Dudas? Escríbenos</p>
-      <a id="footer-wsp" target="_blank" rel="noopener" class="btn btn-green"><i class="fa-brands fa-whatsapp text-lg"></i> Hablar por WhatsApp</a>
+      <a id="footer-wsp" target="_blank" rel="noopener" class="btn btn-green mb-5"><i class="fa-brands fa-whatsapp text-lg"></i> Hablar por WhatsApp</a>
+      <p class="font-bold text-white mb-2 text-sm">Ofertas por WhatsApp</p>
+      <form onsubmit="event.preventDefault();subscribeWsp()" class="flex gap-2">
+        <input id="sub-phone" type="tel" placeholder="Tu número" class="field !bg-white/5 !border-white/15 !text-white flex-1" aria-label="Tu número de WhatsApp">
+        <button class="btn btn-ghost !border-white/25 !text-white hover:!bg-white hover:!text-[color:var(--ink)] !px-4" aria-label="Suscribirme"><i class="fa-solid fa-arrow-right"></i></button>
+      </form>
     </div>
   </div>
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 flex flex-wrap items-center justify-between gap-3 text-xs text-slate-500">
@@ -453,7 +544,7 @@ const DEFAULTS = [
   { id:2, name:'Tarjeta NFC · Seguidores de Instagram',  price:419, oldPrice:null, category:'nfc',   wspMessage:'Hola, necesito información y adquirir la Tarjeta NFC de Seguidores de Instagram.', image:'igNFC.png',   outOfStock:false },
   { id:3, name:'Combo Doble · Google + Instagram',       price:629, oldPrice:838,  category:'nfc',   wspMessage:'Hola, necesito información y adquirir el Combo Doble NFC (Google + Instagram).', image:'googleigNFC.png', outOfStock:false },
   { id:4, name:'AirPods 4ta Gen AAA+',                   price:590, oldPrice:649, category:'audio', limited:true, wspMessage:'Hola, necesito información y adquirir los AirPods 4ta Gen AAA+ en oferta.', image:'airpods4tagen.png',    outOfStock:true },
-  { id:5, name:'AirPods Pro 2 AAA+',                     price:590, oldPrice:849, category:'audio', limited:true, wspMessage:'Hola, necesito información y adquirir los AirPods Pro 2 AAA+ en oferta.', image:'airpodspro2.png',       outOfStock:true }
+  { id:5, name:'AirPods Pro 2 AAA+',                     price:590, oldPrice:849, category:'audio', limited:true, nuevo:true, wspMessage:'Hola, necesito información y adquirir los AirPods Pro 2 AAA+ en oferta.', image:'airpodspro2.png',       outOfStock:true }
 ];
 
 /* =========================================================
@@ -480,7 +571,8 @@ function normalize(p){
     wspMessage: p.wspMessage || `Hola, necesito información y adquirir ${name}.`,
     image: p.image || '',
     outOfStock: !!p.outOfStock,
-    limited: !!p.limited
+    limited: !!p.limited,
+    nuevo: !!p.nuevo
   };
 }
 
@@ -491,6 +583,7 @@ let products = load(KEY_PRODUCTS, null) || DEFAULTS;
 products = products.map(normalize);
 let cart = load(KEY_CART, {});          // { id: cantidad }
 let filter = 'todos';
+let searchQuery = '';
 
 const saveProducts = () => save(KEY_PRODUCTS, products);
 const saveCart     = () => save(KEY_CART, cart);
@@ -515,15 +608,17 @@ function renderFilters(){
 }
 
 function renderProducts(){
-  const list = products.filter(p => filter === 'todos' || p.category === filter);
+  const q = searchQuery.trim().toLowerCase();
+  const list = products.filter(p => (filter === 'todos' || p.category === filter) && (!q || p.name.toLowerCase().includes(q)));
   $('#empty').classList.toggle('hidden', list.length > 0);
+  $('#empty').textContent = q ? `Ningún producto coincide con “${searchQuery}”.` : 'No hay productos en esta categoría todavía.';
   $('#product-grid').innerHTML = list.map(p => {
     const save = p.oldPrice && p.oldPrice > p.price ? p.oldPrice - p.price : 0;
     return `
     <article class="card ${p.outOfStock ? 'soldout' : ''}">
       <div class="card-media">
         <span class="chip"><i class="fa-solid fa-truck-fast text-emerald-300"></i> Envío gratis</span>
-        ${save ? `<span class="chip save">Ahorras ${money(save).replace('.00','')}</span>` : ''}
+        ${p.nuevo && !p.outOfStock ? `<span class="ribbon-new">Nuevo</span>` : save ? `<span class="chip save">Ahorras ${money(save).replace('.00','')}</span>` : ''}
         <img src="${esc(p.image)}" alt="${esc(p.name)}" loading="lazy" onerror="this.onerror=null;this.src=PLACEHOLDER">
         ${p.outOfStock ? '<div class="absolute inset-0 grid place-items-center bg-black/10"><span class="bg-[color:var(--ink)] text-white text-xs font-extrabold px-4 py-2 rounded-full">Agotado</span></div>' : ''}
       </div>
@@ -615,6 +710,24 @@ function toggleCart(open){
   document.body.style.overflow = open ? 'hidden' : '';
 }
 function toggleMenu(open){ $('#mobile-menu').classList.toggle('hidden', !open); }
+function toggleSearch(){
+  const bar = $('#search-bar'); const opening = bar.classList.contains('hidden');
+  bar.classList.toggle('hidden');
+  if (opening) setTimeout(() => $('#search-input').focus(), 50);
+  else { searchQuery = ''; $('#search-input').value = ''; renderProducts(); }
+}
+function goToCategory(cat){
+  filter = cat; searchQuery = '';
+  const bar = $('#search-bar'); if (bar) bar.classList.add('hidden');
+  renderFilters(); renderProducts();
+  location.hash = '#productos';
+}
+function subscribeWsp(){
+  const phone = $('#sub-phone').value.trim();
+  if (!phone) { toast('Escribe tu número de WhatsApp'); return; }
+  window.open(waLink('Hola, quiero recibir ofertas y promociones de Zentra en este número.'), '_blank', 'noopener');
+  $('#sub-phone').value = ''; toast('Te escribimos por WhatsApp para confirmar');
+}
 function closeAll(){ toggleCart(false); toggleMenu(false); }
 document.addEventListener('keydown', e => {
   if (e.key !== 'Escape') return;
