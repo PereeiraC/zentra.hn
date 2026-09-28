@@ -530,7 +530,7 @@
 const PHONE     = '50488780115';
 const ADMIN_PIN = '200324';        // Barrera básica del lado del cliente, no seguridad real.
 const WEBHOOK_URL = '';            // URL de tu Google Apps Script (ver Admin → Ajustes). Sin esto, los pedidos de clientes no llegan al CRM.
-const KEY_PRODUCTS = 'zentra_products_v22';
+const KEY_PRODUCTS = 'zentra_products_v23';
 const KEY_CART     = 'zentra_cart_v1';
 const KEY_ORDERS    = 'zentra_orders_v1';
 const KEY_CUSTOMERS = 'zentra_customers_v1';
@@ -542,12 +542,12 @@ const DEFAULTS = [
   { id:3, name:'Combo Doble · Google + Instagram',       price:629, oldPrice:838,  category:'nfc',   wspMessage:'Hola, necesito información y adquirir el Combo Doble NFC (Google + Instagram).', image:'googleigNFC.png', outOfStock:false },
   { id:1, name:'Tarjeta NFC · Reseñas de Google',        price:419, oldPrice:null, category:'nfc',   wspMessage:'Hola, necesito información y adquirir la Tarjeta NFC de Reseñas de Google.', image:'googleNFC.png',      outOfStock:false },
   { id:2, name:'Tarjeta NFC · Seguidores de Instagram',  price:419, oldPrice:null, category:'nfc',   wspMessage:'Hola, necesito información y adquirir la Tarjeta NFC de Seguidores de Instagram.', image:'igNFC.png',   outOfStock:false },
-  { id:4, name:'AirPods 4ta Gen AAA+',                   price:590, oldPrice:649, category:'audio', limited:true, wspMessage:'Hola, necesito información y adquirir los AirPods 4ta Gen AAA+ en oferta.', image:'airpods4tagen.png',    outOfStock:true },
-  { id:5, name:'AirPods Pro 2 AAA+',                     price:590, oldPrice:849, category:'audio', limited:true, nuevo:true, wspMessage:'Hola, necesito información y adquirir los AirPods Pro 2 AAA+ en oferta.', image:'airpodspro2.png',       outOfStock:true },
   { id:6, name:'Cable USB-C',                            price:199, oldPrice:null, category:'accesorios', nuevo:true, wspMessage:'Hola, necesito información y adquirir el Cable USB-C.', image:'cableusbc.png',              outOfStock:false },
-  { id:7, name:'Cargador Lightning',                     price:199, oldPrice:null, category:'accesorios', nuevo:true, wspMessage:'Hola, necesito información y adquirir el Cargador Lightning.', image:'cargadorapplelightning.png', outOfStock:false },
+  { id:7, name:'Cargador Lightning',                     price:189, oldPrice:null, category:'accesorios', nuevo:true, wspMessage:'Hola, necesito información y adquirir el Cargador Lightning.', image:'cargadorapplelightning.png', outOfStock:false },
   { id:8, name:'Cargador MagSafe',                        price:349, oldPrice:null, category:'accesorios', nuevo:true, wspMessage:'Hola, necesito información y adquirir el Cargador MagSafe.', image:'cargadormagsafe.png',        outOfStock:false },
-  { id:9, name:'Cargador 20W',                            price:259, oldPrice:null, category:'accesorios', nuevo:true, wspMessage:'Hola, necesito información y adquirir el Cargador 20W.', image:'cuboapple.jpg',              outOfStock:false }
+  { id:9, name:'Cargador 20W',                            price:259, oldPrice:null, category:'accesorios', nuevo:true, wspMessage:'Hola, necesito información y adquirir el Cargador 20W.', image:'cuboapple.jpg',              outOfStock:false },
+  { id:4, name:'AirPods 4ta Gen AAA+',                   price:590, oldPrice:649, category:'audio', limited:true, wspMessage:'Hola, necesito información y adquirir los AirPods 4ta Gen AAA+ en oferta.', image:'airpods4tagen.png',    outOfStock:true },
+  { id:5, name:'AirPods Pro 2 AAA+',                     price:590, oldPrice:849, category:'audio', limited:true, nuevo:true, wspMessage:'Hola, necesito información y adquirir los AirPods Pro 2 AAA+ en oferta.', image:'airpodspro2.png',       outOfStock:true }
 ];
 
 /* =========================================================
